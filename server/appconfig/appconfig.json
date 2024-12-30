@@ -1,0 +1,11 @@
+{
+    "configuration": {
+        "driver": "mysql",
+        "host": "127.0.0.1",
+        "user": "fvKCU/79BEVrwZbivkpqAA==",
+        "database": "jerawprod",
+        "password": "USfW3zBaK1ciJaWxKCEL/g==",
+        "portno": "4455",
+        "logger" :"on"
+    }
+}
