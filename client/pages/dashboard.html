@@ -1,0 +1,183 @@
+<div class="row"  data-ng-controller="reportcontroller" ng-init="initdashboard()">
+    <div class="row" >
+        <div class="col-md-12">
+            <div class="data-header">
+                <span>dashboard</span>
+            </div>
+        </div>
+    </div>
+
+    <!--  report body starts here-->
+    <div class="row" style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <div class="col-md-12" data-ng-controller="reportcontroller">
+            <div >
+                <div class="col-md-6 col-sm-12" >
+                    <div style="margin-right: 1px;">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">trend (last 7 days)</div>
+                            <div class="panel-body">
+                                <canvas id="transactioncustomer" width="200" height="75" class="chart chart-line" chart-data="transactiontrendchartData.data" chart-labels="transactiontrendchartData.labels"
+                                        chart-legend="true" series="transactiontrendchartData.series" dataset-override="transactiontrendchartdatasetOverride"
+                                        chart-options="transactiontrendchartoptions" colors="colors">
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div  style="margin-right: 1px;" >
+                        <div class="panel panel-default">
+                            <div class="panel-heading">smith transaction (last 7 days)</div>
+                                <div class="panel-body">
+                                    <canvas id="transactionsmith" width="200" height="75" class="chart chart-line" chart-data="transactionsmithchartData.data" chart-labels="transactionsmithchartData.labels" chart-legend="true"
+                                            chart-series="transactionsmithchartData.series" chart-dataset-override="transactionsmithchartdatasetOverride"
+                                            chart-options="transactionsmithchartoptions" chart-colors="colors">
+                                    </canvas>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <div class="col-md-12" data-ng-controller="reportcontroller">
+            <div >
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">metal positions</div>
+                            <div class="panel-body">
+                                <canvas id="metalposition" class="chart chart-doughnut" chart-data="metalpositionchartData.data"
+                                        chart-labels="metalpositionchartData.labels"  chart-legend="true">
+                                </canvas>
+                            </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">top out-standing customer vs sales (last 7 days)</div>
+                            <div class="panel-body">
+                                <canvas id="topoustanderswithsales" class="chart chart-bar" chart-data="topoustanderswithsaleschartData.data"
+                                        chart-labels="topoustanderswithsaleschartData.labels" chart-series="topoustanderswithsaleschartData.series">
+                                </canvas>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <div class="col-md-12">
+            <div >
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">orders (last 7 days)</div>
+                        <div class="panel-body">
+                            <canvas id="orderlist" width="200" height="75" class="chart chart-line" chart-data="orderchartData.data" chart-labels="orderchartData.labels" chart-legend="true"
+                                    series="orderchartData.series" dataset-override="orderchartdatasetOverride"
+                                    chart-options="orderchartoptions" chart-colors="colors">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div  style="margin-right: 1px;">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">orders due next 48 hours or crossed delivery date</div>
+                            <div class="panel-body" style="vertical-align: middle;">
+                                <div class="module" data-ng-repeat="row in ordersnearingdelivery">
+                                    <h4 class="stripe-2" style="height: 30px; vertical-align: middle">
+                                        {{row.duedate | date:'mediumDate'}}, {{row.orgname}}, {{row.firstname}}, {{row.productvalue}} grams.
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div >-->
+                            <!--<h3>orders nearing 48 hours delivery date</h3>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <div class="col-md-12" data-ng-controller="reportcontroller">
+            <div >
+                <div class="col-md-6 col-sm-12" >
+                    <div style="margin-right: 1px;">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">rate fluctuation (weekly)</div>
+                            <div class="panel-body">
+                                <a href="https://www.iGolder.com/gold-charts/"><img border=0 src="https://www.iGolder.com/GoldChart.ashx?w=500&h=375&months=3&currency=INR&tz=India Standard Time&title=premdeep&unit=gr" alt="Gold Chart" /></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div  style="margin-right: 1px;" >
+                        <div class="panel panel-default">
+                            <div class="panel-heading">GNS</div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="col-md-2">
+                                            <label style="font-size: 14px">select </label>
+                                        </div>
+                                        <div class="col-md-4 pull-left">
+                                            <div class="input-group" >
+                                                <input type="text"
+                                                       placeholder="to date"
+                                                       class="form-control"
+                                                       datepicker-popup="dd-MM-yyyy"
+                                                       is-open="opened[28]"
+                                                       min="event.start_date"
+                                                       data-ng-model="reportdata.fromdate"
+                                                       datepicker-options="dateOptions"
+                                                       date-disabled="disabled(date, mode)"
+                                                       ng-required="true"
+                                                       close-text="Close"
+                                                       ng-click="open($event,28)">
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 pull-left">
+                                            <div class="input-group" >
+                                                <input type="text"
+                                                       placeholder="from date"
+                                                       class="form-control"
+                                                       datepicker-popup="dd-MM-yyyy"
+                                                       is-open="opened[29]"
+                                                       min="event.start_date"
+                                                       data-ng-model="reportdata.todate"
+                                                       datepicker-options="dateOptions"
+                                                       date-disabled="disabled(date, mode)"
+                                                       ng-required="true"
+                                                       close-text="Close"
+                                                       ng-click="open($event,29)">
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 pull-left">
+                                            <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="calculategns();">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        GMS : {{netgns}} grams
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+        <div class="col-md-12">
+        </div>
+    </div>
+</div>

@@ -1,0 +1,371 @@
+<div ng-controller="salesController">
+    <ul class="nav nav-boxed nav-justified tabbable ver-horizontal-menu" >
+
+        <!--<ul class="ver-inline-menu tabbable margin-bottom-10">-->
+        <li class="active">
+            <a data-toggle="tab" href="#" data-ng-click="setSalesTab('billing')">
+                Billing
+            </a>
+
+        </li>
+
+        <li>
+            <a data-toggle="tab" href="#" data-ng-click="setSalesTab('salesReturn')">
+                Sales Return
+            </a>
+        </li>
+        <li>
+            <a data-toggle="tab" href="#" data-ng-click="setSalesTab('customers')">
+                Customers
+            </a>
+        </li>
+
+    </ul>
+    <div class="row margin-top-10" data-ng-switch="salesTab">
+
+        <!--Member Div Starts Here-->
+        <div class="col-md-12" data-ng-switch-when="billing">
+            <div class="panel panel-body panel-info">
+                <form class="form-horizontal" ng-submit="addProductToCart()">
+                    <div class="form-group">
+
+                        <div class="col-md-5 ">
+
+                            <select class="form-control"
+                                    ng-class="inputClass.Text"
+                                    data-ng-model="billing.item"
+                                    ng-change="populateProductDetail()"
+                                    required="">
+                                <option value="">Select Product</option>
+                                <option ng-repeat="product in sellablePackages"  value="{{product}}">{{product.packagename}}</option>
+
+                            </select>
+
+                            <!--<input type="text"-->
+                                   <!--class="form-control input-lg"-->
+                                   <!--placeholder="Enter item name"-->
+                                   <!--data-ng-model="billingCart.item"-->
+                                   <!--required=""-->
+                                   <!--id="billingProductInput"-->
+                                   <!--tabindex="1"-->
+                                   <!--typeahead="product as product.packagename for product in sellablePackages | filter:$viewValue"-->
+                                   <!--ng-blur="populateProductDetail()">-->
+  </div>
+
+  <div class="col-md-2  ">
+
+      <input type="text"
+             class="form-control "
+             ng-class="inputClass.Text"
+             placeholder="Rate"
+             data-ng-model="billing.cart.packageAmount"
+             required=""
+             id="rate"
+             tabindex="">
+  </div>
+
+  <div class="col-md-1  ">
+
+      <input type="text"
+             class="form-control"
+             ng-class="inputClass.Text"
+             placeholder="Qty"
+             data-ng-model="billing.cart.qty"
+             required=""
+             id="qty"
+             tabindex="2">
+  </div>
+
+  <div class="col-md-2 ">
+
+      <input type="text"
+             class="form-control "
+             ng-class="inputClass.Text"
+             placeholder="Amount"
+             value="{{billing.cart.packageAmount * billing.cart.qty ||Amount}}"
+             required=""
+             id="amount">
+  </div>
+
+  <div class="col-md-2 ">
+      <button class="btn  btn-info btn-block " ng-class="inputClass.Button.Submit" tabindex="3" type="submit">Add </button>
+  </div>
+</div>
+<hr>
+</form>
+
+<div ng-show="sales.showCart">
+
+<div class="table-responsive" id="cart" >
+  <table class="table table-striped table-bordered ">
+      <thead>
+      <tr>
+          <th class="text-center">#</th>
+          <th class="text-center">Item</th>
+          <th class="text-center">Rate</th>
+          <th class="text-center">Qty</th>
+          <th class="text-center">Amount</th>
+          <th class="text-center"></th>
+      </tr>
+      </thead>
+      <tbody ng-repeat="product in sales.cart">
+
+      <tr>
+          <td class="text-center">{{$index+1}}</td>
+          <td class="text-left">{{product.packagename}}</td>
+          <td class="text-right">{{product.packageAmount}}.00</td>
+          <td class="text-center">{{product.qty}}</td>
+          <td class="text-right">{{product.packageAmount * product.qty || 0 }}.00</td>
+          <td class="text-center"><span class="fa fa-trash-o mouse-pointer" ng-click="removeFromShoppingCart($index)"></span></td>
+      </tr>
+      </tbody>
+      <tfoot>
+      <tr>
+          <th class="text-center"></th>
+          <th class="text-center"></th>
+          <th class="text-right">Total</th>
+          <th class="text-center">{{sales.totalQty}}</th>
+          <th class="text-right">{{sales.totalAmount}}.00</th>
+          <th class="text-center"></th>
+      </tr>
+      </tfoot>
+  </table>
+</div>
+
+    <div class="col-md-offset-7 col-md-5">
+        <form ng-submit="saveSales()">
+        <div class="form-group row">
+            <div class="col-md-6 form-group">
+                <label class="font_b float-right">Gross Total </label>
+            </div>
+            <div class="col-md-6 form-group ">
+                <input type="text"
+                       class="form-control float-left "
+                       ng-class="inputClass.Text"
+                       ng-model="sales.totalAmount"
+                       placeholder="Gross Amount"
+                       required="">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-6 form-group ">
+                <label class="font_b float-right">Discount </label>
+            </div>
+            <div class="col-md-6 form-group">
+                <input type="text"
+                       class="form-control float-left"
+                       ng-class="inputClass.Text"
+                       data-ng-model="sales.discount"
+                       placeholder="Discount Amount">
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <div class="col-md-6 form-group">
+                    <label class="font_b float-right ">Net Total </label>
+            </div>
+            <div class="col-md-6 form-group">
+                    <input type="text"
+                           class="form-control float-left"
+                           ng-class="inputClass.Text"
+                           value="{{sales.totalAmount - sales.discount || sales.totalAmount}}"
+                           placeholder="Net  Amount"
+                           required="">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-6 form-group col-xs-12">
+                <label class="font_b float-right ">Sales Type </label>
+            </div>
+            <div class="col-md-6 form-group col-xs-12">
+                    <label class="ui-radio"><input name="salesType" ng-model="sales.Type" type="radio" value="0" ><span>Cash</span></label>
+                    <label class="ui-radio"><input name="salesType" ng-model="sales.Type" type="radio" value="1" ><span>Credit</span></label>
+
+            </div>
+        </div>
+        <div class="form-group row" ng-show="sales.Type">
+            <div class="col-md-6 form-group col-xs-12">
+                <label class="font_b float-right ">Select Customer</label>
+            </div>
+            <div class="col-md-6 form-group col-xs-12"  ng-controller="customerController">
+                <select class="form-control" ng-class="inputClass.Text" data-ng-model="sales.customerID" ng-required="!sales.Type">
+                    <option value="">Select Customer</option>
+                    <option ng-repeat="customer in cutomersList"  value="{{customer.customerid}}"> {{customer.customername}} </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="row form-group ">
+                <div class="col-md-5">
+                </div>
+                <div class="col-md-7">
+                    <div class="col-md-8 form-group">
+                        <button type="submit" class="btn btn-block btn-info" ng-class="inputClass.Button.Submit">Save</button>
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <button type="button" class="btn btn-block btn-info-alt " ng-class="inputClass.Button.Reset">Clear</button>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        </form>
+    </div>
+
+</div>
+
+
+<hr>
+
+
+
+<!--List view result of community member and Option to Remove-->
+
+
+
+
+            </div>
+
+        </div>
+        <!--Member Div Ends Here-->
+
+        <!--Events Div Starts Here-->
+        <div class="col-md-12 " data-ng-switch-when="salesReturn">
+
+            <div class="panel panel-body">
+
+                <form class="form-horizontal">
+
+                    <div class="form-group">
+                        <label for="" class="col-sm-2"> Title :</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2">Description</label>
+                        <div class="col-sm-10">
+                            <textarea name="" id="" class="form-control" rows="4" data-ng-model="DescriptionText"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-2"> Email :</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="" class="col-sm-2">Start Date :</label>
+                        <div class="col-sm-4">
+                            <div class="input-group" >
+                                <input type="text"
+                                       placeholder="Date"
+                                       class="form-control col-sm-4"
+                                       datepicker-popup='yyyy-MM-dd'
+                                       is-open="opened1"
+                                       data-ng-model="dtFROM"
+                                       min="minDate"
+                                       max="'2015-06-22'"
+                                       datepicker-options="dateOptions"
+                                       ng-required="true"
+                                       close-text="Close"
+                                       ng-click="open1($event)">
+
+                                <span class="input-group-addon" ng-click="open1($event)"><i class="fa fa-calendar"></i></span>
+
+                            </div>
+                        </div>
+
+                        <label for="" class="col-sm-2">End Date :</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text"
+                                       placeholder="Date"
+                                       class="form-control col-sm-4"
+                                       datepicker-popup='yyyy-MM-dd'
+                                       is-open="opened"
+                                       min="minDate"
+                                       data-ng-model="dtTO"
+                                       max="'2015-06-22'"
+                                       datepicker-options="dateOptions"
+                                       date-disabled="disabled(date, mode)"
+                                       ng-required="true"
+                                       close-text="Close"
+                                       ng-click="open($event)">
+
+                                <span class="input-group-addon" ng-click="open($event)"><i class="fa fa-calendar"></i></span>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="row no-right-margin">
+                        <div class="pull-right">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="button" class="btn btn-primary">Cancel</button>
+                        </div>
+                    </div>
+
+                </form>
+                <hr>
+                <!--LIST :------  Option to Remove all Events, Date, Current Date -->
+
+            </div>
+        </div>
+        <!--Events Div Ends Here-->
+
+        <!--Notices Div Starts Here-->
+        <div class="col-md-12" data-ng-switch-when="customers">
+
+            <div class="panel panel-body">
+                <div class="table-responsive"  >
+                    <table class="table table-striped table-bordered ">
+                        <thead>
+                        <tr>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Name</th>
+                            <th class="text-center">Contact</th>
+                            <th class="text-center">Address</th>
+                            <th class="text-center">Cash balance</th>
+                            <th class="text-center"></th>
+                        </tr>
+                        </thead>
+                        <tbody ng-repeat="customer in cutomersList">
+
+                        <tr>
+                            <td class="text-center">{{customer.customerid}}</td>
+                            <td class="text-left"><b>{{customer.customername}}</b>
+                                <span class="text-small text-muted">({{customer.customerbusinessname}})</span>
+                            </td>
+                            <td class="text-left">
+                                <p class="font_b text-small" ng-show="customer.address_mobile">Mobile : {{customer.address_mobile}}</p>
+                                <p class="font_b text-small" ng-show="customer.address_phone">Phone : {{customer.address_phone}}</p>
+                                <p class="font_b text-small" ng-show="customer.address_email">Email : {{customer.address_email}}</p>
+
+                            </td>
+                            <td class="text-left">
+                                <p class="font_b text-small" ng-show="customer.address_line1">{{customer.address_line1}}</p>
+                                <p class="font_b text-small" ng-show="customer.address_line2">{{customer.address_line2}},{{customer.address_postoffice}}</p>
+                                <p class="font_b text-small" ng-show="customer.address_district">{{customer.address_district}},{{customer.address_state}}  <span ng-show="customer.address_pincode">, Pin :{{customer.address_pincode}}</span></p>
+
+                            </td>
+                            <td class="text-right">{{customer.openingbalance}}.00</td>
+                            <td class="text-center"><span class="fa fa-trash-o mouse-pointer" ng-click="remove($index)"></span></td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+

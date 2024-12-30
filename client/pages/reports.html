@@ -1,0 +1,3090 @@
+<div class="visible-md visible-lg">
+
+<ul class="nav nav-boxed nav-justified tabbable ver-horizontal-menu" >
+
+    <!--<ul class="ver-inline-menu tabbable margin-bottom-10">-->
+    <li class="active" data-ng-class="" >
+        <a data-toggle="tab" href="#" data-ng-click="selectReport(1)">
+            Stock
+        </a>
+    </li>
+    <li >
+        <a data-toggle="tab" href="#" data-ng-click="selectReport(2)">
+            Transaction
+        </a>
+    </li>
+    <li>
+        <a data-toggle="tab" href="#" data-ng-click="selectReport(3)">
+            Sales Return
+        </a>
+    </li>
+    <li>
+        <a data-toggle="tab" href="#" data-ng-click="selectReport(4)">
+            Billing
+        </a>
+    </li>
+    <li data-ng-class="colClass">
+        <a data-toggle="tab" href="#" data-ng-click="selectReport(5)">
+            CashBook
+        </a>
+    </li>
+    <li>
+        <a data-toggle="tab" href="#" data-ng-click="selectReport(6)">
+            GoldSmith
+        </a>
+    </li>
+    <li>
+        <a data-toggle="tab" href="#" data-ng-click="selectReport(7)">
+            DailyChart
+        </a>
+    </li>
+    <li>
+        <a data-toggle="tab" href="#" data-ng-click="selectReport(8)">
+            Order
+        </a>
+    </li>
+</ul>
+
+<div class="row margin-top-10" data-ng-switch="communityTab" >
+    <!--STOCK REPORT-->
+    <div class="col-md-12" data-ng-switch-when="1" data-ng-controller="StockReportController" >
+        <div class="panel panel-body panel-info">
+
+            <div class="row visible-md visible-lg">
+                <div class="col-md-1">
+
+                    <label class="control-label" style="padding-top: 5px">From</label>
+
+
+                </div>
+
+                <div class="col-md-3 md-3-from">
+                  <div class="form-group mouse-pointer" ng-click="open1(report)">
+                    <div class="input-group" ng-click="open1(report)">
+                        <input type="text"
+                               placeholder="Date"
+                               class="form-control col-sm-3"
+                               datepicker-popup='yyyy-MM-dd'
+                               is-open="opened1"
+                               data-ng-model="report.Stock_FromDate"
+                               datepicker-options="dateOptions"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="$event.preventDefault();$event.stopPropagation();opened1=true;"
+                                >
+
+                        <span class="input-group-addon" ng-click="open1(report)"><i class="fa fa-calendar"></i></span>
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-1 md-1-to">
+                    <label class="control-label" style="padding-top: 5px">To</label>
+
+                </div>
+
+                <div class="col-md-3 md-3-from-1">
+                    <div class="input-group" >
+                        <input type="text"
+                               placeholder="Date"
+                               class="form-control"
+                               datepicker-popup='yyyy-MM-dd'
+                               is-open="opened"
+                               min="event.start_date"
+                               data-ng-model="report.Stock_ToDate"
+                               datepicker-options="dateOptions"
+                               date-disabled="disabled(date, mode)"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="$event.preventDefault();$event.stopPropagation();opened=true;"
+                                >
+
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                    </div>
+
+                </div>
+                <div class="col-md-1 md-1-customer">
+                    <label class="control-label" style="padding-top: 5px">Category</label>
+
+                </div>
+
+                <div class="col-md-3">
+
+
+                    <select  id="CategoryName1" ng-model="report.CategoryID" class="form-control" required>
+                        <option value="0">-All-</option>
+                        <option value="1">Ornaments</option>
+                        <option value="2">Old Gold</option>
+                        <option value="3">995</option>
+                    </select>
+                </div>
+
+                <div class="col-md-1">
+
+                    <input type="button" value="Go" class="btn btn-primary" data-ng-click="getStockReport(report)">
+
+                </div>
+            </div>
+
+
+            <!--ng-show-->
+            <div ng-show="showStockReport">
+
+                <div class="favourite-counter">
+                    <div class="favourite-text text-center">Stock Lists
+                    </div>
+                </div>
+                 <!--{{GetStkReport}}-->
+                <accordion close-others="1"  class="ui-accordion-palered">
+                    <!--<accordion-group  ng-repeat="Services in servicesData" is-open="isopen">-->
+                    <accordion-group ng-repeat="item in GetStkReport" is-open="isopen">
+                        <accordion-heading>
+                            <div class="row mouse-pointer" data-ng-click="getDetailedStockReport(item.CategoryID,report);">
+                                                <span class="col-md-9">
+                                                     <span class="">
+                                                        <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                                                    </span>
+                                                    <div >
+                                                        <div class="" >
+
+                                                            <span>{{item.CategoryName}}</span>
+                                                            <!--<span>{{item.DayOpeningStock]}}</span>-->
+                                                            <!--<span class="col-md-2">{{DayChart_OpeningStockQty[item.CategoryID]}}</span>-->
+                                                            <!--<span class="col-md-2">{{DayChart_ClosingStock[item.CategoryID]}}</span>-->
+                                                            <!--<span class="col-md-2">{{DayChart_ClosingStockQty[item.CategoryID]}}</span>-->
+                                                        </div>
+                                                    </div>
+                                                </span>
+                            </div>
+
+                        </accordion-heading>
+
+
+                            <div class="table-responsive table_scrollable">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+
+                                        <!--<th>Date</th>-->
+                                        <th>Date </th>
+                                        <th>Opening Qty</th>
+                                        <th>Opening Wt</th>
+
+                                        <th>Sales Wt</th>
+                                        <th>Sales Qty</th>
+                                        <th>Purchase Wt</th>
+                                        <th>Purchase Qty</th>
+                                        <th>S_Return Wt</th>
+                                        <th>S_Return Qty</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <!--<div ng-grid="gridStockReports[item.CategoryID]" ng-style={height:stockGridHeight[item.CategoryID]} ></div>-->
+                                    <tr ng-repeat="item in stockReportData[clickedCategoryID]">
+
+                                        <!--<td>{{row.IssuedDateTime}}</td>-->
+                                        <td>{{item.Date}}</td>
+                                        <td>{{item.OpeningQty}}</td>
+                                        <td>{{item.OpeningWt}}</td>
+
+                                        <td>{{item.SalesWt}}</td>
+                                        <td>{{item.SalesQty}}</td>
+                                        <td>{{item.PurchaseWt}}</td>
+                                        <td>{{item.PurchaseQty}}</td>
+                                        <td>{{item.S_ReturnWt}}</td>
+                                        <td>{{item.S_ReturnQty}}</td>
+
+
+                                        <!--<td><a><p ng-click="deleteGSIssue(row,goldsmith)"><img src="client/images/delete-circle.gif"  style="width:20px;height:20px"/></p></a></td>-->
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                    </accordion-group>
+
+                </accordion>
+            </div>
+
+        </div>
+
+
+    </div>
+    <!--TRANSACTION REPORT-->
+    <div class="col-md-12" data-ng-switch-when="2" data-ng-controller="TransactionReportController">
+        <div class="panel panel-body panel-info"  >
+
+            <!--<div class="report_search_container">-->
+
+                <div class="row">
+                    <div class="col-md-1">
+
+                        <label class="control-label" style="padding-top: 5px">From</label>
+
+
+                    </div>
+
+                    <div class="col-md-3 md-3-from">
+
+                        <div class="input-group" >
+                            <input type="text"
+                                   placeholder="Date"
+                                   class="form-control"
+                                   datepicker-popup='yyyy-MM-dd'
+                                   is-open="opened1"
+                                   data-ng-model="Transact.FromDate"
+                                   datepicker-options="dateOptions"
+                                   ng-required="true"
+                                   close-text="Close"
+                                   ng-click="$event.preventDefault();$event.stopPropagation();opened1=true;"
+                                    >
+
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-1 md-1-to">
+                        <label class="control-label" style="padding-top: 5px">To</label>
+
+                    </div>
+
+                    <div class="col-md-3 md-3-from-1">
+                        <div class="input-group" >
+                            <input type="text"
+                                   placeholder="Date"
+                                   class="form-control"
+                                   datepicker-popup='yyyy-MM-dd'
+                                   is-open="opened"
+                                   min="event.start_date"
+                                   data-ng-model="Transact.ToDate"
+                                   datepicker-options="dateOptions"
+                                   date-disabled="disabled(date, mode)"
+                                   ng-required="true"
+                                   close-text="Close"
+                                   ng-click="$event.preventDefault();$event.stopPropagation();opened=true;" >
+
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-1 md-1-customer">
+                        <label class="control-label" style="padding-top: 5px">Customer</label>
+
+                    </div>
+
+                    <div class="col-md-3">
+
+
+                        <select id="TransactionCustomerName1" ng-model="Transact.CustomerID" class="form-control" required>
+                            <option value="0">-All-</option>
+                            <option value="{{Customer.CustID}}" ng-repeat="Customer in CustomerData">{{Customer.BusinessName}}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-1">
+
+                        <input type="button" value="Go" class="btn btn-primary" data-ng-click="getTransactionReport(Transact)">
+
+                    </div>
+                </div>
+
+            <!--</div>-->
+
+
+        <div ng-show="showTransactionReport">
+
+            <div class="favourite-counter">
+                <div class="favourite-text text-center">Transaction Lists
+                </div>
+            </div>
+
+
+            <accordion close-others="1"  class="ui-accordion-palered">
+                <!--<accordion-group  ng-repeat="Services in servicesData" is-open="isopen">-->
+                <accordion-group ng-repeat="item in TransReport" is-open="isopen">
+                    <accordion-heading>
+                        <div class="row mouse-pointer" data-ng-click="showTransactionReportPackages=true">
+                                                <span class="col-md-9">
+                                                     <span class="">
+                                                        <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                                                    </span>
+                                                    <div >
+
+                                                        <div class="" ng-click="getCustomerTransactions(item.TransactionID,item.CustCode)">
+                                                            <!--<div>-->
+                                                            <span>{{item.BusinessName}}</span>
+                                                            <span class="float-right">{{item.TransactionDate.substring(10,0)}}</span>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                        </div>
+
+                    </accordion-heading>
+
+                    <div class=" panel-default  margin-top-10 table_scrollable">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+
+                                <tr>
+
+
+                                    <th>Item Name </th>
+
+                                    <th>Qty</th>
+                                    <th>Weight </th>
+                                    <th>Rate</th>
+                                    <th>Return Qty</th>
+                                    <th>Return Wt</th>
+                                    <th>StQty</th>
+                                    <th>StWt</th>
+                                </tr>
+                                </thead>
+
+                                <tbody >
+
+                                <!--<div ng-grid="gridStockReports[item.CategoryID]" ng-style={height:stockGridHeight[item.CategoryID]} ></div>-->
+                                <tr ng-repeat="row in transactionReportData">
+
+                                    <!--<td>{{row.IssuedDateTime}}</td>-->
+
+                                    <td>{{row.ItemName}}</td>
+                                    <td>{{row.Qty}}</td>
+                                    <td>{{row.weight}}</td>
+                                    <td>{{row.Rate}}</td>
+                                    <td>{{row.ReturnQty}}</td>
+                                    <td>{{row.ReturnWt}}</td>
+                                    <td>{{row.StQty}}</td>
+                                    <td>{{row.StWeight}}</td>
+
+
+
+                                    <!--<td><a><p ng-click="deleteGSIssue(row,goldsmith)"><img src="client/images/delete-circle.gif"  style="width:20px;height:20px"/></p></a></td>-->
+                                </tr>
+
+                                </tbody>
+                            </table>
+
+
+
+                            <table class="table">
+                                <tr><td>Total Purchases ({{type[item.TransactionID]}}) </td><td>{{PurchaseDetails[item.TransactionID]}}</td><td style="text-align: left">:&nbsp;&nbsp;{{TotalPurchases[item.TransactionID]||0}}</td></tr>
+                                <tr><td>Cash  ({{type[item.TransactionID]}}) </td><td> (Rs. {{Amount}} )</td><td style="text-align: left">:&nbsp;&nbsp;{{TotalCash||0}}  </td> </tr>
+                            </table>
+                        </div>
+                    </div>
+                </accordion-group>
+            </accordion>
+
+
+        </div>
+
+        </div>
+
+
+    </div>
+    <!--SALES Return-->
+    <div class="col-md-12" data-ng-switch-when="3" data-ng-controller="SalesReportController">
+        <div class="panel panel-body panel-info"  >
+
+            <div class="row">
+                <div class="col-md-2">
+
+                    <label class="control-label" style="padding-top: 5px">Choose Date</label>
+
+
+                </div>
+
+                <div class="col-md-4 md-3-from">
+
+                    <div class="input-group" >
+                        <input type="text"
+                               placeholder="Date"
+                               class="form-control"
+                               datepicker-popup='yyyy-MM-dd'
+                               is-open="opened1"
+                               data-ng-model="sales.SalesReturn_Date"
+                               datepicker-options="dateOptions"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="open1(report)"
+                                >
+
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                    </div>
+
+                </div>
+
+                <!--<div class="col-md-1 md-1-to">-->
+                    <!--<label class="control-label" style="padding-top: 5px">To</label>-->
+
+                <!--</div>-->
+
+                <!--<div class="col-md-3 md-3-from-1">-->
+                    <!--<div class="input-group" >-->
+                        <!--<input type="text"-->
+                               <!--placeholder="Date"-->
+                               <!--class="form-control"-->
+                               <!--datepicker-popup='yyyy-MM-dd'-->
+                               <!--is-open="opened"-->
+                               <!--min="event.start_date"-->
+                               <!--data-ng-model="Transact.ToDate"-->
+                               <!--datepicker-options="dateOptions"-->
+                               <!--date-disabled="disabled(date, mode)"-->
+                               <!--ng-required="true"-->
+                               <!--close-text="Close"-->
+                               <!--ng-click="open(report)" >-->
+
+                        <!--<span class="input-group-addon"><i class="fa fa-calendar"></i></span>-->
+
+                    <!--</div>-->
+
+                <!--</div>-->
+                <div class="col-md-2 md-1-customer">
+                    <label class="control-label" style="padding-top: 5px">Customer</label>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <select id="SalesReturnCustomerName" class="form-control visible-md visible-lg" ng-model="sales.SalesReturn_CustomerID"required>
+                        <option value="">-All-</option>
+                        <option value="{{SalesReturn_Customer.CustID}}" ng-repeat="SalesReturn_Customer in SalesReturn_CustomerData">{{SalesReturn_Customer.BusinessName}}</option>
+                    </select>
+                </div>
+
+                <div class="col-md-1">
+
+                    <input type="button" value="Go" class="btn btn-primary form-control " data-ng-click="getSalesReturnReport(sales)">
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div ng-show="showSalesReport">
+
+            <div class="favourite-counter">
+                <div class="favourite-text text-center">Sales Return Lists
+                </div>
+            </div>
+
+
+            <accordion close-others="1"  class="ui-accordion-palered">
+                <!--<accordion-group  ng-repeat="Services in servicesData" is-open="isopen">-->
+
+                <accordion-group ng-repeat="item in SalesReturn_SalesReturnData" is-open="isopen">
+                    <accordion-heading>
+                        <div class="row mouse-pointer" data-ng-click="showSalesReportPackages=true">
+
+                                                <span class="col-md-12">
+                                                     <span class="">
+                                                        <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                                                    </span>
+                                                    <div >
+
+
+                                                        <div class="" ng-click="getDetailedSalesReturnReport(item.CustomerID,item.TransactionID)">
+                                                            <!--<div>-->
+                                                            <span>{{item.BusinessName}}</span>
+                                                            <span class="float-right">{{item.TransactionDate.substring(10,0)}}</span>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                        </div>
+
+                    </accordion-heading>
+
+                    <div class=" panel-default  margin-top-10 table_scrollable">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+
+                                <tr>
+
+
+                                    <th>Category </th>
+
+                                    <!--<th>Item</th>-->
+                                    <th>Purity </th>
+                                    <th>Qty</th>
+                                    <th>Rate</th>
+                                    <th>StAmount</th>
+                                    <th>StWeight</th>
+                                    <th>Weight</th>
+                                    <!--<th>Bill No</th>-->
+                                </tr>
+                                </thead>
+
+                                <tbody >
+
+
+
+                                <!--<div ng-grid="gridStockReports[item.CategoryID]" ng-style={height:stockGridHeight[item.CategoryID]} ></div>-->
+                                <tr ng-repeat="data in salesReturnReportData">
+
+
+                                    <!--<td>{{row.IssuedDateTime}}</td>-->
+
+                                    <td>{{data.CategoryName}}</td>
+                                    <!--<td>{{data.Item}}</td>-->
+                                    <td>{{data.Purity}}</td>
+                                    <td>{{data.Qty}}</td>
+                                    <td>{{data.Rate}}</td>
+                                    <td>{{data.StAmount}}</td>
+                                    <td>{{data.StWeight}}</td>
+                                    <td>{{data.Weight}}</td>
+                                    <!--<td>{{data.BillNo}}</td>-->
+
+
+
+
+                                    <!--<td><a><p ng-click="deleteGSIssue(row,goldsmith)"><img src="client/images/delete-circle.gif"  style="width:20px;height:20px"/></p></a></td>-->
+                                </tr>
+
+                                </tbody>
+                            </table>
+
+
+
+                        </div>
+                    </div>
+                </accordion-group>
+            </accordion>
+
+
+        </div>
+
+
+
+
+    </div>
+    <!--BILLING REPORT-->
+    <div class="col-md-12" data-ng-switch-when="4" data-ng-controller="BillingReportController">
+        <div class="panel panel-body panel-info"  >
+
+
+            <div class="row">
+                <div class="col-md-1">
+
+                    <label class="control-label" style="padding-top: 5px">From</label>
+
+
+                </div>
+
+                <div class="col-md-3 md-3-from">
+
+                    <div class="input-group" >
+                        <input type="text"
+                               placeholder="Date"
+                               class="form-control"
+                               datepicker-popup='yyyy-MM-dd'
+                               is-open="opened1"
+                               data-ng-model="Report.billing_FromDate"
+                               datepicker-options="dateOptions"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="open1(report)"
+                                >
+
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-1 md-1-to">
+                    <label class="control-label" style="padding-top: 5px">To</label>
+
+                </div>
+
+                <div class="col-md-3 md-3-from-1">
+                    <div class="input-group" >
+                        <input type="text"
+                               placeholder="Date"
+                               class="form-control"
+                               datepicker-popup='yyyy-MM-dd'
+                               is-open="opened"
+                               min="event.start_date"
+                               data-ng-model="Report.billing_ToDate"
+                               datepicker-options="dateOptions"
+                               date-disabled="disabled(date, mode)"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="open(report)" >
+
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                    </div>
+
+                </div>
+                <div class="col-md-1 md-1-customer">
+                    <label class="control-label" style="padding-top: 5px">Customer</label>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <select  id="billingCustomerName"  class="form-control" ng-model="Report.billing_CustomerID"  required>
+                        <option value="0" >-All-</option>
+                        <option value="{{billing_Customer.CustID}}" ng-repeat="billing_Customer in billing_CustomerData">{{billing_Customer.BusinessName}}</option>
+                    </select>
+                </div>
+
+                <div class="col-md-1">
+
+                    <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="getBillReport(Report)">
+
+                </div>
+            </div>
+
+
+
+
+
+        <div ng-show="showsBillingReport">
+            <hr>
+            <div class="favourite-counter">
+                <div class="favourite-text text-center">Billing Lists
+                </div>
+            </div>
+            <accordion close-others="1"  class="ui-accordion-palered">
+                <!--<accordion-group  ng-repeat="Services in servicesData" is-open="isopen">-->
+                <accordion-group ng-repeat="row in billing_BillingData" is-open="isopen">
+                    <accordion-heading>
+                        <div class="row mouse-pointer billing-accordion" data-ng-click="showBillingReportPackages=true;getDetailedBillingReport(row.TransactionID)">
+                            <!--<div class="CollapsiblePanelTab" tabindex="0" style="font-weight: bolder;font-size: 10pt" ng-click="getDetailedBillingReport(row.TransactionID)">-->
+                            <!--<div class="col-md-2">-->
+                                <!--<span class="">-->
+                                   <!--<i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>-->
+                                <!--</span>-->
+                            <!--</div>-->
+                            <div class="col-md-3">
+                                <span class="">
+                                   <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                                </span>
+                                {{row.BusinessName}}
+                            </div>
+                            <div class="col-md-2">
+                                Date : {{row.BillDate.substring(0,10)}}
+                            </div>
+                            <div class="col-md-2">
+                                Sales:{{row.TotalSales}}
+                            </div>
+                            <div class="col-md-2">
+                                Purchase:{{row.OGPurchaseWt}}
+                            </div>
+                            <div class="col-md-3">
+                                Cash:{{row.CashPayments}}
+                            </div>
+
+                                <!--<table class="responsive">-->
+                                    <!--<tr>-->
+                                        <!--<td class="col-md-2">+ {{row.BusinessName}}</td>-->
+                                        <!--<td class="col-md-2">Date : {{row.BillDate.substring(0,10)}}</td>-->
+                                        <!--<td class="col-md-2">Sales:{{row.TotalSales}}</td>-->
+                                        <!--<td class="col-md-2">Purchase:{{row.OGPurchaseWt}}</td>-->
+                                        <!--<td class="col-md-2">Cash:{{row.CashPayments}}</td>-->
+                                    <!--</tr>-->
+                                <!--</table>-->
+                            <!--</div>-->
+                        </div>
+                    </accordion-heading>
+                    <div class="panel-default margin-top-10 table_scrollable">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+
+                                <tr>
+                                    <th>Item  </th>
+
+                                    <th>Qty</th>
+                                    <th>Weight </th>
+                                    <th>StWeight</th>
+                                    <th>StValue</th>
+                                    <th>ME</th>
+                                    <th>VA</th>
+                                    <th>MC</th>
+                                    <th>Rate</th>
+                                    <th>NtWeight</th>
+                                </tr>
+                                </thead>
+
+                                <tbody >
+
+
+                                <!--<div ng-grid="gridStockReports[item.CategoryID]" ng-style={height:stockGridHeight[item.CategoryID]} ></div>-->
+                                <tr ng-repeat="row in billingReportData">
+
+                                    <!--<td>{{row.IssuedDateTime}}</td>-->
+
+                                    <td>{{row.Item}}</td>
+                                    <td>{{row.Qty}}</td>
+                                    <td>{{row.Weight}}</td>
+                                    <td>{{row.StWeight}}</td>
+                                    <td>{{row.StValue}}</td>
+                                    <td>{{row.ME}}</td>
+                                    <td>{{row.VA}}</td>
+                                    <td>{{row.MC}}</td>
+                                    <td>{{row.Rate}}</td>
+                                    <td>{{row.NtWeight}}</td>
+
+
+
+                                    <!--<td><a><p ng-click="deleteGSIssue(row,goldsmith)"><img src="client/images/delete-circle.gif"  style="width:20px;height:20px"/></p></a></td>-->
+                                </tr>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </accordion-group>
+            </accordion>
+
+
+        </div>
+
+        </div>
+    </div>
+
+    <!--CASH REPORT-->
+    <div class="col-md-12" data-ng-switch-when="5" data-ng-controller="CashReportController">
+        <div class="panel panel-body panel-info"  >
+            <div class="row">
+                <div class="col-md-1">
+
+                    <label class="control-label" style="padding-top: 5px">From</label>
+
+
+                </div>
+
+                <div class="col-md-3 md-3-from">
+
+                    <div class="input-group" >
+                        <input type="text"
+                               placeholder="Date"
+                               class="form-control"
+                               datepicker-popup='yyyy-MM-dd'
+                               is-open="opened1"
+                               data-ng-model="cash.cash_FromDate"
+                               datepicker-options="dateOptions"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="open1(report)"
+                                >
+
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-1 md-1-to">
+                    <label class="control-label" style="padding-top: 5px">To</label>
+
+                </div>
+
+                <div class="col-md-3 md-3-from-1">
+                    <div class="input-group" >
+                        <input type="text"
+                               placeholder="Date"
+                               class="form-control"
+                               datepicker-popup='yyyy-MM-dd'
+                               is-open="opened"
+                               min="event.start_date"
+                               data-ng-model="cash.cash_ToDate"
+                               datepicker-options="dateOptions"
+                               date-disabled="disabled(date, mode)"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="open(report)" >
+
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                    </div>
+
+                </div>
+                <div class="col-md-1 md-1-customer">
+                    <label class="control-label" style="padding-top: 5px">Source</label>
+
+                </div>
+
+                <div class="col-md-3">
+
+                        <select id="cashSourceName" class="form-control" ng-model="cash.cash_Source" required >
+                            <option value=" ">-All-</option>
+                            <option value="{{cash_Customer.Source}}" ng-repeat="cash_Customer in cash_CustomerData">{{cash_Customer.Source}}</option>
+                        </select>
+
+
+                </div>
+
+                <div class="col-md-1">
+
+                    <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="getCashReport(cash)">
+
+                </div>
+            </div>
+
+            <div ng-show="showsCashReport">
+
+            <div class="favourite-counter" >
+                <div class="favourite-text text-center">CashBook Lists
+                </div>
+            </div>
+
+
+
+        <accordion close-others="1"  class="ui-accordion-palered">
+            <!--<accordion-group  ng-repeat="Services in servicesData" is-open="isopen">-->
+            <accordion-group ng-repeat="row in cash_CashData" is-open="isopen">
+                <accordion-heading>
+                    <div class="row mouse-pointer" data-ng-click="showCashReportPackages=true;getDetailedCashReport(row.CashGroupID,row.UpdatedDateTime,cash)">
+                                                <span class="col-md-9">
+                                                     <span class="">
+                                                        <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                                                    </span>
+                                                     <div >
+
+                                                        <!--<div class="">-->
+                                                            <div class="col-md-3">
+                                                                <span>Cash</span>
+
+                                                                <!--{{row.UpdatedDateTime}}-->
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                {{cash_TotalReceipt}}
+
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                {{cash_TotalPayment}}
+
+                                                            </div>
+                                                            <!--<div>-->
+                                                            <!--<span>{{row.UpdatedDateTime}}</span>-->
+                                                            <!--<span class="float-right">{{cash_TotalPayment}}</span>-->
+                                                            <!--<span class="float-right">{{cash_TotalReceipt}}</span>-->
+
+                                                        <!--</div>-->
+                                                    </div>
+                                                </span>
+                    </div>
+
+                </accordion-heading>
+
+                <div class=" panel-default  margin-top-10 table_scrollable">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Date  </th>
+                                <th>Description </th>
+                                <th>Income</th>
+
+                                <th>Expense</th>
+                                <!--<th>Description</th>-->
+                                <!--<th>Time</th>-->
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+
+
+                            <!--<div ng-grid="gridStockReports[item.CategoryID]" ng-style={height:stockGridHeight[item.CategoryID]} ></div>-->
+                            <tr ng-repeat="row in cashReportData">
+
+                                <td>{{row.Source}}</td>
+                                <td>{{row.PaymentDescription}}{{row.ReceiptDescription}}</td>
+                                <!--<td>{{row.ReceiptDescription}}</td>-->
+                                <!--<td>{{row.Source}}</td>-->
+                                <td>{{row.Payment}}</td>
+
+                                <td>{{row.Receipt}}</td>
+                                <!--<td>{{row.ReceiptDescription}}</td>-->
+                                <!--<td>{{row.Time}}</td>-->
+
+
+
+
+                                <!--<td><a><p ng-click="deleteGSIssue(row,goldsmith)"><img src="client/images/delete-circle.gif"  style="width:20px;height:20px"/></p></a></td>-->
+                            </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </accordion-group>
+        </accordion>
+
+
+        </div>
+
+
+
+        </div>
+    </div>
+
+    <!--GOLD SMITH-->
+    <div class="col-md-12" data-ng-switch-when="6" data-ng-controller="GoldSmithReportController">
+        <div class="panel-body panel panel-info">
+            <div class="row">
+                <div class="col-md-1">
+
+                    <label class="control-label" style="padding-top: 5px">From</label>
+
+
+                </div>
+
+                <div class="col-md-3 md-3-from">
+
+                    <div class="input-group" >
+                        <input type="text"
+                               placeholder="Date"
+                               class="form-control"
+                               datepicker-popup='yyyy-MM-dd'
+                               is-open="opened1"
+                               data-ng-model="Goldsmith.GoldSmiths_FromDate"
+                               datepicker-options="dateOptions"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="open1(report)"
+                                >
+
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-1 md-1-to">
+                    <label class="control-label" style="padding-top: 5px">To</label>
+
+                </div>
+
+                <div class="col-md-3 md-3-from-1">
+                    <div class="input-group" >
+                        <input type="text"
+                               placeholder="Date"
+                               class="form-control"
+                               datepicker-popup='yyyy-MM-dd'
+                               is-open="opened"
+                               min="event.start_date"
+                               data-ng-model="Goldsmith.GoldSmiths_ToDate"
+                               datepicker-options="dateOptions"
+                               date-disabled="disabled(date, mode)"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="open(report)" >
+
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                    </div>
+
+                </div>
+                <div class="col-md-1 md-1-customer">
+                    <label class="control-label" style="padding-top: 5px">GoldSmith</label>
+                </div>
+                <div class="col-md-3">
+                    <select  id="GoldSmithName" class="form-control"  ng-model="Goldsmith.GoldSmiths_GoldSmithID"  required>
+                        <option value="" >Select GoldSmith</option>
+                        <option value="0" >-All-</option>
+                        <option value="{{GoldSmith.CustID}}" ng-repeat="GoldSmith in GoldSmith_GoldSmithNames">{{GoldSmith.BusinessName}}</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+
+                    <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="getGoldSmithReport(Goldsmith)">
+
+                </div>
+            </div>
+
+            <div ng-show="showsGoldSmithReport">
+
+                <div class="favourite-counter">
+                    <div class="favourite-text text-center">GoldSmith Lists
+                    </div>
+                </div>
+
+
+
+
+                <accordion close-others="1"  class="ui-accordion-palered">
+                    <!--<accordion-group  ng-repeat="Services in servicesData" is-open="isopen">-->
+                    <accordion-group ng-repeat="row in GoldSmith_GoldSmithData" is-open="isopen">
+                        <accordion-heading>
+                            <div class="row" data-ng-click="showGoldSmithReportPackages=true;getDetailedGoldSmithReport(row.CustomerID,Goldsmith)">
+                                <div class="col-md-12">
+                                      <span class="">
+                                           <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                                          <span>{{row.BusinessName}}</span>
+                                        <span class="pull-right"><label>OutstandingWeight : </label> {{row.OutstandingWeight}}</span>
+
+                                      </span>
+
+                                </div>
+                                                <!--<span class="col-md-12">-->
+                                                     <!--<span class="">-->
+                                                        <!--<i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>-->
+                                                    <!--</span>-->
+                                                     <!--<div >-->
+
+                                                         <!--<div class="">-->
+                                                             <!--&lt;!&ndash;<div>&ndash;&gt;-->
+
+
+                                                             <!--<span class="col-md-3">{{row.BusinessName}}</span>-->
+                                                             <!--<span class="col-md-8"><label>OutstandingWeight:</label>{{row.OutstandingWeight}}</span>-->
+
+
+                                                         <!--</div>-->
+                                                     <!--</div>-->
+                                                <!--</span>-->
+                            </div>
+
+                        </accordion-heading>
+
+                        <div class=" panel-default  margin-top-10 table_scrollable">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tbody>
+                                    <tr ng-repeat="row in goldSmithIssueReportData">
+                                    <tr>
+                                        <th>Date  </th>
+                                        <th>Particular(Qty,Item) </th>
+                                        <th>Issue (NetWt) </th>
+
+                                        <th>Recipt</th>
+                                        <!--<th>Description</th>-->
+                                        <!--<th>Time</th>-->
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+
+
+                                    <!--<div ng-grid="gridStockReports[item.CategoryID]" ng-style={height:stockGridHeight[item.CategoryID]} ></div>-->
+                                    <tr ng-repeat="row in goldSmithReceiptReportData">
+                                        <!--<td>{{row.IssuedDateTime}}</td>-->
+                                        <td>{{row.Date}}</td>
+
+                                        <td>  {{row.Qty}}   {{row.Item}} {{row.GrossWt}} gm </td>
+                                        <td> {{row.NetWt}} </td>
+
+                                        <td>{{row.Receipt}}</td>
+
+
+
+
+
+
+                                        <!--<td>{{row.Carrier}}</td>-->
+                                        <!--<td><a><p ng-click="deleteGSIssue(row,goldsmith)"><img src="client/images/delete-circle.gif"  style="width:20px;height:20px"/></p></a></td>-->
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </accordion-group>
+                </accordion>
+
+
+            </div>
+        </div>
+    </div>
+
+    <!--DAILY CHART-->
+    <div class="col-md-12" data-ng-switch-when="7" data-ng-controller="DailyChartReportController">
+        <div class="panel-body panel panel-info">
+            <div class="row">
+                <div class="col-md-1">
+
+                    <label class="control-label" style="padding-top: 5px">From</label>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group" >
+                        <input type="text"
+                               placeholder="Date"
+                               class="form-control"
+                               datepicker-popup='yyyy-MM-dd'
+                               is-open="opened1"
+                               data-ng-model="DayChart_Date"
+                               datepicker-options="dateOptions"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="open1(report)"
+                                >
+
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-2">
+                    <label class="control-label" style="padding-top: 5px">Choose Category</label>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <select   id="DayChart_Category" class="form-control" ng-model="DayChart_CategoryID" required>
+                        <!--<option value="ChooseCustomer">ChooseCustomer</option>-->
+                        <option value="0" >-All-</option>
+                        <option value="{{Category.CategoryID}}" ng-repeat="Category in DayChart_CategoryValues">{{Category.CategoryName}}</option>
+                    </select>
+
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <input type="button" value="Go" class="btn btn-primary" data-ng-click="getDayChart()">
+
+                </div>
+
+            </div>
+
+            <div ng-show="showsDailyChartData">
+
+                <div class="favourite-counter">
+                    <div class="favourite-text text-center">Daily Chart Lists
+                    </div>
+                </div>
+
+
+                <accordion close-others="1"  class="ui-accordion-palered">
+                    <!--<accordion-group  ng-repeat="Services in servicesData" is-open="isopen">-->
+                    <accordion-group ng-repeat="item in DayChart_StockData" is-open="isopen">
+                        <accordion-heading>
+                            <div class="row mouse-pointer" data-ng-click="showDailyChartDataPackages=true;getDetailedDayChartReport(item.CategoryID,item.TransactionDate)">
+                                                <span class="col-md-12">
+                                                     <span class="">
+                                                        <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                                                    </span>
+
+
+                                                         <div class="">
+                                                             <!--<div>-->
+                                                             <span class="col-md-2">{{item.CategoryName}}</span>
+                                                             <span class="col-md-2">{{DayChart_OpeningStock[item.CategoryID]}}</span>
+                                                             <span class="col-md-2">{{DayChart_OpeningStockQty[item.CategoryID]}}</span>
+                                                             <span class="col-md-2">{{DayChart_ClosingStock[item.CategoryID]}}</span>
+                                                             <span class="col-md-2">{{DayChart_ClosingStockQty[item.CategoryID]}}</span>
+                                                             <span class="col-md-2">{{DayChart_TotalSales[item.CategoryID]}}</span>
+                                                             <span class="col-md-2">{{DayChart_TotalSalesQty[item.CategoryID]}}</span>
+                                                             <span class="col-md-2">{{DayChart_TotalPurchase[item.CategoryID]}}</span>
+                                                             <span class="col-md-2">{{DayChart_TotalPurchaseQty[item.CategoryID]}}</span>
+                                                             <span class="col-md-2">{{DayChart_TotalSalesReturn[item.CategoryID]}}</span>
+                                                             <span class="col-md-2">{{DayChart_TotalSalesReturnQty[item.CategoryID]}}</span>
+                                                             </div>
+                                                </span>
+
+
+                                                             <!--<span class="col-md-2">OutstandingWeight:{{row.OutstandingWeight}}</span>-->
+                                                             <!--<span>{{cash_TotalReceipt[row.CashGroupID]}}</span>-->
+
+                                                         </div>
+                            </accordion-heading>
+
+
+                                                         <div class="CollapsiblePanelContent">
+                                                             <br>
+                                                             <h4 align="center">{{DayChart_SalesHeading[item.CategoryID]}}</h4>
+                                                             <div class="table-responsive" ng-repeat="row in DayChartSalesData[item.CategoryID]">
+
+                                                                 <table class="table">
+                                                                     <thead>
+                                                                     <tr>
+                                                                         <th>Bussiness Name  </th>
+                                                                         <th>Quantity</th>
+                                                                         <th>Weight </th>
+
+                                                                     </tr>
+                                                                     </thead>
+                                                                     <tbody >
+                                                                     <!--<div ng-grid="gridStockReports[item.CategoryID]" ng-style={height:stockGridHeight[item.CategoryID]} ></div>-->
+                                                                     <tr>
+                                                                         <!--<td>{{row.IssuedDateTime}}</td>-->
+                                                                         <td>{{row.BusinessName}}</td>
+                                                                         <td>{{row.Quantity}}</td>
+                                                                         <td>{{row.Weight}}</td>
+                                                                     </tr>
+                                                                                                                                  </tbody>
+                                                                 </table>
+
+                                                             </div>
+                                                             <!--<div ng-grid="gridDayChartReportSales[item.CategoryID]" ng-style={height:DayChartGridSalesHeight[item.CategoryID]} ></div>-->
+                                                             <br>
+                                                             <h4 align="center">{{DayChart_PurchasesHeading[item.CategoryID]}}</h4>
+                                                             <div class="table-responsive" ng-repeat="row in DayChartPurchaseData[item.CategoryID]">
+
+                                                                 <table class="table">
+                                                                     <thead>
+                                                                     <tr>
+                                                                         <th>Bussiness Name  </th>
+                                                                         <th>Quantity</th>
+                                                                         <th>Weight </th>
+
+                                                                     </tr>
+                                                                     </thead>
+                                                                     <tbody >
+
+                                                                     <tr>
+                                                                     <!--<td>{{row.IssuedDateTime}}</td>-->
+                                                                     <td>{{row.BusinessName}}</td>
+                                                                     <td>{{row.Quantity}}</td>
+                                                                     <td>{{row.Weight}}</td>
+                                                                     </tr>
+
+
+                                                                     </tbody>
+                                                                 </table>
+
+                                                             </div>
+
+                                                             <!--<div ng-grid="gridDayChartReportPurchases[item.CategoryID]" ng-style={height:DayChartGridPurchaseHeight[item.CategoryID]} ></div>-->
+
+                                                             <br>
+                                                             <div ng-hide="DayChartSalesReturnHide[item.CategoryID]">
+                                                                 <h4 align="center" >SalesReturn</h4>
+                                                                 <div class="table-responsive">
+
+                                                                     <table class="table">
+                                                                         <thead>
+                                                                         <tr>
+                                                                             <th>Bussiness Name  </th>
+                                                                             <th>Quantity</th>
+                                                                             <th>Weight </th>
+
+                                                                         </tr>
+                                                                         </thead>
+                                                                         <tbody >
+
+                                                                         <tr ng-repeat="row in DayChartSalesReturnData[item.CategoryID]">
+                                                                         <!--<td>{{row.IssuedDateTime}}</td>-->
+                                                                         <td>{{row.BusinessName}}</td>
+                                                                         <td>{{row.Quantity}}</td>
+                                                                         <td>{{row.Weight}}</td>
+                                                                         </tr>
+
+
+                                                                         </tbody>
+                                                                     </table>
+
+                                                                 </div>
+
+                                                                 <!--<div ng-grid="gridDayChartReportSalesReturn[item.CategoryID]" ng-style={height:DayChartGridSalesReturnHeight[item.CategoryID]} ></div>-->
+                                                             </div>
+                                                         </div>
+
+
+
+
+
+
+                    </accordion-group>
+                </accordion>
+
+
+            </div>
+
+        </div>
+    </div>
+
+<!-- Order Report-->
+
+    <div class="col-md-12" data-ng-switch-when="8" data-ng-controller="OrderReportController">
+        <div class="panel panel-body panel-info"  >
+
+
+            <div class="row">
+                <div class="col-md-1">
+
+                    <label class="control-label" style="padding-top: 5px">From</label>
+
+
+                </div>
+
+                <div class="col-md-3 md-3-from">
+
+                    <div class="input-group" >
+                        <input type="text"
+                               placeholder="Date"
+                               class="form-control"
+                               datepicker-popup='yyyy-MM-dd'
+                               is-open="opened1"
+                               data-ng-model="Order.billing_FromDate"
+                               datepicker-options="dateOptions"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="open1(report)"
+                                >
+
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-1 md-1-to">
+                    <label class="control-label" style="padding-top: 5px">To</label>
+
+                </div>
+
+                <div class="col-md-3 md-3-from-1">
+                    <div class="input-group" >
+                        <input type="text"
+                               placeholder="Date"
+                               class="form-control"
+                               datepicker-popup='yyyy-MM-dd'
+                               is-open="opened"
+                               min="event.start_date"
+                               data-ng-model="Order.billing_ToDate"
+                               datepicker-options="dateOptions"
+                               date-disabled="disabled(date, mode)"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="open(report)" >
+
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                    </div>
+
+                </div>
+                <div class="col-md-1 md-1-customer">
+                    <label class="control-label" style="padding-top: 5px">Customer</label>
+
+                </div>
+
+                <div class="col-md-3">
+                    <!--{{OrderReport}}-->
+                    <!--{{billing_CustomerData}}-->
+
+
+                    <select  id="OrderCustomerName"  class="form-control" ng-model="Order.billing_CustomerID"  required>
+                        <option value="0" >-All-</option>
+                        <option value="{{billing_Customer.OrderID}}" ng-repeat="billing_Customer in billing_CustomerData">{{billing_Customer.CustomerName}}</option>
+                    </select>
+                </div>
+
+                <div class="col-md-1">
+
+                    <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="getOrderReport(Order)">
+
+                </div>
+            </div>
+
+
+
+
+
+            <div ng-show="showsOrderReport">
+                <hr>
+                <div class="favourite-counter">
+                    <div class="favourite-text text-center">Order Lists
+                    </div>
+                </div>
+                <accordion close-others="1"  class="ui-accordion-palered">
+                    <!--<accordion-group  ng-repeat="Services in servicesData" is-open="isopen">-->
+                    <accordion-group ng-repeat="row in OrderReport" is-open="isopen">
+                        <accordion-heading>
+                            <div class="row mouse-pointer billing-accordion" data-ng-click="showBillingReportPackages=true;getDetailedOrderReport(row.OrderID)">
+                                <!--<div class="CollapsiblePanelTab" tabindex="0" style="font-weight: bolder;font-size: 10pt" ng-click="getDetailedBillingReport(row.TransactionID)">-->
+                                <!--<div class="col-md-2">-->
+                                <!--<span class="">-->
+                                <!--<i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>-->
+                                <!--</span>-->
+                                <!--</div>-->
+                                <div class="col-md-3">
+                                <span class="">
+                                   <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                                </span>
+                                    {{row.CustomerName}}
+                                </div>
+                                <!--<div class="col-md-2">-->
+                                    <!--Date : {{row.BillDate.substring(0,10)}}-->
+                                <!--</div>-->
+                                <!--<div class="col-md-2">-->
+                                    <!--Sales:{{row.TotalSales}}-->
+                                <!--</div>-->
+                                <!--<div class="col-md-2">-->
+                                    <!--Purchase:{{row.OGPurchaseWt}}-->
+                                <!--</div>-->
+                                <!--<div class="col-md-3">-->
+                                    <!--Cash:{{row.CashPayments}}-->
+                                <!--</div>-->
+
+                                <!--<table class="responsive">-->
+                                <!--<tr>-->
+                                <!--<td class="col-md-2">+ {{row.BusinessName}}</td>-->
+                                <!--<td class="col-md-2">Date : {{row.BillDate.substring(0,10)}}</td>-->
+                                <!--<td class="col-md-2">Sales:{{row.TotalSales}}</td>-->
+                                <!--<td class="col-md-2">Purchase:{{row.OGPurchaseWt}}</td>-->
+                                <!--<td class="col-md-2">Cash:{{row.CashPayments}}</td>-->
+                                <!--</tr>-->
+                                <!--</table>-->
+                                <!--</div>-->
+                            </div>
+                        </accordion-heading>
+                        <div class="panel-default margin-top-10 table_scrollable">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+
+                                    <tr>
+                                        <th>Order No </th>
+
+                                        <th>Date</th>
+                                        <th>Customer</th>
+                                        <th>Description</th>
+                                        <th>Item</th>
+                                        <th>Qty</th>
+                                        <th>Wt</th>
+                                        <th>Due Date</th>
+                                        <th>Status</th>
+                                        <!--<th>NtWeight</th>-->
+                                    </tr>
+                                    </thead>
+
+                                    <tbody >
+                                    <!--{{OrderDetailsReport}}-->
+
+
+                                    <!--<div ng-grid="gridStockReports[item.CategoryID]" ng-style={height:stockGridHeight[item.CategoryID]} ></div>-->
+                                    <tr ng-repeat="row in OrderDetailsReport">
+
+                                        <!--<td>{{row.IssuedDateTime}}</td>-->
+
+                                        <td>{{row.OrderID}}</td>
+                                        <td>{{row.CreatedDateTime.substring(0,10)}}</td>
+                                        <td>{{row.CustomerName}}</td>
+                                        <td>{{row.Description}}</td>
+                                        <td>{{row.ItemName}}</td>
+                                        <td>{{row.Quantity}}</td>
+                                        <td>{{row.DesiredWeight}}</td>
+                                        <td>{{row.SmithDueDate.substring(0,10)}}</td>
+                                        <td class="text-center" ng-switch="row.Status"><span data-ng-switch-when="0">In Progressing </span><span ng-switch-default="">Complete</span> </td>
+                                        <td></td>
+
+
+
+                                        <!--<td><a><p ng-click="deleteGSIssue(row,goldsmith)"><img src="client/images/delete-circle.gif"  style="width:20px;height:20px"/></p></a></td>-->
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </accordion-group>
+                </accordion>
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+</div>
+
+</div>
+
+
+
+
+
+
+        <!--Responsive Menu Accordions Instead of Menu-->
+<div class="visible-xs visible-sm">
+
+<div class="row margin-top-25">
+<div class="col-md-12">
+ <accordion close-others="Reportsm_oneAtATime"  class="ui-accordion-palered ">
+    <!--Responsive stock-->
+    <accordion-group is-open="Reportsm_status.Reportsm_isFirstOpen">
+        <accordion-heading>
+            <div class="row"  >
+                        <span class="col-md-12">
+                             <span class="">
+                                <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                             </span>
+                             <span>Stock</span>
+                        </span>
+            </div>
+
+        </accordion-heading>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <label class="control-label">From</label>
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <div class="input-group" >
+                                <input type="text"
+                                       placeholder="Date"
+                                       class="form-control"
+                                       datepicker-popup='yyyy-MM-dd'
+                                       is-open="opened1sm"
+                                       data-ng-model="report.Stock_FromDate"
+                                       datepicker-options="dateOptions"
+                                       ng-required="true"
+                                       close-text="Close"
+                                       ng-click="open1sm(report)"
+                                        >
+
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-1">
+
+                            <label class="control-label">To</label>
+
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="input-group" >
+                                    <input type="text"
+                                           placeholder="Date"
+                                           class="form-control"
+                                           datepicker-popup='yyyy-MM-dd'
+                                           is-open="openedsm"
+                                           min="event.start_date"
+                                           data-ng-model="report.Stock_ToDate"
+                                           datepicker-options="dateOptions"
+                                           date-disabled="disabled(date, mode)"
+                                           ng-required="true"
+                                           close-text="Close"
+                                           ng-click="opensm(report)"
+                                            >
+
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <select  id="CategoryName" ng-model="report.CategoryID" class="form-control"required>
+                                    <option value="">Select Category</option>
+
+                                    <option value=" ">-All-</option>
+                                    <option value="{{Category.CategoryID}}" ng-repeat="Category in CategoryValues">{{Category.CategoryName}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="getStockReport(report)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                    <!--ng-show-->
+                <div ng-show="showStockReport">
+
+                    <div class="favourite-counter">
+                        <div class="favourite-text text-center">Stock Lists
+                        </div>
+                    </div>
+
+                    <accordion close-others="1"  class="ui-accordion-palered">
+                        <!--<accordion-group  ng-repeat="Services in servicesData" is-open="isopen">-->
+                        <accordion-group ng-repeat="item in stockData" is-open="isopen">
+                            <accordion-heading>
+                                <div class="row mouse-pointer" data-ng-click="showStockReportPackages=true">
+                                                <span class="col-md-12">
+                                                     <span class="">
+                                                        <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                                                    </span>
+                                                    <div >
+                                                        <div class="" ng-click="getDetailedStockReport(item.CategoryID,report)">
+
+                                                            <span>{{item.CategoryName}}</span>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                </div>
+
+                            </accordion-heading>
+
+
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+
+                                        <!--<th>Date</th>-->
+                                        <th>Date </th>
+
+                                        <th>Opening Wt</th>
+                                        <th>Opening Qty</th>
+                                        <th>Sales Wt</th>
+                                        <th>Sales Qty</th>
+                                        <th>Purchase Wt</th>
+                                        <th>Purchase Qty</th>
+                                        <th>S_ReturnWt Wt</th>
+                                        <th>S_Return Qty</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!--<div ng-grid="gridStockReports[item.CategoryID]" ng-style={height:stockGridHeight[item.CategoryID]} ></div>-->
+                                    <tr ng-repeat="item in stockReportData[1]">
+
+                                        <!--<td>{{row.IssuedDateTime}}</td>-->
+                                        <td>{{item.Date}}</td>
+                                        <td>{{item.OpeningWt}}</td>
+                                        <td>{{item.OpeningQty}}</td>
+                                        <td>{{item.SalesWt}}</td>
+                                        <td>{{item.SalesQty}}</td>
+                                        <td>{{item.PurchaseWt}}</td>
+                                        <td>{{item.PurchaseQty}}</td>
+                                        <td>{{item.S_ReturnWt}}</td>
+                                        <td>{{item.S_ReturnQty}}</td>
+
+
+                                        <!--<td><a><p ng-click="deleteGSIssue(row,goldsmith)"><img src="client/images/delete-circle.gif"  style="width:20px;height:20px"/></p></a></td>-->
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </accordion-group>
+
+                    </accordion>
+                </div>
+            </div>
+        </div>
+
+    </accordion-group>
+
+    <div class="divider"></div>
+
+    <!--Responsive Transaction-->
+
+
+    <accordion-group is-open="Reportsm_status.Reportsm_isFirstOpen1">
+        <accordion-heading>
+            <div class="row">
+                 <span class="col-md-12">
+                     <span class="">
+                       <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                     </span>
+                     <span>
+                          Transaction
+                     </span>
+                 </span>
+            </div>
+
+        </accordion-heading>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <label>From</label>
+
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group" >
+                                <input type="text"
+                                       placeholder="Date"
+                                       class="form-control"
+                                       datepicker-popup='yyyy-MM-dd'
+                                       is-open="opened1sm"
+                                       data-ng-model="Transact.FromDate"
+                                       datepicker-options="dateOptions"
+                                       ng-required="true"
+                                       close-text="Close"
+                                       ng-click="open1sm(report)"
+                                        >
+
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-1">
+                            <label>To</label>
+
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group" >
+                                <input type="text"
+                                       placeholder="Date"
+                                       class="form-control"
+                                       datepicker-popup='yyyy-MM-dd'
+                                       is-open="openedsm"
+                                       min="event.start_date"
+                                       data-ng-model="Transact.ToDate"
+                                       datepicker-options="dateOptions"
+                                       date-disabled="disabled(date, mode)"
+                                       ng-required="true"
+                                       close-text="Close"
+                                       ng-click="opensm(report)" >
+
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>Customer</label>
+
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <select  id="TransactionCustomerName" ng-model="Transact.CustomerID" class="form-control" ng-options="Customer as Customer.BusinessName for Customer in CustomerData" required>
+                                    <option value="">-All-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="getTransactionReport(Transact)">
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+<!--Transaction Ng-show-->
+
+                <div ng-show="showTransactionReport">
+
+                    <div class="favourite-counter">
+                        <div class="favourite-text text-center">Transaction Lists
+                        </div>
+                    </div>
+
+
+                    <accordion close-others="1"  class="ui-accordion-palered">
+                        <!--<accordion-group  ng-repeat="Services in servicesData" is-open="isopen">-->
+                        <accordion-group ng-repeat="item in TransReport" is-open="isopen">
+                            <accordion-heading>
+                                <div class="row mouse-pointer" data-ng-click="showTransactionReportPackages=true">
+                                                <span class="col-md-9">
+                                                     <span class="">
+                                                        <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                                                    </span>
+                                                    <div >
+
+                                                        <div class="" ng-click="getCustomerTransactions(item.TransactionID,item.CustCode)">
+                                                            <!--<div>-->
+                                                            <span>{{item.BusinessName}}</span>
+                                                            <span class="float-right">{{item.TransactionDate.substring(10,0)}}</span>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                </div>
+
+                            </accordion-heading>
+
+                            <div class=" panel-default  margin-top-10">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+
+                                        <tr>
+
+
+                                            <th>Item Name </th>
+
+                                            <th>Qty</th>
+                                            <th>Weight </th>
+                                            <th>Rate</th>
+                                            <th>Return Qty</th>
+                                            <th>Return Wt</th>
+                                            <th>StQty</th>
+                                            <th>StWt</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody >
+
+                                        <!--<div ng-grid="gridStockReports[item.CategoryID]" ng-style={height:stockGridHeight[item.CategoryID]} ></div>-->
+                                        <tr ng-repeat="row in transactionReportData">
+
+                                            <!--<td>{{row.IssuedDateTime}}</td>-->
+
+                                            <td>{{row.ItemName}}</td>
+                                            <td>{{row.Qty}}</td>
+                                            <td>{{row.weight}}</td>
+                                            <td>{{row.Rate}}</td>
+                                            <td>{{row.ReturnQty}}</td>
+                                            <td>{{row.StQty}}</td>
+                                            <td>{{row.StWeight}}</td>
+
+
+
+                                            <!--<td><a><p ng-click="deleteGSIssue(row,goldsmith)"><img src="client/images/delete-circle.gif"  style="width:20px;height:20px"/></p></a></td>-->
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+
+
+
+                                    <table class="table">
+
+
+                                        <tr><td>Total Purchases ({{type[item.TransactionID]}}) </td><td>{{PurchaseDetails[item.TransactionID]}}</td><td style="text-align: left">:&nbsp;&nbsp;{{TotalPurchases[item.TransactionID]||0}}</td></tr>
+                                        <tr><td>Cash  ({{type[item.TransactionID]}}) </td><td> (Rs. {{Amount[item.TransactionID]}} )</td><td style="text-align: left">:&nbsp;&nbsp;{{TotalCash[item.TransactionID]||0}}  </td> </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </accordion-group>
+                    </accordion>
+
+
+                </div>
+
+
+            </div>
+        </div>
+
+
+    </accordion-group>
+
+    <div class="divider"></div>
+
+    <!--Responsive sales return-->
+
+    <accordion-group is-open="Reportsm_status.Reportsm_isFirstOpen2">
+        <accordion-heading>
+                <div class="row">
+                         <span class="col-md-12">
+                              <span class="">
+                                   <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                              </span>
+                              <span>Sales Return</span>
+                         </span>
+                 </div>
+
+        </accordion-heading>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group margin-bottom-0">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label>Select Date</label>
+
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group" >
+                                    <input type="text"
+                                           placeholder="Date"
+                                           class="form-control col-sm-4"
+                                           datepicker-popup='yyyy-MM-dd'
+                                           is-open="opened1"
+                                           data-ng-model="sales.SalesReturn_Date"
+                                           datepicker-options="dateOptions"
+                                           ng-required="true"
+                                           close-text="Close"
+                                           ng-click="open1(report)"
+                                            >
+
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                                </div>
+
+
+                            </div>
+                            <div class="col-md-2">
+                                <label>Select Customer</label>
+
+                            </div>
+
+                            <div class="col-md-3">
+                                <select id="SalesReturnCustomerNamexs1" class="form-control visible-md visible-lg" ng-model="sales.SalesReturn_CustomerID"  required>
+                                    <option value="0" >-All-</option>
+                                    <option value="{{SalesReturn_Customer.CustID}}" ng-repeat="SalesReturn_Customer in SalesReturn_CustomerData">{{SalesReturn_Customer.BusinessName}}</option>
+                                </select>
+                                <div class="form-group visible-xs visible-sm">
+                                    <select id="SalesReturnCustomerNamexs2" class="form-control" ng-model="sales.SalesReturn_CustomerID"  required>
+                                        <option value="0" >-All-</option>
+                                        <option value="{{SalesReturn_Customer.CustID}}" ng-repeat="SalesReturn_Customer in SalesReturn_CustomerData">{{SalesReturn_Customer.BusinessName}}</option>
+                                    </select>
+                                </div>
+
+
+                            </div>
+                            <div class="col-md-1">
+                                <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="getSalesReturnReport(sales)">
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+<!--NG_SHOW SALES RETURN BEGINS-->
+
+                <div ng-show="showSalesReport">
+
+                    <div class="favourite-counter">
+                        <div class="favourite-text text-center">Sales Return Lists
+                        </div>
+                    </div>
+
+
+                    <accordion close-others="1"  class="ui-accordion-palered">
+                        <!--<accordion-group  ng-repeat="Services in servicesData" is-open="isopen">-->
+
+                        <accordion-group ng-repeat="item in SalesReturn_SalesReturnData" is-open="isopen">
+                            <accordion-heading>
+                                <div class="row mouse-pointer" data-ng-click="showSalesReportPackages=true">
+
+                                                <span class="col-md-12">
+                                                     <span class="">
+                                                        <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                                                    </span>
+                                                    <div >
+
+                                                        <div class="" ng-click="getDetailedSalesReturnReport(item.CustomerID,item.TransactionID)">
+                                                            <!--<div>-->
+                                                            <span>{{item.BusinessName}}</span>
+                                                            <span class="float-right">{{item.TransactionDate.substring(10,0)}}</span>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                </div>
+
+                            </accordion-heading>
+
+                            <div class=" panel-default  margin-top-10">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+
+                                        <tr>
+
+
+                                            <th>Category </th>
+
+                                            <th>Item</th>
+                                            <th>Purity </th>
+                                            <th>Qty</th>
+                                            <th>Rate</th>
+                                            <th>StAmount</th>
+                                            <th>StWeight</th>
+                                            <th>Weight</th>
+                                            <th>Bill No</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody >
+
+
+
+                                        <!--<div ng-grid="gridStockReports[item.CategoryID]" ng-style={height:stockGridHeight[item.CategoryID]} ></div>-->
+                                        <tr ng-repeat="data in salesReturnReportData[1]">
+
+
+                                            <!--<td>{{row.IssuedDateTime}}</td>-->
+
+                                            <td>{{data.Category}}</td>
+                                            <td>{{data.Item}}</td>
+                                            <td>{{data.Purity}}</td>
+                                            <td>{{data.Qty}}</td>
+                                            <td>{{data.Rate}}</td>
+                                            <td>{{data.StAmount}}</td>
+                                            <td>{{data.StWeight}}</td>
+                                            <td>{{data.Weight}}</td>
+                                            <td>{{data.BillNo}}</td>
+
+
+
+
+                                            <!--<td><a><p ng-click="deleteGSIssue(row,goldsmith)"><img src="client/images/delete-circle.gif"  style="width:20px;height:20px"/></p></a></td>-->
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+
+
+
+                                </div>
+                            </div>
+                        </accordion-group>
+                    </accordion>
+
+
+                </div>
+
+<!--NG_SHOW SALES RETURN ENDS-->
+
+            </div>
+        </div>
+
+
+
+    </accordion-group>
+
+    <div class="divider"></div>
+
+    <!--Responsive billing-->
+
+    <accordion-group is-open="Reportsm_status.Reportsm_isFirstOpen3">
+        <accordion-heading>
+            <div class="row">
+                         <span class="col-md-12">
+                              <span class="">
+                                   <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                              </span>
+                             <span>Billing</span>
+                         </span>
+            </div>
+
+        </accordion-heading>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-1">
+                                <label>From</label>
+
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group" >
+                                    <input type="text"
+                                           placeholder="Date"
+                                           class="form-control"
+                                           datepicker-popup='yyyy-MM-dd'
+                                           is-open="opened1"
+                                           data-ng-model="Report.billing_FromDate"
+                                           datepicker-options="dateOptions"
+                                           ng-required="true"
+                                           close-text="Close"
+                                           ng-click="open1(report)"
+                                            >
+
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                                </div>
+
+
+                            </div>
+                            <div class="col-md-1">
+                                <label>To</label>
+
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group" >
+                                    <input type="text"
+                                           placeholder="Date"
+                                           class="form-control"
+                                           datepicker-popup='yyyy-MM-dd'
+                                           is-open="opened"
+                                           min="event.start_date"
+                                           data-ng-model="Report.billing_ToDate"
+                                           datepicker-options="dateOptions"
+                                           date-disabled="disabled(date, mode)"
+                                           ng-required="true"
+                                           close-text="Close"
+                                           ng-click="open(report)" >
+
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <label>Customer</label>
+
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <select  id="billingCustomerNamexs"  class="form-control" ng-model="Report.billing_CustomerID"  required>
+                                        <option value="0" >-All-</option>
+                                        <option value="{{billing_Customer.CustID}}" ng-repeat="billing_Customer in billing_CustomerData">{{billing_Customer.BusinessName}}</option>
+                                    </select>
+                                </div>
+
+
+                            </div>
+                            <div class="col-md-1">
+                                <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="getBillReport(Report)">
+
+                            </div>
+                        </div>
+
+                    </div>
+
+<!--NG SHOW BILLING BEGINS HERE -->
+
+                    <div ng-show="showsBillingReport">
+                        <hr>
+                        <div class="favourite-counter">
+                            <div class="favourite-text text-center">Billing Lists
+                            </div>
+                        </div>
+                        <accordion close-others="1"  class="ui-accordion-palered">
+                            <!--<accordion-group  ng-repeat="Services in servicesData" is-open="isopen">-->
+                            <accordion-group ng-repeat="row in billing_BillingData" is-open="isopen">
+                                <accordion-heading>
+                                    <div class="row mouse-pointer billing-accordion" data-ng-click="showBillingReportPackages=true">
+                                        <!--<div class="CollapsiblePanelTab" tabindex="0" style="font-weight: bolder;font-size: 10pt" ng-click="getDetailedBillingReport(row.TransactionID)">-->
+                                        <!--<div class="col-md-2">-->
+                                        <!--<span class="">-->
+                                        <!--<i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>-->
+                                        <!--</span>-->
+                                        <!--</div>-->
+                                        <div class="col-md-3">
+                                <span class="">
+                                   <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                                </span>
+                                            {{row.BusinessName}}
+                                        </div>
+                                        <div class="col-md-2">
+                                            Date : {{row.BillDate.substring(0,10)}}
+                                        </div>
+                                        <div class="col-md-2">
+                                            Sales:{{row.TotalSales}}
+                                        </div>
+                                        <div class="col-md-2">
+                                            Purchase:{{row.OGPurchaseWt}}
+                                        </div>
+                                        <div class="col-md-3">
+                                            Cash:{{row.CashPayments}}
+                                        </div>
+
+                                        <!--<table class="responsive">-->
+                                        <!--<tr>-->
+                                        <!--<td class="col-md-2">+ {{row.BusinessName}}</td>-->
+                                        <!--<td class="col-md-2">Date : {{row.BillDate.substring(0,10)}}</td>-->
+                                        <!--<td class="col-md-2">Sales:{{row.TotalSales}}</td>-->
+                                        <!--<td class="col-md-2">Purchase:{{row.OGPurchaseWt}}</td>-->
+                                        <!--<td class="col-md-2">Cash:{{row.CashPayments}}</td>-->
+                                        <!--</tr>-->
+                                        <!--</table>-->
+                                        <!--</div>-->
+                                    </div>
+                                </accordion-heading>
+                                <div class="panel-default margin-top-10">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+
+                                            <tr>
+                                                <th>Item  </th>
+
+                                                <th>Qty</th>
+                                                <th>Weight </th>
+                                                <th>StWeight</th>
+                                                <th>StValue</th>
+                                                <th>ME</th>
+                                                <th>VA</th>
+                                                <th>MC</th>
+                                                <th>Rate</th>
+                                                <th>NtWeight</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody >
+
+
+                                            <!--<div ng-grid="gridStockReports[item.CategoryID]" ng-style={height:stockGridHeight[item.CategoryID]} ></div>-->
+                                            <tr ng-repeat="row in billingReportData">
+
+                                                <!--<td>{{row.IssuedDateTime}}</td>-->
+
+                                                <td>{{row.Item}}</td>
+                                                <td>{{row.Qty}}</td>
+                                                <td>{{row.Weight}}</td>
+                                                <td>{{row.StWeight}}</td>
+                                                <td>{{row.StValue}}</td>
+                                                <td>{{row.ME}}</td>
+                                                <td>{{row.VA}}</td>
+                                                <td>{{row.MC}}</td>
+                                                <td>{{row.Rate}}</td>
+                                                <td>{{row.NtWeight}}</td>
+
+
+
+                                                <!--<td><a><p ng-click="deleteGSIssue(row,goldsmith)"><img src="client/images/delete-circle.gif"  style="width:20px;height:20px"/></p></a></td>-->
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </accordion-group>
+                        </accordion>
+
+
+                    </div>
+
+<!--NG SHOW BILLING ENDS HERE -->
+                </div>
+            </div>
+    </accordion-group>
+
+    <div class="divider"></div>
+
+    <!--Responsive cash book-->
+
+    <accordion-group is-open="Reportsm_status.Reportsm_isFirstOpen4">
+        <accordion-heading>
+            <div class="row">
+                         <span class="col-md-12">
+                              <span class="">
+                                   <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                              </span>
+                             <span>Cash Book</span>
+                         </span>
+            </div>
+
+        </accordion-heading>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <label>From</label>
+
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group" >
+                                <input type="text"
+                                       placeholder="Date"
+                                       class="form-control"
+                                       datepicker-popup='yyyy-MM-dd'
+                                       is-open="opened1"
+                                       data-ng-model="cash.cash_FromDate"
+                                       datepicker-options="dateOptions"
+                                       ng-required="true"
+                                       close-text="Close"
+                                       ng-click="open1(report)"
+                                        >
+
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-1">
+                            <label>To</label>
+
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group" >
+                                <input type="text"
+                                       placeholder="Date"
+                                       class="form-control"
+                                       datepicker-popup='yyyy-MM-dd'
+                                       is-open="opened"
+                                       min="event.start_date"
+                                       data-ng-model="cash.cash_ToDate"
+                                       datepicker-options="dateOptions"
+                                       date-disabled="disabled(date, mode)"
+                                       ng-required="true"
+                                       close-text="Close"
+                                       ng-click="open(report)" >
+
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label>Select Source</label>
+
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <select id="cashSourceNamexs" class="form-control" ng-model="cash.cash_Source"  required >
+                                    <option value="">-All-</option>
+                                    <option value="{{cash_Customer.Source}}" ng-repeat="cash_Customer in cash_CustomerData">{{cash_Customer.Source}}</option>
+                                </select>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-1">
+                            <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="getCashReport(cash)">
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <!--NG SHOW CASH BOOK BEGINS-->
+
+                <div ng-show="showsCashReport">
+
+                    <div class="favourite-counter">
+                        <div class="favourite-text text-center">CashBook Lists
+                        </div>
+                    </div>
+
+
+
+                    <accordion close-others="1"  class="ui-accordion-palered">
+                        <!--<accordion-group  ng-repeat="Services in servicesData" is-open="isopen">-->
+                        <accordion-group ng-repeat="row in cash_CashData" is-open="isopen">
+                            <accordion-heading>
+
+                                <div class="row mouse-pointer" data-ng-click="showCashReportPackages=true;getDetailedCashReport(row.CashGroupID,row.UpdatedDateTime,cash)">
+                                                <span class="col-md-9">
+                                                     <span class="">
+                                                        <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                                                    </span>
+                                                     <div >
+
+                                                         <div class="">
+                                                             <!--<div>-->
+                                                             <span>{{row.UpdatedDateTime}}</span>
+                                                             <span>{{cash_TotalPayment[row.CashGroupID]}}</span>
+                                                             <span>{{cash_TotalReceipt[row.CashGroupID]}}</span>
+
+                                                         </div>
+                                                     </div>
+                                                </span>
+                                </div>
+
+                            </accordion-heading>
+
+                            <div class=" panel-default  margin-top-10">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Source  </th>
+                                            <th>Payment</th>
+                                            <th>Description </th>
+                                            <th>Receipt</th>
+                                            <th>Description</th>
+                                            <th>Time</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody >
+
+
+                                        <!--<div ng-grid="gridStockReports[item.CategoryID]" ng-style={height:stockGridHeight[item.CategoryID]} ></div>-->
+                                        <tr ng-repeat="row in cashReportData">
+
+                                            <!--<td>{{row.IssuedDateTime}}</td>-->
+
+                                            <td>{{row.Source}}</td>
+                                            <td>{{row.Payment}}</td>
+                                            <td>{{row.PaymentDescription}}</td>
+                                            <td>{{row.Receipt}}</td>
+                                            <td>{{row.ReceiptDescription}}</td>
+                                            <td>{{row.Time}}</td>
+
+
+
+
+                                            <!--<td><a><p ng-click="deleteGSIssue(row,goldsmith)"><img src="client/images/delete-circle.gif"  style="width:20px;height:20px"/></p></a></td>-->
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </accordion-group>
+                    </accordion>
+
+
+                </div>
+
+                <!--NG SHOW CASH BOOK BEGINS-->
+            </div>
+        </div>
+    </accordion-group>
+
+    <div class="divider"></div>
+
+      <!--Responsive Gold smith-->
+
+    <accordion-group is-open="Reportsm_status.Reportsm_isFirstOpen5">
+        <accordion-heading>
+            <div class="row">
+                         <span class="col-md-12">
+                              <span class="">
+                                   <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                              </span>
+                             <span>Gold Smith</span>
+                         </span>
+            </div>
+
+        </accordion-heading>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <label>From</label>
+
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group" >
+                                <input type="text"
+                                       placeholder="Date"
+                                       class="form-control"
+                                       datepicker-popup='yyyy-MM-dd'
+                                       is-open="opened1"
+                                       data-ng-model="cash.cash_FromDate"
+                                       datepicker-options="dateOptions"
+                                       ng-required="true"
+                                       close-text="Close"
+                                       ng-click="open1(report)"
+                                        >
+
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-1">
+                            <label>To</label>
+
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group" >
+                                <input type="text"
+                                       placeholder="Date"
+                                       class="form-control"
+                                       datepicker-popup='yyyy-MM-dd'
+                                       is-open="opened"
+                                       min="event.start_date"
+                                       data-ng-model="cash.cash_ToDate"
+                                       datepicker-options="dateOptions"
+                                       date-disabled="disabled(date, mode)"
+                                       ng-required="true"
+                                       close-text="Close"
+                                       ng-click="open(report)" >
+
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label>Select Source</label>
+
+                        </div>
+                        <div class="col-md-3">
+
+                            <select   id="GoldSmithSource"  class="form-control" ng-model="goldSmith.goldSmith_Source"required>
+                                <!--<option value="ChooseCustomer">ChooseCustomer</option>-->
+                                <option value="0"> -All- </option>
+                                <option value="{{cash_Customer.Source}}" ng-repeat="cash_Customer in cash_CustomerData">{{cash_Customer.Source}}</option>
+                            </select>
+
+
+                        </div>
+                        <div class="col-md-1">
+                            <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="getCashReport(cash)">
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <!--NG SHOW GOLD SMITH BEGINS HERE-->
+
+                <div ng-show="showsGoldSmithReport">
+
+                    <div class="favourite-counter">
+                        <div class="favourite-text text-center">GoldSmith Lists
+                        </div>
+                    </div>
+
+
+
+
+                    <accordion close-others="1"  class="ui-accordion-palered">
+                        <!--<accordion-group  ng-repeat="Services in servicesData" is-open="isopen">-->
+                        <accordion-group ng-repeat="row in GoldSmith_GoldSmithData" is-open="isopen">
+                            <accordion-heading>
+                                <div class="row" data-ng-click="showGoldSmithReportPackages=true;getDetailedGoldSmithReport(row.CustomerID)">
+                                    <div class="col-md-12">
+                                      <span class="">
+                                           <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                                          <span>{{row.BusinessName}}</span>
+                                        <span class="pull-right"><label>OutstandingWeight : </label> {{row.OutstandingWeight}}</span>
+
+                                      </span>
+
+                                    </div>
+                                    <!--<span class="col-md-12">-->
+                                    <!--<span class="">-->
+                                    <!--<i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>-->
+                                    <!--</span>-->
+                                    <!--<div >-->
+
+                                    <!--<div class="">-->
+                                    <!--&lt;!&ndash;<div>&ndash;&gt;-->
+
+
+                                    <!--<span class="col-md-3">{{row.BusinessName}}</span>-->
+                                    <!--<span class="col-md-8"><label>OutstandingWeight:</label>{{row.OutstandingWeight}}</span>-->
+
+
+                                    <!--</div>-->
+                                    <!--</div>-->
+                                    <!--</span>-->
+                                </div>
+
+                            </accordion-heading>
+
+                            <div class=" panel-default  margin-top-10">
+                                <div class="table-responsive">
+
+                                    <h3>
+                                        Issues</h3>
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Date  </th>
+                                            <th>Receipt</th>
+                                            <th>OGWeight </th>
+                                            <th>OGPurity</th>
+                                            <th>995Wt</th>
+                                            <th>Rate</th>
+                                            <th>Cash</th>
+                                            <!--<th>Reciever</th>-->
+                                            <th>IssuedDate</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="row in goldSmithIssueReportData">
+                                            <td>{{row.Date}}</td>
+                                            <td>{{row.Receipt}}</td>
+                                            <td>{{row.OGWeight}}</td>
+                                            <td>{{row.OGPurity}}</td>
+                                            <td>{{row.995Wt}}</td>
+                                            <td>{{row.Rate}}</td>
+                                            <td>{{row.Cash}}</td>
+
+                                            <td>{{row.IssuedDate}}</td>
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+                                    <table class="table">
+
+                                        <h3>
+                                            Receipt</h3>
+                                        <thead>
+                                        <tr>
+                                            <th>Date  </th>
+                                            <th>Receipt</th>
+                                            <th>Item </th>
+                                            <th>Qty</th>
+                                            <th>GrossWt</th>
+                                            <th>StWt</th>
+                                            <th>NetWt</th>
+                                            <th>ME</th>
+                                            <th>WastageWt</th>
+                                            <th>Carrier</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+
+
+                                        <!--<div ng-grid="gridStockReports[item.CategoryID]" ng-style={height:stockGridHeight[item.CategoryID]} ></div>-->
+                                        <tr ng-repeat="row in goldSmithReceiptReportData">
+                                            <!--<td>{{row.IssuedDateTime}}</td>-->
+                                            <td>{{row.Date}}</td>
+                                            <td>{{row.Receipt}}</td>
+                                            <td>{{row.Item}}</td>
+                                            <td>{{row.Qty}}</td>
+                                            <td>{{row.GrossWt}}</td>
+                                            <td>{{row.StWt}}</td>
+                                            <td>{{row.NetWt}}</td>
+                                            <td>{{row.ME}}</td>
+                                            <td>{{row.WastageWt}}</td>
+                                            <td>{{row.Carrier}}</td>
+                                            <!--<td><a><p ng-click="deleteGSIssue(row,goldsmith)"><img src="client/images/delete-circle.gif"  style="width:20px;height:20px"/></p></a></td>-->
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </accordion-group>
+                    </accordion>
+
+
+                </div>
+
+                <!--NG SHOW GOLD SMITH ENDS HERE-->
+            </div>
+        </div>
+    </accordion-group>
+
+    <div class="divider"></div>
+<!--Responsive Daily Chart-->
+    <accordion-group is-open="Reportsm_status.Reportsm_isFirstOpen6">
+        <accordion-heading>
+            <div class="row">
+                         <span class="col-md-12">
+                              <span class="">
+                                   <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                              </span>
+                             <span>Daily Chart</span>
+                         </span>
+            </div>
+
+        </accordion-heading>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <label>Date</label>
+
+                        </div>
+                      <div class="col-md-2">
+                            <div class="input-group" >
+                                <input type="text"
+                                       placeholder="Date"
+                                       class="form-control"
+                                       datepicker-popup='yyyy-MM-dd'
+                                       is-open="opened"
+                                       min="event.start_date"
+                                       data-ng-model="cash.cash_ToDate"
+                                       datepicker-options="dateOptions"
+                                       date-disabled="disabled(date, mode)"
+                                       ng-required="true"
+                                       close-text="Close"
+                                       ng-click="open(report)" >
+
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label>Choose Category</label>
+
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <select id="dailyChart" class="form-control" ng-model="dailyChart.dailyChart_Source"  required >
+                                    <option value="0">-All-</option>
+                                    <option value="{{cash_Customer.Source}}" ng-repeat="cash_Customer in cash_CustomerData">{{cash_Customer.Source}}</option>
+                                </select>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-1">
+                            <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="getCashReport(cash)">
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <!--NG SHOW Daily Chart BEGINS HERE-->
+                <div ng-show="showsDailyChartData">
+
+                    <div class="favourite-counter">
+                        <div class="favourite-text text-center">Daily Chart Lists
+                        </div>
+                    </div>
+
+
+                    <accordion close-others="1"  class="ui-accordion-palered">
+                        <!--<accordion-group  ng-repeat="Services in servicesData" is-open="isopen">-->
+                        <accordion-group ng-repeat="item in DayChart_StockData" is-open="isopen">
+                            <accordion-heading>
+                                <div class="row mouse-pointer" data-ng-click="showDailyChartDataPackages=true;getDetailedDayChartReport(item.CategoryID,item.TransactionDate)">
+                                                <span class="col-md-12">
+                                                     <span class="">
+                                                        <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                                                    </span>
+
+
+                                                         <div class="">
+                                                             <!--<div>-->
+                                                             <span class="col-md-2">{{item.CategoryName}}</span>
+                                                             <span class="col-md-2">{{DayChart_OpeningStock[item.CategoryID]}}</span>
+                                                             <span class="col-md-2">{{DayChart_OpeningStockQty[item.CategoryID]}}</span>
+                                                             <span class="col-md-2">{{DayChart_ClosingStock[item.CategoryID]}}</span>
+                                                             <span class="col-md-2">{{DayChart_ClosingStockQty[item.CategoryID]}}</span>
+                                                             <span class="col-md-2">{{DayChart_TotalSales[item.CategoryID]}}</span>
+                                                             <span class="col-md-2">{{DayChart_TotalSalesQty[item.CategoryID]}}</span>
+                                                             <span class="col-md-2">{{DayChart_TotalPurchase[item.CategoryID]}}</span>
+                                                             <span class="col-md-2">{{DayChart_TotalPurchaseQty[item.CategoryID]}}</span>
+                                                             <span class="col-md-2">{{DayChart_TotalSalesReturn[item.CategoryID]}}</span>
+                                                             <span class="col-md-2">{{DayChart_TotalSalesReturnQty[item.CategoryID]}}</span>
+                                                         </div>
+                                                </span>
+
+
+                                    <!--<span class="col-md-2">OutstandingWeight:{{row.OutstandingWeight}}</span>-->
+                                    <!--<span>{{cash_TotalReceipt[row.CashGroupID]}}</span>-->
+
+                                </div>
+                            </accordion-heading>
+
+
+                            <div class="CollapsiblePanelContent">
+                                <br>
+                                <h4 align="center">{{DayChart_SalesHeading[item.CategoryID]}}</h4>
+                                <div class="table-responsive" ng-repeat="row in DayChartSalesData[item.CategoryID]">
+
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Bussiness Name  </th>
+                                            <th>Quantity</th>
+                                            <th>Weight </th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody >
+                                        <!--<div ng-grid="gridStockReports[item.CategoryID]" ng-style={height:stockGridHeight[item.CategoryID]} ></div>-->
+                                        <tr>
+                                            <!--<td>{{row.IssuedDateTime}}</td>-->
+                                            <td>{{row.BusinessName}}</td>
+                                            <td>{{row.Quantity}}</td>
+                                            <td>{{row.Weight}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <!--<div ng-grid="gridDayChartReportSales[item.CategoryID]" ng-style={height:DayChartGridSalesHeight[item.CategoryID]} ></div>-->
+                                <br>
+                                <h4 align="center">{{DayChart_PurchasesHeading[item.CategoryID]}}</h4>
+                                <div class="table-responsive" ng-repeat="row in DayChartPurchaseData[item.CategoryID]">
+
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Bussiness Name  </th>
+                                            <th>Quantity</th>
+                                            <th>Weight </th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody >
+
+                                        <tr>
+                                            <!--<td>{{row.IssuedDateTime}}</td>-->
+                                            <td>{{row.BusinessName}}</td>
+                                            <td>{{row.Quantity}}</td>
+                                            <td>{{row.Weight}}</td>
+                                        </tr>
+
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                                <!--<div ng-grid="gridDayChartReportPurchases[item.CategoryID]" ng-style={height:DayChartGridPurchaseHeight[item.CategoryID]} ></div>-->
+
+                                <br>
+                                <div ng-hide="DayChartSalesReturnHide[item.CategoryID]">
+                                    <h4 align="center" >SalesReturn</h4>
+                                    <div class="table-responsive">
+
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>Bussiness Name  </th>
+                                                <th>Quantity</th>
+                                                <th>Weight </th>
+
+                                            </tr>
+                                            </thead>
+                                            <tbody >
+
+                                            <tr ng-repeat="row in DayChartSalesReturnData[item.CategoryID]">
+                                                <!--<td>{{row.IssuedDateTime}}</td>-->
+                                                <td>{{row.BusinessName}}</td>
+                                                <td>{{row.Quantity}}</td>
+                                                <td>{{row.Weight}}</td>
+                                            </tr>
+
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+
+                                    <!--<div ng-grid="gridDayChartReportSalesReturn[item.CategoryID]" ng-style={height:DayChartGridSalesReturnHeight[item.CategoryID]} ></div>-->
+                                </div>
+                            </div>
+
+
+
+
+
+
+                        </accordion-group>
+                    </accordion>
+
+
+                </div>
+
+
+
+                <!--NG SHOW Daily Chart ENDS HERE-->
+            </div>
+        </div>
+    </accordion-group>
+    <div class="divider"></div>
+    <!--Responsive Order-->
+
+    <accordion-group is-open="Reportsm_status.Reportsm_isFirstOpen7">
+        <accordion-heading>
+            <div class="row">
+                         <span class="col-md-12">
+                              <span class="">
+                                   <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                              </span>
+                             <span>Order</span>
+                         </span>
+            </div>
+
+        </accordion-heading>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <label>From</label>
+
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group" >
+                                <input type="text"
+                                       placeholder="Date"
+                                       class="form-control"
+                                       datepicker-popup='yyyy-MM-dd'
+                                       is-open="opened1"
+                                       data-ng-model="Report.billing_FromDate"
+                                       datepicker-options="dateOptions"
+                                       ng-required="true"
+                                       close-text="Close"
+                                       ng-click="open1(report)"
+                                        >
+
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-1">
+                            <label>To</label>
+
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group" >
+                                <input type="text"
+                                       placeholder="Date"
+                                       class="form-control"
+                                       datepicker-popup='yyyy-MM-dd'
+                                       is-open="opened"
+                                       min="event.start_date"
+                                       data-ng-model="Report.billing_ToDate"
+                                       datepicker-options="dateOptions"
+                                       date-disabled="disabled(date, mode)"
+                                       ng-required="true"
+                                       close-text="Close"
+                                       ng-click="open(report)" >
+
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <label>GoldSmith</label>
+
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <select  id="OrderCustomerNames"  class="form-control" ng-model="Report.billing_CustomerID"  required>
+                                    <option value=" ">-All-</option>
+                                    <option value="{{billing_Customer.CustID}}" ng-repeat="billing_Customer in billing_CustomerData">{{billing_Customer.BusinessName}}</option>
+                                </select>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-1">
+                            <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="getBillReport(Report)">
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <!--NG SHOW BILLING BEGINS HERE -->
+
+                <div ng-show="showsOrderReport">
+                    <hr>
+                    <div class="favourite-counter">
+                        <div class="favourite-text text-center">Ordering Lists
+                        </div>
+                    </div>
+
+                    <accordion close-others="1"  class="ui-accordion-palered">
+                        <!--<accordion-group  ng-repeat="Services in servicesData" is-open="isopen">-->
+                        <accordion-group ng-repeat="row in billing_BillingData" is-open="isopen">
+                            <accordion-heading>
+                                {{OrderReport}}
+                                <div class="row mouse-pointer billing-accordion" data-ng-click="showBillingReportPackages=true">
+
+                                    <div class="col-md-3">
+                                <span class="">
+                                   <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                                </span>
+                                        {{row.BusinessName}}
+                                    </div>
+                                    <div class="col-md-2">
+                                        Date : {{row.BillDate.substring(0,10)}}
+                                    </div>
+                                    <div class="col-md-2">
+                                        Sales:{{row.TotalSales}}
+                                    </div>
+                                    <div class="col-md-2">
+                                        Purchase:{{row.OGPurchaseWt}}
+                                    </div>
+                                    <div class="col-md-3">
+                                        Cash:{{row.CashPayments}}
+                                    </div>
+
+                                </div>
+                            </accordion-heading>
+                            <div class="panel-default margin-top-10">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+
+                                        <tr>
+                                            <th>Item  </th>
+
+                                            <th>Qty</th>
+                                            <th>Weight </th>
+                                            <th>StWeight</th>
+                                            <th>StValue</th>
+                                            <th>ME</th>
+                                            <th>VA</th>
+                                            <th>MC</th>
+                                            <th>Rate</th>
+                                            <th>NtWeight</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody >
+
+
+                                        <!--<div ng-grid="gridStockReports[item.CategoryID]" ng-style={height:stockGridHeight[item.CategoryID]} ></div>-->
+                                        <tr ng-repeat="row in billingReportData">
+
+                                            <!--<td>{{row.IssuedDateTime}}</td>-->
+
+                                            <td>{{row.Item}}</td>
+                                            <td>{{row.Qty}}</td>
+                                            <td>{{row.Weight}}</td>
+                                            <td>{{row.StWeight}}</td>
+                                            <td>{{row.StValue}}</td>
+                                            <td>{{row.ME}}</td>
+                                            <td>{{row.VA}}</td>
+                                            <td>{{row.MC}}</td>
+                                            <td>{{row.Rate}}</td>
+                                            <td>{{row.NtWeight}}</td>
+
+
+
+                                            <!--<td><a><p ng-click="deleteGSIssue(row,goldsmith)"><img src="client/images/delete-circle.gif"  style="width:20px;height:20px"/></p></a></td>-->
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </accordion-group>
+                    </accordion>
+
+
+                </div>
+
+                <!--NG SHOW BILLING ENDS HERE -->
+            </div>
+        </div>
+    </accordion-group>
+
+
+
+</accordion>
+
+
+<!--Item accordion starts-->
+
+
+
+</div>
+
+</div>
+</div>
+
+
+
+
+
+
+

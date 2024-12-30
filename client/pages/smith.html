@@ -1,0 +1,347 @@
+<div class="row" style="text-transform: lowercase !important; margin-top: 1px" data-ng-controller="servicecontroller" ng-init="initsmith()">
+    <div class="col-md-12">
+        <div class="row" >
+            <div class="data-header">
+                <span>gold smith</span>
+            </div>
+        </div>
+
+        <div class="row col-md-12">
+            <form>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="input-group padding-left-10">
+                            <select class="form-control" ng-model="billcustomer" autofocus ng-options="row.orgname for row in listcustomer | orderBy:'orgname'" data-ng-change="onchangecustomer(billcustomer)">
+                                <option value="">-- smith --</option>
+                            </select>
+                            <!--<input type="text" id="billingcustomer" placeholder="customer" ng-model="billcustomer" typeahead="row as row.orgname for row in listcustomer | filter:$viewValue | orderBy:'orgname'"-->
+                                   <!--class="form-control" ng-blur="onchangecustomer(billcustomer)" autofocus>-->
+
+                            <span class="input-group-btn ">
+                                <button class="btn  btn-default"   data-ng-click="showreturns=false;showissuetable=true;showreturnstable=false;showissue=!showissue;listgoldsmithtransaction('issue');">issue</button>
+                                <button class="btn  btn-default" data-ng-click="showissue=false;showissuetable=false;showreturnstable=true;showreturns=!showreturns;listgoldsmithtransaction('return');">return</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="form-group pull-right">
+                            <div style="font-size: smaller; text-align: right">
+                                <p>outstanding: {{billdata.customeroutstanding}} grams</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="row"></div>
+        <div class="row form-group margin-top-10 padding-left-10">
+            <div class="col-md-12">
+                    <!-- input issue transaction-->
+                    <div collapse="!showissue" class="row form-group">
+                        <div class="col-md-12">
+                            <div class="panel panel-info" style="border-color: #ED6B71; box-shadow: 2px 2px 4px 0px">
+                                <div class="panel-heading text-center" style="color: white; background-color:#ED6B71; text-transform: lowercase; border-color: #ED6B71">
+                                    <span class="pull-right fa fa-close mouse-pointer"  data-ng-click="showissue=!showissue;"><a> close</a></span>issue</div>
+
+                                    <div class="panel-body">
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="row form-group">
+                                                    <div class="col-md-2">
+                                                        <label class="control-label">old gold weight:</label>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="input-group">
+                                                            <input id="smitholdgoldweight" type ="text" enter select-on-click ng-only-number data-max-length=4 data-max-decimal-points=3 required="required" class="input-sm form-control" ng-model="billdata.issueoldgoldweight" ng-change="GSIssue_CalculateOG995Weight(goldsmith)">
+                                                            <div class="input-group-addon">gm</div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-1">
+                                                        <label class="control-label">purity</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="input-group">
+                                                            <input type="text" enter select-on-click ng-only-number data-max-length=2 data-max-decimal-points=2 name ="" required="required" class="input-sm form-control" ng-model="billdata.issueoldgoldpurity" ng-change="GSIssue_CalculateOG995Weight(goldsmith)">
+                                                            <div class="input-group-addon">%</div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-1">
+                                                        <label class="control-label">=</label>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="input-group">
+                                                            <input type="text" name ="" required="required" class=" input-sm form-control" ng-model="billdata.issueoldgoldnetweight" disabled>
+                                                            <div class="input-group-addon">gm</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col-md-2">
+                                                        <label class="control-label">995 gold weight:</label>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="input-group">
+                                                            <input type="text" enter select-on-click ng-only-number data-max-length=4 data-max-decimal-points=3 value="0" required="" class=" input-sm form-control" ng-model="billdata.issue995goldweight">
+                                                            <div class="input-group-addon">gm</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label class="control-label">purity</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="input-group">
+                                                            <input type="text" enter select-on-click ng-only-number data-max-length=2 data-max-decimal-points=2 class=" input-sm form-control" ng-model="billdata.issue995goldpurity" required="">
+                                                            <div class="input-group-addon">%</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label class="control-label">=</label>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="input-group">
+                                                            <input type="text" name ="" class=" input-sm form-control" required="required" ng-model="billdata.issue995goldnetweight" disabled>
+                                                            <div class="input-group-addon">gm</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col-md-2">
+                                                        <label class="control-label">cash</label>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="input-group">
+                                                            <input type="text" enter select-on-click ng-only-number data-max-length=6 data-max-decimal-points=2 class=" input-sm form-control" ng-model="billdata.cashissued">
+                                                            <div class="input-group-addon"> <i class="fa fa-inr"></i></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label class="control-label">rate</label>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="input-group">
+                                                            <input  type="text" enter ng-only-number data-max-length=4 data-max-decimal-points=2  ng-model="billdata.metalrate"  required class="input-sm form-control">
+                                                            <div class="input-group-addon"> <i class="fa fa-inr"></i></div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-1">
+                                                        <label class="control-label">=</label>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="input-group">
+                                                            <input type="text" name ="" required="required" ng-model="billdata.netcashissueweight" class="input-sm form-control" disabled>
+                                                            <div class="input-group-addon">gm</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col-md-2">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="control-label">net issue weight</label>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label class="control-label">=</label>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="input-group">
+                                                            <input type="text" name ="" required="required" ng-model="billdata.netgoldsmithissueweight" class="input-sm form-control" disabled>
+                                                            <div class="input-group-addon">gm</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row form-group">
+                                                <div class="col-md-2 col-sm-offset-11 pull-right">
+                                                    <button class="btn btn-success" data-ng-click="calculateresult('issue')">calculate</button>
+                                                    <button class="btn btn-success" data-ng-click="savetransactiongoldsmith()">save</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    <!-- input return transaction-->
+                    <div collapse="!showreturns" class="row form-group">
+                        <div class="col-md-12">
+                            <div class="panel panel-info" style="border-color: #ED6B71; box-shadow: 2px 2px 4px 0px">
+                                <div class="panel-heading text-center" style="color: white; background-color:#ED6B71;text-transform: lowercase; border-color: #ED6B71">
+                                    <span class="pull-right fa fa-close mouse-pointer" data-ng-click="showreturns=!showreturns;"><a> close</a></span>return</div>
+                                        <div class="panel-body">
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <div class="row form-group">
+                                                        <div class="col-md-1">
+                                                            <label class="control-label">item</label>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <select class="form-control input-sm" id="packageitem" enter ng-model="billpackage" ng-options="pkgitem.package_name for pkgitem in listpackage" data-ng-change="onchangeitem(billpackage)">
+                                                                <option value="">-- choose item --</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-md-2">
+                                                            <label class="control-label">category</label>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <select class="form-control input-sm" enter ng-model="billcategory" ng-options="category.categoryname for category in listcategories | filter: ({packages_id:billpackage.packages_id})" data-ng-change="onchangecategory(billcategory)">
+                                                                <option value="">-- choose category --</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-md-1">
+                                                            <label class="control-label">quantity</label>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="input-group">
+                                                                <input type="text" enter select-on-click ng-only-number data-max-length=4 data-max-decimal-points=0 class=" input-sm form-control" ng-only-number data-max-length=2 data-max-decimal-points=0  required="required" ng-model="billdata.quantity" >
+                                                                <div class="input-group-addon">no</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row form-group">
+                                                        <div class="col-md-1">
+                                                            <label class="control-label">weight</label>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="input-group">
+                                                                <input type="text" enter select-on-click ng-only-number data-max-length=4 data-max-decimal-points=3 class="input-sm  form-control" ng-only-number data-max-length=3 data-max-decimal-points=3  required="required" ng-model="billdata.weight">
+                                                                <div class="input-group-addon">gm</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label class="control-label">stone weight</label>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="input-group">
+                                                                <input type="text" enter select-on-click ng-only-number data-max-length=2 data-max-decimal-points=3 class=" input-sm form-control" ng-only-number data-max-length=3 data-max-decimal-points=3   ng-model="billdata.stoneweight">
+                                                                <div class="input-group-addon">gm</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <label class="control-label">Net weight</label>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="input-group">
+                                                                <input  type="text" enter select-on-click ng-only-number data-max-length=2 data-max-decimal-points=3  class="input-sm  form-control" ng-only-number data-max-length=3 data-max-decimal-points=3   ng-model="billdata.netgoldsmithreturnweight" disabled>
+                                                                <div class="input-group-addon">gm</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row form-group">
+                                                        <div class="col-md-1">
+                                                            <label class="control-label">touch</label>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="input-group">
+                                                                <input type='text' enter select-on-click ng-only-number data-max-length=2 data-max-decimal-points=2 required="required" ng-only-number data-max-length=2 data-max-decimal-points=3 ng-model="billdata.valueaddition" class=" input-sm form-control" required>
+                                                                <div class="input-group-addon">%</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label class="control-label">wastage</label>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="input-group">
+                                                                <input type='text' ng-model="billdata.wastage" enter select-on-click ng-only-number data-max-length=2 data-max-decimal-points=3 class="input-sm  form-control" required>
+                                                                <div class="input-group-addon">gm</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 pull-right">
+                                                            <button class="btn btn-success" data-ng-click="calculateresult('return');">calculate</button>
+                                                            <button class="btn btn-success" data-ng-click="savetransactiongoldsmith();">save</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- transaction table-->
+                    <div class="row form-group">
+                            <div class="col-md-12">
+                                <!-- issue table-->
+                                <div class="container-fluid" data-ng-hide="!showissuetable">
+                                    <h3>issue list</h3>
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>date</th>
+                                                <th>old gold weight</th>
+                                                <th>old gold purity</th>
+                                                <th>995 gold weight</th>
+                                                <th>cash issued</th>
+                                                <th>metal rate</th>
+                                                <th>net issue weight</th>
+                                                <th>user</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody data-ng-repeat="row in issuedetail | orderBy:'transactiondate' : true" >
+                                            <tr>
+                                                <th>{{row.transactiondate | date:'longDate'}}</th>
+                                                <th>{{row.olggoldweight}} gm</th>
+                                                <th>{{row.oldgoldpurity}} %</th>
+                                                <th>{{row.ct995goldweight}} gm</th>
+                                                <th>{{row.cashissued}} inr</th>
+                                                <th>{{row.metalrate}} inr</th>
+                                                <th>{{row.netweightissued}} gm</th>
+                                                <th>{{row.user}}</th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- return table-->
+                                <div class="container-fluid" data-ng-hide="!showreturnstable">
+                                    <h3>return list</h3>
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>date</th>
+                                                <th>quantity</th>
+                                                <th>item</th>
+                                                <th>category</th>
+                                                <th>weight</th>
+                                                <th>stone</th>
+                                                <th>gross</th>
+                                                <th>va</th>
+                                                <th>wastage</th>
+                                                <th>net</th>
+                                                <th>user</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody data-ng-repeat="row in returndetail | orderBy:'transactiondate' : true" >
+                                        <tr>
+                                            <th>{{row.transactiondate | date:'mediumDate'}}</th>
+                                            <th>{{row.quantity}}</th>
+                                            <th>{{row.item}}</th>
+                                            <th>{{row.category}}</th>
+                                            <th>{{row.weight}} gm</th>
+                                            <th>{{row.stoneweight}} gm</th>
+                                            <th>{{row.weight - row.stoneweight | number : 3}} gm</th>
+                                            <th>{{row.valueaddition}} %</th>
+                                            <th>{{row.wastage}} gm</th>
+                                            <th>{{row.netweightreturned}} gm</th>
+                                            <th>{{row.user}}</th>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                    </div>
+                <!--</div>-->
+            </div>
+        </div>
+    </div> <!-- root col-md-->
+</div>

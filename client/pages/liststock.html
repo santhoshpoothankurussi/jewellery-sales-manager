@@ -1,0 +1,108 @@
+<div class="row"  data-ng-controller="reportcontroller" ng-init="initliststockreport()" >
+    <div class="col-md-12">
+        <div class="row" >
+            <div class="data-header">
+                <span>stock report</span>
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <div class="panel panel-body panel-info">
+                <div class="col-md-1 pull-left">
+                    <label class="control-label" >Date: </label>
+                </div>
+
+                <div class="col-md-4 pull-left">
+                    <div class="input-group" >
+                        <input type="text"
+                               placeholder="Date"
+                               class="form-control"
+                               datepicker-popup="dd-MM-yyyy"
+                               is-open="opened[0]"
+                               data-ng-model="reportdata.fromdate"
+                               datepicker-options="dateOptions"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="open($event,0)"
+                                >
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="liststock()">
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-body panel-info">
+
+            <!-- stock report table-->
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <!-- display stock -->
+                    <div class="container-fluid">
+                        <h3>stock as on {{reportdata.fromdate | date:'mediumDate'}}</h3>
+                        <table class="table table-striped table-bordered table-hover table-condense " style="border: 1px solid #97550b;">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th class="text-left">item</th>
+                                <th class="text-left">op.bal quantity</th>
+                                <th class="text-left">op.bal weight</th>
+                                <th class="text-left">cl.bal quantity</th>
+                                <th class="text-left">cl.bal weight</th>
+                            </tr>
+                            </thead>
+                            <tbody data-ng-repeat="row in liststocksummary | orderBy:'package_name'" >
+                            <tr>
+                                <td>
+                                    <button ng-click="stocktransactionexpanded = !stocktransactionexpanded">
+                                        <span ng-bind="stocktransactionexpanded ? '-' : '+'"></span>
+                                    </button>
+                                </td>
+                                <td>{{row.package_name}}</td>
+                                <td>{{row.opqty}}</td>
+                                <td>{{row.opweight}}</td>
+                                <td>{{row.closingstockquantity}}</td>
+                                <td>{{row.closingstockweight}}</td>
+                            </tr>
+                            <tr data-ng-show="stocktransactionexpanded">
+                                <td colspan="12">
+                                    <table class="table table-hover" style="border: 1px solid #e0940b;">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th>customer</th>
+                                            <th>transaction</th>
+                                            <th style="text-align: center">receipt.qty</th>
+                                            <th style="text-align: center">receipt.weight</th>
+                                            <th style="text-align: center">withdraw.qty</th>
+                                            <th style="text-align: center">withdraw.weight</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody data-ng-repeat="item in liststocktransaction | filter: ({packageid:row.packageid}) | orderBy:'transactiontype'">
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>{{item.orgname}}</td>
+                                            <td>{{item.transactiontypename}}</td>
+                                            <td style="text-align: center"> <span ng-if="[2,3,6].indexOf(item.transactiontype) > -1">{{item.billqty}} no.</span></td>
+                                            <td style="text-align: center"> <span ng-if="[2,3,6].indexOf(item.transactiontype) > -1">{{item.billwt}} gm.</span></td>
+                                            <td style="text-align: center"> <span ng-if="[1,5].indexOf(item.transactiontype) > -1">{{item.billqty}} no.</span></td>
+                                            <td style="text-align: center"> <span ng-if="[1,5].indexOf(item.transactiontype) > -1">{{item.billwt}} gm.</span></td>
+                                            <td></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

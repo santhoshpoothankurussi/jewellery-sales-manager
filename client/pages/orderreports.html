@@ -1,0 +1,132 @@
+<div class="row"  data-ng-controller="reportcontroller" ng-init="initorderreport()">
+    <div class="col-md-12">
+        <div class="row" >
+            <div class="data-header">
+                <span>order report</span>
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <div class="panel panel-body panel-info">
+                <div class="col-md-1 pull-left">
+                    <label class="control-label" >From</label>
+                </div>
+
+                <div class="col-md-3 pull-left">
+                    <div class="input-group" >
+                        <input type="text"
+                               placeholder="from date"
+                               class="form-control"
+                               datepicker-popup="dd-MM-yyyy"
+                               is-open="opened[10]"
+                               min="event.start_date"
+                               data-ng-model="reportdata.fromdate"
+                               datepicker-options="dateOptions"
+                               date-disabled="disabled(date, mode)"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="open($event,10)">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <label class="control-label" >To</label>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="input-group" >
+                        <input type="text"
+                               class="form-control"
+                               datepicker-popup="dd-MM-yyyy"
+                               data-ng-model="reportdata.todate"
+                               placeholder="to date"
+                               is-open="opened[11]"
+                               min="event.start_date"
+                               datepicker-options="dateOptions"
+                               date-disabled="disabled(date, mode)"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="open($event,11)">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="order();">
+                </div>
+            </div>
+        </div>
+        <!--  report body starts here-->
+        <div class="row" style="margin-left:2px">
+            <h3>pending orders as on {{reportdata.fromdate | date:'mediumDate'}}</h3>
+        </div>
+
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-12" data-ng-hide="billsummary" >
+                <h4>no data to display</h4>
+            </div>
+            <div class="col-md-12" data-ng-show="billsummary" >
+                <div class="columnsContainer">
+                    <div>
+                        <table class="table table-hover">
+                            <thead class="table-header-custom">
+                            <tr>
+                                <th></th>
+                                <th class="text-left">date</th>
+                                <th class="text-left">customer</th>
+                                <th class="text-left">address</th>
+                                <th class="text-left">operator</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody data-ng-repeat="row in billsummary">
+                            <tr data-ng-click="showbilldetails=!showbilldetails">
+                                <td data-ng-click="showbilldetails=!showbilldetails;">
+                                    <button >
+                                        <span ng-bind="showbilldetails ? '-' : '+'"></span>
+                                    </button>
+                                </td>
+                                <td class="text-left" ng-class='{cancelledtransaction : !row.status}'>{{row.transactiondate | date:'longDate'}}</td>
+                                <td class="text-left" ng-class='{cancelledtransaction : !row.status}'>{{row.billcustomer}}</td>
+                                <td class="text-left" ng-class='{cancelledtransaction : !row.status}'>{{row.district}}, {{row.contact}}</td>
+                                <td class="text-left" ng-class='{cancelledtransaction : !row.status}'>{{row.cname}}</td>
+                                <td class="text-left" ng-class='{cancelledtransaction : !row.status}'><span>{{row.status == '0' ? 'cancelled' : row.statusname}}</span></td>
+                            </tr>
+                            <tr ng-show="showbilldetails">
+                                <td></td>
+                                <td colspan="12" style="padding-left: 20px">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th class="fa fa-level-down"></th>
+                                            <th>item</th>
+                                            <th>category</th>
+                                            <th>quantity</th>
+                                            <th>value</th>
+                                            <th>purity</th>
+                                            <th>rate</th>
+                                            <th>comments</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody data-ng-repeat="billitem in billdetailsreport | filter: ({transactionid: row.transactionid}) | filter: ({productid: 1})" >
+                                        <tr>
+                                            <td ng-if="billitem.productvalue > 0">{{$index+1}}</td>
+                                            <td ng-if="billitem.productvalue > 0">{{billitem.package_title}}</td>
+                                            <td ng-if="billitem.productvalue > 0">{{billitem.categoryname}}</td>
+                                            <td ng-if="billitem.productvalue > 0">{{billitem.quantity}}</td>
+                                            <td ng-if="billitem.productvalue > 0">{{billitem.productvalue}}</td>
+                                            <td ng-if="billitem.productvalue > 0">{{billitem.purity}}</td>
+                                            <td ng-if="billitem.productvalue > 0">{{billitem.rate}}</td>
+                                            <td ng-if="billitem.productvalue > 0">{{billitem.description}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

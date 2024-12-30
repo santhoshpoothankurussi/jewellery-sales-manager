@@ -1,0 +1,69 @@
+<div class="row" style="text-transform: lowercase !important; margin-top: 60px">
+    <div class="col-md-12">
+        <div class="row col-md-12" >
+            <div class="modal-header">
+                <span>transaction history</span>
+            </div>
+        </div>
+
+        <div ng-controller="modalcontroller" class="modal-body">
+            <div class="row col-md-12 modal-body">
+            <div class="col-md-6"><label class="h4">customer </label><br>{{transactionhistoryheader.customer}}<br>{{transactionhistoryheader.owner}}<br>
+            {{transactionhistoryheader.contactno}}<br>{{transactionhistoryheader.customertype}}</div>
+            <div class="col-md-6"><label class="h4">details </label><br>{{transactionhistoryheader.receiptno}}<br>{{transactionhistoryheader.transactiontype}}<br>
+                {{transactionhistoryheader.transactiondate}}<br>
+                <div  ng-switch on="transactionhistoryheader.status">
+                    <span ng-switch-when='0'><label class="h3">live </label></span>
+                    <span ng-switch-when='1'><label class="h3">cancelled </label></span>
+                </div>
+            </div>
+
+            <br>
+            <b></b>
+            <hr style="width: 96%; color: #ecd320; height: 1px; background-color:#ecd320;" />
+        </div>
+
+            <div class="row col-md-12" style="padding-top: -10px">
+            <div class="container-fluid">
+                <h3>history</h3>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>user</th>
+                        <th>date</th>
+                        <th>comments</th>
+                        <th>package</th>
+                        <th>product</th>
+                        <th>category</th>
+                        <th>purity</th>
+                        <th>rate</th>
+                        <th>quantity</th>
+                        <th>value</th>
+                    </tr>
+                    </thead>
+                    <tbody data-ng-repeat="row in transactionhistorybodydetails)" >
+                        <tr>
+                            <th>{{$index+1}}</th>
+                            <th>{{row.appuser}}</th>
+                            <th>{{row.createddatetime  | date:'longDate'}}</th>
+                            <th>{{row.description}}</th>
+                            <th>{{row.package_name}}</th>
+                            <th>{{row.products_title}}</th>
+                            <th>{{row.categoryname}}</th>
+                            <th>{{row.purity}}</th>
+                            <th>{{row.rate}}</th>
+                            <th>{{row.quantity}}</th>
+                            <th>{{row.productvalue}}</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">close</button>
+        </div>
+    </div>
+</div>

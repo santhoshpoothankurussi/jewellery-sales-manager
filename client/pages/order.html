@@ -1,0 +1,330 @@
+<div class="row" style="margin-top: 1px" data-ng-controller="servicecontroller" ng-init="initorder()">
+    <div class="col-md-12">
+        <div class="row" >
+            <div class="data-header">
+                <span>order</span>
+            </div>
+        </div>
+
+        <div class="row" style="margin-left: 20px; margin-right: 20px">
+            <div class="col-md-12">
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12">
+                                            <div >
+                                                <div class="row" style="padding-bottom: 5px">
+                                                    <div class="col-md-3 col-sm-3"><label>customer</label> </div>
+                                                    <div class="col-md-7 col-sm-6">
+                                                        <select class="form-control input-sm" name="sel" autofocus enter data-ng-model="billcustomer"
+                                                                data-ng-options="row.orgname for row in listaddress"  data-ng-change="onchangecustomer(billcustomer)">
+                                                            <option value="">-- choose customer --</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-2 col-sm-3 ">
+                                                        <div class="pull-right">
+                                                            <a id="addcustomerlink" style="color: #0000FF" href ng-click="shownewaddress=!shownewaddress;">add  new customer</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="panel panel-info" data-ng-show="shownewaddress">
+                                                            <div class="row" style="padding-bottom: 5px" >
+                                                                <div class="col-md-5"></div>
+                                                                <div class="col-md-3" style="align-content: center" >
+                                                                        <h3 style="color: #880000">new customer</h3>
+                                                                </div>
+                                                                <div class="col-md-4"></div>
+                                                            </div>
+                                                        <div class="row" >
+                                                            <div class="col-md-12">
+                                                                            <div class="row" style="padding-bottom: 5px">
+                                                                                <div class="col-md-12" >
+                                                                                    <div class="col-md-2 ">
+                                                                                        <label class="control-label">name</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-7">
+                                                                                        <input type="text" ng-only-character enter class="form-control input-sm"
+                                                                                               placeholder="select customer"
+                                                                                               required=""
+                                                                                               typeahead="customer as customer.cname for customer in listaddress | filter:$viewValue | limitTo:20"
+                                                                                               data-ng-model="addressdata.cname">
+                                                                                    </div>
+                                                                                    <div class="col-md-3  pull-right" style="padding-bottom: 3px; padding-left: 71px">
+                                                                                        <button class="btn btn-success small padding-right-20"  data-ng-click="filteraddress(addressdata.customer);">search</button>
+                                                                                        <button class="btn btn-success padding-right-20" data-ng-click="saveaddress()">save</button>
+                                                                                        <button class="btn btn-success" data-ng-click="shownewaddress=false;listaddressfiltered=''">close</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-12"  style="padding-bottom: 5px">
+                                                                                    <div class="col-md-2 ">
+                                                                                        <label class="control-label">address</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-10">
+                                                                                        <input type="text" ng-only-character enter class="form-control input-sm" data-ng-model="addressdata.addressline">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-12" style="padding-bottom: 5px" >
+                                                                                    <div class="col-md-2 ">
+                                                                                        <label class="control-label">district</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-10">
+                                                                                        <input type="text" ng-only-character enter class="form-control input-sm" data-ng-model="addressdata.district">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-12" style="padding-bottom: 5px">
+                                                                                    <div class="col-md-2 ">
+                                                                                        <label class="control-label">state</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-10">
+                                                                                        <input type="text" ng-only-character enter class="form-control input-sm" data-ng-model="addressdata.state">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-12" >
+                                                                                    <div class="col-md-2 ">
+                                                                                        <label class="control-label">phone</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-10">
+                                                                                        <input type="text" ng-only-number data-max-length=10 data-max-decimal-points=0 enter class="form-control input-sm" data-ng-model="addressdata.contact">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    <table class="table table-bordered table-responsive">
+                                                                                        <thead style="background-color:#53c6c5;color:white; ">
+                                                                                            <tr >
+                                                                                                <th style="text-align: center">#</th>
+                                                                                                <th style="text-align: left">name</th>
+                                                                                                <th style="text-align: left">address</th>
+                                                                                                <th style="text-align: left">district</th>
+                                                                                                <th style="text-align: left">state</th>
+                                                                                                <th style="text-align: left">contact</th>
+                                                                                                <th style="text-align: left">type</th>
+                                                                                                <th></th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                        <tr class="text-center" data-ng-repeat="row in listaddressfiltered">
+                                                                                            <td>{{$index+1}}</td>
+                                                                                            <td>{{row.cname}}</td>
+                                                                                            <td>{{row.house}}</td>
+                                                                                            <td>{{row.district}}</td>
+                                                                                            <td>{{row.state}}</td>
+                                                                                            <td>{{row.contact}}</td>
+                                                                                            <td>{{row.typename}}</td>
+                                                                                            <td>
+                                                                                                <input type="button" value="select" class="btn btn-primary" data-ng-click="selectaddress(row);"/>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                    </div>
+                                                        </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div >
+                                                <div class="row" style="padding-bottom: 5px">
+                                                    <div class="col-md-3 col-sm-4"><label>item </label></div>
+                                                    <div class="col-md-9 col-sm-8">
+                                                        <select class="form-control input-sm" enter ng-model="billpackage" ng-options="pkgitem.package_name for pkgitem in listpackage" data-ng-change="onchangeitem(billpackage)">
+                                                            <option value="">-- choose item --</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div >
+                                                <div class="row" style="padding-bottom: 5px">
+                                                    <div class="col-md-3 col-sm-4"><label>category </label></div>
+                                                    <div class="col-md-9 col-sm-8">
+                                                        <select class="form-control input-sm" enter ng-model="billcategory" ng-options="category.categoryname for category in listcategories | filter: ({packages_id:billpackage.packages_id})" data-ng-change="onchangecategory(billcategory)">
+                                                            <option value="">-- choose category --</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div >
+                                                <div class="row" style="padding-bottom: 5px">
+                                                    <div class="col-md-3 col-sm-4"><label>quantity </label></div>
+                                                    <div class="col-md-9 col-sm-8">
+                                                        <div class="input-group">
+                                                            <input type="number" enter select-on-click ng-only-number data-max-length=4 data-max-decimal-points=0 class="form-control" placeholder="quantity"required data-ng-model="billdata.quantity">
+                                                            <div class="input-group-addon">no</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div >
+                                                <div class="row" style="padding-bottom: 5px">
+                                                    <div class="col-md-3 col-sm-4"><label>weight </label> </div>
+                                                    <div class="col-md-9 col-sm-8">
+                                                        <div class="input-group">
+                                                            <input type="text" select-on-click ng-only-number select-on-click enter data-max-length=4  data-max-decimal-points=3 placeholder="weight in grams" class="form-control" required data-ng-model="billdata.weight">
+                                                            <div class="input-group-addon">gm</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div >
+                                                <div class="row" style="padding-bottom: 5px">
+                                                    <div class="col-md-3 col-sm-4"><label>description</label> </div>
+                                                    <div class="col-md-9 col-sm-8">
+                                             <textarea class="form-control" select-on-click ng-only-character enter rows="2" placeholder="item description " required data-ng-model="billdata.comments">
+                                             </textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div >
+                                                <div class="row" style="padding-bottom: 5px">
+                                                    <div class="col-md-3 col-sm-4"><label>rate</label> </div>
+                                                    <div class="col-md-9 col-sm-8">
+                                                        <div class="input-group">
+                                                            <input type="text" enter select-on-click ng-only-number data-max-length=4 data-max-decimal-points=2 class="form-control"placeholder="metal rate" required data-ng-model="billdata.metalrate" >
+                                                            <div class="input-group-addon"><i class="fa fa-inr"></i></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div >
+                                                <div class="row" style="padding-bottom: 5px">
+                                                    <div class="col-md-3 col-sm-4"><label>due on</label> </div>
+                                                    <div class="col-md-9 col-sm-8">
+                                                        <div class="input-group" >
+                                                            <input type="text"
+                                                                   placeholder="from date"
+                                                                   class="form-control"
+                                                                   datepicker-popup="dd-MM-yyyy"
+                                                                   is-open="opened[1]"
+                                                                   min="event.start_date"
+                                                                   data-ng-model="billdata.duedate"
+                                                                   datepicker-options="dateOptions"
+                                                                   date-disabled="disabled(date, mode)"
+                                                                   ng-required="true"
+                                                                   close-text="Close"
+                                                                   ng-click="open($event,1)">
+                                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="padding-bottom: 5px; padding-right: 15px">
+                                            <div class="col-md-12">
+                                                <div class="pull-right" class="form-control">
+                                                    <input type="button"  class="btn btn-primary" data-ng-click="savetransaction()" value="save">
+                                                    <input type="button"  class="btn btn-danger" data-ng-click="clearbilldata()" value="clear">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-left: 20px; margin-right: 20px">
+            <div class="col-md-12">
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                        <div class="container-fluid">
+                            <h3>pending order list</h3>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>date</th>
+                                        <th>item</th>
+                                        <th>quantity</th>
+                                        <th>weight</th>
+                                        <th>desc</th>
+                                        <th>customer</th>
+                                        <th>assigned to</th>
+                                        <th>duedate</th>
+                                        <th>status</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody data-ng-repeat="orderrow in listpendingorder | orderBy:['transactiondate','package_title','customerid']" >
+                                    <tr>
+                                        <td>{{orderrow.transactiondate | date:'mediumDate'}}</td>
+                                        <td>{{orderrow.package_title}}</td>
+                                        <td>{{orderrow.quantity}}</td>
+                                        <td>{{orderrow.productvalue}}</td>
+                                        <td>{{orderrow.description}}</td>
+                                        <td>{{orderrow.orgname}}</td>
+                                        <td>{{orderrow.assignedto}}</td>
+                                        <td>{{orderrow.duedate | date:'mediumDate'}}</td>
+                                        <td>{{orderrow.statusname}}</td>
+                                        <td><button style="display: inline-block; float: none; white-space: nowrap; text-align: right" class="btn btn-secondary-outline" data-ng-click="showorderstatus=!showorderstatus">change status</button></td>
+                                        <td><button style="display: inline-block; float: none; white-space: nowrap; text-align: right" class="btn btn-secondary-outline" data-ng-click="showorderedit=!showorderedit">assign</button></td>
+                                    </tr>
+                                    <tr data-ng-show="showorderstatus">
+                                        <td colspan="8" >
+                                            <div class="row col-md-12">
+                                                <div class="input-group">
+                                                    <div class="btn btn-group form-control" style="padding-top: 0px; padding-right: 0px">
+                                                        <button class="btn btn-line-primary fa fa-user" btn-radio="2" data-ng-model="orderrow.status"  data-ng-click="updateorderstatus(orderrow,2)"> new work order</button>
+                                                        <button class="btn btn-line-primary fa fa-user" btn-radio="3" data-ng-model="orderrow.status"  data-ng-click="updateorderstatus(orderrow,3)"> work in progress</button>
+                                                        <button class="btn btn-line-primary fa fa-user" btn-radio="4" data-ng-model="orderrow.status"  data-ng-click="updateorderstatus(orderrow,4)"> work order complete</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr data-ng-show="showorderedit">
+                                        <td colspan="12" >
+                                            <div class="row col-md-12">
+                                                <div class="form-group">
+                                                    <div class="col-md-2">
+                                                        <label class="control-label  padding-left-10">assigned to :</label>
+                                                    </div>
+                                                    <div class="col-md-3 pull-left">
+                                                        <select class="form-control" id="billingcustomer" ng-model="goldsmithcustomer" autofocus ng-options="row.orgname for row in goldsmithcustomer | orderBy:'orgname'">
+                                                            <option value="">-- goldsmith --</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-md-2 "><label>due on :</label> </div>
+                                                    <div class="col-md-3 col-sm-8">
+                                                        <div class="input-group" >
+                                                            <input type="text"
+                                                                   placeholder="due date"
+                                                                   class="form-control"
+                                                                   datepicker-popup="dd-MM-yyyy"
+                                                                   is-open="opened[2]"
+                                                                   min="event.start_date"
+                                                                   data-ng-model="billdata.duedate"
+                                                                   datepicker-options="dateOptions"
+                                                                   date-disabled="disabled(date, mode)"
+                                                                   ng-required="true"
+                                                                   close-text="Close"
+                                                                   ng-click="open($event,2)">
+                                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button style="display: inline-block; float: none; white-space: nowrap; text-align: right" class="btn btn-secondary-outline" data-ng-click="assignorder(orderrow,goldsmithcustomer,billdata.duedate)">save</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

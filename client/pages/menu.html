@@ -1,0 +1,83 @@
+<div style="margin-bottom:-15px;padding-top: 35px;background-color:rgba(1, 67, 90, 0.00);margin-left: -5px;margin-right: -5px;padding-left: 10px;padding-right: 10px" data-ng-controller="logincontroller">
+
+   <div class="row">
+       <div class="col-md-6">
+           <div class="row">
+               <div class="col-md-12">
+                   <div class="menu-caption">
+                       <h3>service</h3>
+                   </div>
+                   <div class="row">
+                       <div class=""></div>
+                       <div class="col-md-3 col-sm-4 col-xs-6" data-ng-repeat="data in submenu  | filter:{menuid:2}">
+                           <div class="dummy mouse-pointer" data-ng-click="pathChange(data);">
+                               <h5 class="thumbnail"><span class="{{data.tilecolour}} submenu-icon"></span><br>{{data.menutext}}</h5>
+                           </div>
+                       </div>
+                   </div>
+                   <!--<div class="row">-->
+                       <!--<div class=""></div>-->
+                       <!--<div class="col-md-4 col-xs-4" data-ng-repeat="data in submenu  | filter:{menuid:2}">-->
+                           <!--<div class="sub-menu-box" data-ng-click="pathChange(data);">-->
+                               <!--<span class="{{data.tilecolour}} submenu-icon"></span>-->
+                               <!--<h5 class="submenu-text">{{data.menutext}}</h5>-->
+
+                           <!--</div>-->
+                       <!--</div>-->
+                   <!--</div>-->
+               </div>
+           </div>
+           <div class="row" >
+               <div class="col-md-12">
+                   <div class="menu-caption">
+                       <h3>catalog</h3>
+                   </div>
+
+                   <div class="row">
+                       <div class=""></div>
+                       <div class="col-md-3 col-sm-4 col-xs-6" data-ng-repeat="data in submenu  | filter:{menuid:1}">
+                           <div class="dummy mouse-pointer" data-ng-click="pathChange(data);">
+                               <h5 class="thumbnail"><span class="{{data.tilecolour}} submenu-icon"></span><br>{{data.menutext}}</h5>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+       <div class="col-md-6 ">
+           <div class="row">
+               <div class="col-md-12 ">
+                   <div class="menu-caption">
+                       <h3>reports</h3>
+                   </div>
+                   <div class="row padding-right-20" >
+                       <div class=""></div>
+                       <div class="col-md-3 col-sm-4 col-xs-6" data-ng-repeat="data in submenu  | filter:{menuid:3}">
+                           <div class="dummy mouse-pointer" data-ng-click="pathChange(data);">
+                               <h5 class="thumbnail"><span class="{{data.tilecolour}} submenu-icon"></span><br>{{data.menutext}}</h5>
+                           </div>
+                       </div>
+                   </div>
+                   <!--<div class="row">-->
+                       <!--<div class=""></div>-->
+                       <!--<div class="col-md-4 col-xs-4" data-ng-click="routeChange(datas.submenuid)" data-ng-repeat="data in submenu  | filter:{menuid:3}">-->
+                           <!--<div class="sub-menu-box" data-ng-click="pathChange(data);">-->
+                               <!--<span class="{{data.tilecolour}} submenu-icon"></span>-->
+                               <!--<h5 class="submenu-text">{{data.menutext}}</h5>-->
+                           <!--</div>-->
+                       <!--</div>-->
+                   <!--</div>-->
+               </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="offcanvas"]').click(function () {
+            $('.row-offcanvas').toggleClass('active')
+        });
+    });
+</script>
+

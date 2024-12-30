@@ -1,0 +1,680 @@
+<div class="row" style="text-transform: lowercase !important; margin-top: 1px" data-ng-controller="servicecontroller" ng-init="initbill()">
+    <div class="col-md-12">
+        <div class="row" >
+            <div class="data-header">
+                <span>billing</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div  data-ng-hide="true">
+            <select class="form-control input-sm" data-ng-model="billdata.store">
+                <option data-ng-repeat="datas in liststores" value="{{datas.storeid}}">{{datas.storename}}</option>
+            </select>
+        </div>
+        <div class="row col-md-12">
+            <form>
+                <div class="row">
+                    <div class="col-xs-3">
+                        <div class="input-group">
+                            <div class="btn btn-group form-control" style="padding-top: 0px; padding-right: 0px">
+                                <button class="btn btn-line-primary fa fa-user" btn-radio="1" data-ng-model="customertype"  data-ng-click="loadcustomer(1)"> wholesale</button>
+                                <button class="btn btn-line-primary fa fa-user" btn-radio="2" data-ng-model="customertype"  data-ng-click="loadcustomer(2)"> retail</button>
+                                <button class="btn btn-line-primary fa fa-user" btn-radio="100" data-ng-model="customertype"  data-ng-click="loadcustomer(100)"> self</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-7">
+                        <div class="input-group">
+                                <select class="form-control" id="billingcustomer" ng-model="billcustomer" autofocus ng-options="row.orgname for row in listcustomer | orderBy:'orgname'" data-ng-change="onchangecustomer(billcustomer)">
+                                    <option value="">-- customer --</option>
+                                </select>
+                                <!--<input type="text" id="billingcustomer" placeholder="customer" ng-model="billcustomer" typeahead="row as row.orgname for row in listcustomer | filter:$viewValue | orderBy:'orgname'"-->
+                                   <!--class="form-control" ng-blur="onchangecustomer(billcustomer)" autofocus>-->
+
+                                <span class="input-group-btn">
+                                    <button class="btn  btn-default" id="btnsales" data-ng-click="onchangetransactiontype('sales')">sales</button>
+                                    <button class="btn  btn-default" data-ng-click="onchangetransactiontype('purchase')">purchase</button>
+                                    <button class="btn  btn-default" data-ng-click="onchangetransactiontype('cash')">cash</button>
+                                    <button class="btn  btn-default" data-ng-click="onchangetransactiontype('sales return')">sales return</button>
+                                    <button class="btn  btn-default" data-ng-click="onchangetransactiontype('pre-bill')">pre-bill</button>
+                                </span>
+                            <!--<div class="btn-group btn-group-{{type}}" data-toggle="buttons">-->
+                            <!--<button class="btn btn-line-primary fa fa-user" btn-radio="true"-->
+                            <!--ng-repeat="type in customertypes"-->
+                            <!--ng-class="{active:type.id==1}"-->
+                            <!--ng-click="activate(type.id)">{{customertypes.type}}</button>-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="form-group pull-right" data-ng-show="transactionsummary">
+                            <div ng-if="customertype==1" style="font-size: smaller; text-align: right">
+                                <p>credit limit: {{billdata.customercreditlimit}} grams</p>
+                                <p>outstanding: {{billdata.customeroutstanding}} grams</p>
+
+                            </div>
+                            <div ng-if="customertype==2 && billcustomer.orgname !='cash'" style="font-size: smaller; text-align: right">
+                                <p>credit limit: {{billdata.customercreditlimit}} rupees</p>
+                                <p>outstanding: {{billdata.customeroutstanding}} rupees</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row"></div>
+        <div class="row margin-top-10 padding-left-10">
+            <div class="col-xs-12">
+                <div class="panel panel-default" collapse=!collapsepanel>
+                            <div class="panel-heading panel-heading-custom2">
+                                <h3 class="panel-title">
+                                    <span>{{selectedtab}}</span>
+                                    <span class="pull-right mouse-pointer" data-ng-click="closepanel()"><a>close</a></span>
+                                </h3>
+                            </div>
+                                <div class="panel-body">
+                                    <div class="row form-group">
+                                            <div class="row">
+                                                <form class="form-vertical">
+                                                    <div class="form-group">
+                                                        <div class="input-group" data-ng-show="cashflow">
+                                                            <div class="btn btn-group form-control" style="padding-top: 0px; padding-left: 130px">
+                                                                <button class="btn btn-line-primary fa fa-user" btn-radio="1"  data-ng-show="cashflow" data-ng-model="cashtransactiontype"  data-ng-click="cashflowchange(8)"> receive cash</button>
+                                                                <button class="btn btn-line-primary fa fa-user" btn-radio="2"  data-ng-show="cashflow" data-ng-model="cashtransactiontype"  data-ng-click="cashflowchange(7)"> pay cash</button>
+                                                                <button class="btn btn-line-primary fa fa-user" btn-radio="3" data-ng-show="cashflowexpense" data-ng-model="cashtransactiontype"  data-ng-click="cashflowchange(7)"> pay expense</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <div class="col-md-1 row-in-col" data-ng-show="item">
+                                                            <label class="control-label  padding-left-10">item</label>
+                                                        </div>
+                                                        <div class="col-md-3 row-in-col" data-ng-show="item">
+                                                            <select class="form-control input-sm" enter ng-model="billpackage" id="packageitem" ng-options="pkgitem.package_name for pkgitem in listpackage" data-ng-change="onchangeitem(billpackage)">
+                                                                <option value="">-- choose item --</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-1 row-in-col" data-ng-show="category">
+                                                            <label class="control-label padding-left-10">category</label>
+                                                        </div>
+                                                        <div class="col-md-3 row-in-col" data-ng-show="category">
+                                                            <select class="form-control input-sm" enter ng-model="billcategory" ng-options="category.categoryname for category in listcategories | filter: ({packages_id:billpackage.packages_id})" data-ng-change="onchangecategory(billcategory)">
+                                                                <option value="">-- choose category --</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-1 row-in-col" data-ng-show="purity">
+                                                            <label class="control-label padding-left-10" >purity</label>
+                                                        </div>
+                                                        <div class="col-md-3 row-in-col" data-ng-show="purity">
+                                                            <div class="input-group">
+                                                                <input type="text" enter select-on-click class="form-control input-sm" data-ng-model="billdata.purity" ng-disabled="disablepurity">
+                                                                <div class="input-group-addon padding-right-10">%</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-1 row-in-col" data-ng-show="rates">
+                                                            <label class="control-label padding-left-10" >rate</label>
+                                                        </div>
+                                                        <div class="col-md-3 row-in-col" data-ng-show="rates">
+                                                            <div class="input-group">
+                                                                <input type="text" enter class="form-control input-sm" disabled data-ng-model="billdata.metalrate">
+                                                                <div class="input-group-addon">rs</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-1 row-in-col" data-ng-show="quantitylabel">
+                                                            <label class="control-label padding-left-10">quantity</label>
+                                                        </div>
+                                                        <div class="col-md-3 row-in-col" data-ng-show="quantity">
+                                                            <div class="input-group">
+                                                                <input type="text" enter class="form-control input-sm" select-on-click ng-only-number data-max-length=4 data-max-decimal-points=0  data-ng-model="billdata.quantity">
+                                                                <div class="input-group-addon">no</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-1 row-in-col" data-ng-show="weightlabel">
+                                                            <label class="control-label padding-left-10" >weight</label>
+                                                        </div>
+                                                        <div class="col-md-1 row-in-col" data-ng-show="amount">
+                                                            <label class="control-label padding-left-10">amount</label>
+                                                        </div>
+                                                        <div class="col-md-3 row-in-col" data-ng-show="weight">
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control input-sm" data-ng-show="weightlabel" enter select-on-click ng-only-number data-max-length=4 data-max-decimal-points=3 data-ng-model="billdata.weight" data-ng-change="calculateconversion();">
+                                                                <div class="input-group-addon padding-right-10" data-ng-show="weightlabel">gm</div>
+
+                                                                <input type="text" class="form-control input-sm" data-ng-show="amount" enter select-on-click ng-only-number data-max-length=8 data-max-decimal-points=2 data-ng-model="billdata.weight" ng-keyup="calculateresult('cashreceipt')" >
+                                                                <div class="input-group-addon padding-right-10" data-ng-show="amount">rs</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-1 row-in-col" data-ng-show="calculation">
+                                                            <label class="control-label padding-left-10">convertion</label>
+                                                        </div>
+                                                        <div class="col-md-3 row-in-col" data-ng-show="calculation">
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control input-sm" disabled data-ng-show="calculation" ng-only-number data-max-length=6 data-max-decimal-points=3 data-ng-model="calculatedamount">
+                                                                <div class="input-group-addon padding-right-10"  data-ng-show="amount"> <span>{{billdata.selecteditemunit}}</span></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-md-1 row-in-col" data-ng-show="expenselist">
+                                                            <label class="control-label ">expense</label>
+                                                        </div>
+                                                        <div class="col-md-2 row-in-col" data-ng-show="expenselist">
+                                                                <select class="form-control input-sm" enter ng-model="billdata.comments">
+                                                                    <option value="">-- choose expense --</option>
+                                                                    <option value="food">food</option>
+                                                                    <option value="travel">travel</option>
+                                                                    <option value="stationary">stationary</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                </form>
+                                            </div>
+                                            <div class="row margin-top-10"></div>
+                                            <div class="row form-group">
+                                                <div class="col-md-1" data-ng-show="comments">
+                                                    <label class="control-label padding-left-10">comments</label>
+                                                </div>
+                                                <div class="col-md-11" data-ng-show="comments">
+                                                    <textarea ng-only-character enter limit-to="30"  class="form-control" select-on-click  data-ng-model="billdata.comments"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="row pull-right">
+                                                <div class="col-md-12">
+                                                    <button class="btn btn-success" style="padding-right: 5px" data-ng-show="calculation" data-ng-click="calculateresult('selfpurchase')">calculate amount</button>
+                                                    <button class="btn btn-success"  data-ng-show="hidebutton" data-ng-click="savetransaction(data)">save</button>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+                        </div>
+
+                <div  class="row form-group">
+                    <div class="col-md-12">
+                        <div class="panel panel-default" collapse=!collapsebill>
+                            <div class="panel-heading panel-heading-custom2">
+                                <h3 class="panel-title">
+                                    <span>{{selectedtab}}</span>
+                                    <span class="pull-right" data-ng-click="closepanel()"><a>close</a></span>
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row form-group">
+                                    <div class="col-md-12" style="padding-top: -10px">
+                                            <div class="container-fluid">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>date</th>
+                                                            <th>type</th>
+                                                            <th>quantity</th>
+                                                            <th>item</th>
+                                                            <th>purity</th>
+                                                            <th>rate</th>
+                                                            <th>weight</th>
+                                                            <th>stone.wt</th>
+                                                            <th>stone.value</th>
+                                                            <th>wastage</th>
+                                                            <th>me</th>
+                                                            <th>mc</th>
+                                                            <th>va</th>
+                                                            <th>status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody data-ng-repeat="row in transactionalcharges" >
+                                                        <tr>
+                                                            <th>{{$index+1}}</th>
+                                                            <th data-ng-hide="true">{{row.transactionid}}</th>
+                                                            <th>{{row.transactiondate  | date:'mediumDate'}}</th>
+                                                            <th >
+                                                                <span ng-if="row.transactiontype==1">sales</span>
+                                                                <span ng-if="row.transactiontype==2">purchase</span>
+                                                                <span ng-if="row.transactiontype==3">return</span>
+                                                                <span ng-if="row.transactiontype==7">cashpay</span>
+                                                                <span ng-if="row.transactiontype==8">cashreceipt</span>
+                                                            </th>
+                                                            <th>{{row.quantity}}</th>
+                                                            <th>{{row.packagename}}</th>
+                                                            <th>{{row.purity}}</th>
+                                                            <th>{{row.metalrate}}</th>
+                                                            <th>{{row.weight}}</th>
+                                                            <th>{{row.stoneweight}}</th>
+                                                            <th>{{row.stonevalue}}</th>
+                                                            <th>{{row.wastage}}</th>
+                                                            <th>{{row.makingexpense}}</th>
+                                                            <th>{{row.makingcharge}}</th>
+                                                            <th>{{row.valueaddition}}</th>
+                                                            <td>
+                                                                <div class="btn-group text-center" ng-model="row.excludetransaction" data-toggle="buttons">
+                                                                    <button type="button" ng-model="row.excludetransaction" value="0" ng-class="{'active': row.excludetransaction === 0}" ng-click="excludetransactionfrombill($event,row);" class="btn btn-default">include</button>
+                                                                    <button type="button" ng-model="row.excludetransaction" value="1" ng-class="{'active': row.excludetransaction === 1}" ng-click="excludetransactionfrombill($event,row);" class="btn btn-default">exclude</button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    <!-- approval return grid-->
+                                                    <tr data-ng-hide="hidereturn">
+                                                        <td colspan="12">
+                                                            <table class="table">
+                                                                <tr style="font-size: 15px;">
+                                                                    <th>returned quantity</th>
+                                                                    <th><span class="fa fa-angle-double-right"></span></th>
+                                                                    <td><input type="text" enter ng-only-number select-on-click data-max-length=2 data-max-decimal-points=0 data-ng-model="billdata.returnquantity"></td>
+                                                                    <th>returned weight</th>
+                                                                    <th><span class="fa fa-angle-double-right"></span></th>
+                                                                    <td><input type="text" enter ng-only-number select-on-click data-max-length=2 data-max-decimal-points=3 data-ng-model="billdata.returnproductvalue"></td>
+                                                                    <td><button   class="btn-primary" ng-click="savereturn(row)">save</button></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- prebill grid-->
+                                                    <tr data-ng-hide="hidebillsettings">
+                                                        <td colspan="12">
+                                                            <table class="table table-hover">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th></th>
+                                                                    <th>item</th>
+                                                                    <th>value</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody data-ng-repeat="row in listtransactioncharges" ng-if="['PW102','PW103','PA202','PA203','PW105'].indexOf(row.product_code) > -1" >
+                                                                <tr>
+                                                                    <th></th>
+                                                                    <th>{{row.products_title}}</th>
+                                                                    <td ng-switch on="row.product_code">
+                                                                        <span ng-switch-when='PW102'><input type="text" data-ng-model="billdata.makingexpense"></span>
+                                                                        <span ng-switch-when='PW103'><input type="text" data-ng-model="billdata.valueaddition"></span>
+                                                                        <span ng-switch-when='PW105'><input type="text" data-ng-model="billdata.stoneweight"></span>
+                                                                        <span ng-switch-when='PA202'><input type="text" data-ng-model="billdata.makingcharge"></span>
+                                                                        <span ng-switch-when='PA203'><input type="text" data-ng-model="billdata.stonevalue"></span>
+                                                                    </td>
+                                                                    <th><button class="btn-primary" ng-click="savetransactionlineitem(row)">save</button></th>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        <div class="row">
+                                            <div class="col-md-1 col-sm-offset-10">
+                                                <button class="btn btn-success" data-ng-show="hidebutton" data-ng-click="savetransaction(data)">save</button>
+                                            </div>
+                                            <div class="col-md-8" data-ng-hide="hidebutton"></div>
+                                            <div class="col-md-1">
+                                                <button class="btn btn-success" data-ng-hide="hidebutton" data-ng-click="generatebill(transactionalcharges,'preview')">bill preview</button>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <button class="btn btn-success" data-ng-hide="hidebutton" data-ng-click="generatebill(transactionalcharges,'save')">save & print</button>
+                                            </div>
+                                            <!--<div class="col-md-1">-->
+                                                <!--<button class="btn btn-success" data-ng-hide="hidebutton" data-ng-click="generatebill(transactionalcharges)">print bill</button>-->
+                                            <!--</div>-->
+                                            <div class="col-md-2" data-ng-hide="hidebutton"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row col-md-12" style="padding-top: -10px">
+            <div class="container-fluid">
+                <h3>sales <span style="font-size: small">({{customertransactionsummary.totalsaleqty}} nos, {{customertransactionsummary.totalsaleweight}} gm.)</span></h3>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>date</th>
+                        <th>quantity</th>
+                        <th>item</th>
+                        <th>weight</th>
+                        <th>purity</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody data-ng-repeat="row in transactiondetailsfordisplay | filter: ({transactiontype:'1', product_code:'PW995'})" >
+                    <tr>
+                        <th>{{$index+1}}</th>
+                        <th>{{row.transactiondate  | date:'mediumDate'}}</th>
+                        <th>{{row.quantity}}</th>
+                        <th>{{row.package_name}}</th>
+                        <th>{{row.productvalue}}</th>
+                        <th>{{row.purity}}</th>
+                        <th><button style="display: inline-block; float: none; white-space: nowrap; text-align: right" class="btn btn-secondary-outline" ng-click="hidereturn=!hidereturn;">return</button></th>
+                        <th><button style="display: inline-block; float: none; white-space: nowrap; text-align: right" class="btn btn-secondary-outline" ng-click="filterlisttransactionforbill(row);hidebillsettings=!hidebillsettings">charges</button></th>
+                        <th><button style="display: inline-block; float: none; white-space: nowrap; text-align: right" class="btn btn-secondary-outline" ng-click="removetransaction(row)">delete</button></th>
+                        <th><button style="display: inline-block; float: none; white-space: nowrap; text-align: right" class="btn btn-secondary-outline" ng-click="listhistory(row)">history</button></th>
+
+                    </tr>
+                    <!-- approval return grid-->
+                    <tr data-ng-hide="hidereturn">
+                        <td colspan="12">
+                            <table class="table">
+                                <tr style="font-size: 15px;">
+                                    <th>returned quantity</th>
+                                    <th><span class="fa fa-angle-double-right"></span></th>
+                                    <td><input type="text" enter ng-only-number data-max-length=3 data-max-decimal-points=0 data-ng-model="billdata.returnquantity"></td>
+                                    <th>returned weight</th>
+                                    <th><span class="fa fa-angle-double-right"></span></th>
+                                    <td><input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=3 data-ng-model="billdata.returnproductvalue"></td>
+                                    <td><button   class="btn-primary" ng-click="savereturn(row)">save</button></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <!-- prebill grid-->
+                    <tr data-ng-hide="hidebillsettings">
+                        <td colspan="12">
+                            <table class="table">
+                                <tr style="font-size: 15px;">
+                                    <div data-ng-repeat="charges in listtransactioncharges | orderBy:'products_title'" ng-if="['PW102','PW103','PA202','PA203','PW105','PW107'].indexOf(charges.product_code) > -1">
+                                        <div ng-class="{ 'row': ($index + 1) % 5 == 0 }">
+                                            <div class="col-sm-1" ng-switch on="charges.product_code">
+                                                <span ng-switch-when='PW103'>{{charges.products_short_description}}<input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=2 data-ng-model="billdata.valueaddition"></span>
+                                                <span ng-switch-when='PW105'>{{charges.products_short_description}}<input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=3 data-ng-model="billdata.stoneweight"></span>
+                                                <span ng-switch-when='PA202'>{{charges.products_short_description}}<input type="text" enter ng-only-number data-max-length=5 data-max-decimal-points=2 data-ng-model="billdata.makingcharge"></span>
+                                                <span ng-switch-when='PA203'>{{charges.products_short_description}}<input type="text" enter ng-only-number data-max-length=5 data-max-decimal-points=2 data-ng-model="billdata.stonevalue"></span>
+                                                <span ng-switch-when='PW107'>{{charges.products_short_description}}<input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=3 data-ng-model="billdata.wastage"></span>
+                                                <!--<span ng-switch-when='PW102' data-ng-hide="true">{{charges.products_short_description}}<input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=3 data-ng-model="billdata.makingexpense"></span>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3" style="align-content: center" ><button class="btn-primary pull-right"  ng-click="savebillcharges(row)">save charges</button></div>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row col-md-12" style="padding-top: -10px">
+            <div class="container-fluid">
+                <h3>purchase <span style="font-size: small">({{customertransactionsummary.totalpurchaseqty}} nos, {{customertransactionsummary.totalpurchaseweight}} gm.)</span></h3>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>date</th>
+                            <th>quantity</th>
+                            <th>item</th>
+                            <th>weight</th>
+                            <th>purity</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <!--<tbody data-ng-repeat="row in transactiondetails | filter: {transactiontype: '2', product_code:'PW101', product_code:'PW995'}">-->
+                    <tbody data-ng-repeat="row in transactiondetails | filter: purchasefilter">
+                        <tr>
+                            <th>{{$index+1}}</th>
+                            <th>{{row.transactiondate  | date:'mediumDate'}}</th>
+                            <th>{{row.quantity}}</th>
+                            <th>{{row.package_name}}</th>
+                            <th>{{row.productvalue}}</th>
+                            <th>{{row.purity}}</th>
+                            <th><button class="btn btn-secondary-outline" ng-click="filterlisttransactionforbill(row);hidebillsettings=!hidebillsettings">purity test</button></th>
+                            <th><button class="btn btn-secondary-outline" ng-click="removetransaction(row)">delete</button></th>
+                            <th><button class="btn btn-secondary-outline" ng-click="listhistory(row)">history</button></th>
+                            <th></th>
+                        </tr>
+                        <tr data-ng-hide="hidebillsettings">
+                            <td colspan="12">
+                                <div class="col-md-12">
+                                    <span>test purity :<input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=2 data-ng-model="billdata.testpurity"></span>
+                                    <span>test weight :<input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=3 data-ng-model="billdata.testweight"></span>
+                                    <span>test return :<input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=3 data-ng-model="billdata.testreturnweight"></span>
+                                    <span>pure gold weight :<input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=3 data-ng-model="billdata.puregoldweight"></span>
+                                    <span><button class="btn-primary" ng-click="savetransactionpurchasetest(row)">save</button></span>
+                                </div>
+
+                                    <!--<tbody data-ng-repeat="row in listtransactioncharges" ng-if="['PW104','PW106','PW100','PC102'].indexOf(row.product_code) > -1" >-->
+                                    <!--<tr>-->
+                                        <!--<th></th>-->
+                                        <!--<th>{{row.products_title}}</th>-->
+                                        <!--<td ng-switch on="row.product_code">-->
+                                            <!--<span ng-switch-when='PC102'><input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=2 data-ng-model="billdata.testpurity"></span>-->
+                                            <!--<span ng-switch-when='PW104'><input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=3 data-ng-model="billdata.testweight"></span>-->
+                                            <!--<span ng-switch-when='PW106'><input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=3 data-ng-model="billdata.testreturnweight"></span>-->
+                                            <!--<span ng-switch-when='PW100'><input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=3 data-ng-model="billdata.puregoldweight"></span>-->
+                                        <!--</td>-->
+                                        <!--<th><button class="btn-primary" ng-click="savetransactionlineitem(row)">save</button></th>-->
+                                    <!--</tr>-->
+                                    <!--</tbody>-->
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row col-md-12" style="padding-top: -10px">
+            <div class="container-fluid">
+                <h3>cash <span style="font-size: small">(rs. {{customertransactionsummary.totalcash}})</span></h3>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>date</th>
+                            <th>quantity</th>
+                            <th>item</th>
+                            <th>amount</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <!--<tbody data-ng-repeat="row in transactiondetails | filter:{transactiontype:['8'} +  filter:{transactiontype:'7'}" >-->
+                    <tbody data-ng-repeat="row in transactiondetails | filter: ({transactiondate: currentdate})" ng-if="[7,8].indexOf(row.transactiontype) > -1">
+                        <tr>
+                            <th>{{$index+1}}</th>
+                            <th>{{row.transactiondate  | date:'mediumDate'}}</th>
+                            <th>1</th>
+                            <th>{{row.package_name}}</th>
+                            <th>{{row.productvalue}}</th>
+                            <th ng-if="row.transactiontype==7"><span class="label label-info">paid</span></th>
+                            <th ng-if="row.transactiontype==8"><span class="label label-info">received</span></th>
+                            <th><button class="btn btn-secondary-outline" ng-click="removetransaction(row)">delete</button></th>
+                            <th><button class="btn btn-secondary-outline">history</button></th>
+                            <th></th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row col-md-12" style="padding-top: -10px">
+            <div class="container-fluid">
+                <h3>sales return <span style="font-size: small">({{customertransactionsummary.totalsalesreturnqty}} nos, {{customertransactionsummary.totalsalesreturnweight}} gm.)</span></h3>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>date</th>
+                        <th>quantity</th>
+                        <th>item</th>
+                        <th>weight</th>
+                        <th>purity</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody data-ng-repeat="row in transactiondetails | filter: ({transactiontype:'3', product_code:'PW995'})" >
+                    <tr>
+                        <th>{{$index+1}}</th>
+                        <th>{{row.transactiondate  | date:'mediumDate'}}</th>
+                        <th>{{row.quantity}}</th>
+                        <th>{{row.package_name}}</th>
+                        <th>{{row.productvalue}}</th>
+                        <th>{{row.purity}}</th>
+                        <th><button style="display: inline-block; float: none; white-space: nowrap; text-align: right" class="btn btn-secondary-outline" ng-click="filterlisttransactionforbill(row);hidebillsettings=!hidebillsettings">charges</button></th>
+                        <th><button style="display: inline-block; float: none; white-space: nowrap; text-align: right" class="btn btn-secondary-outline" ng-click="removetransaction(row)">delete</button></th>
+                        <th><button style="display: inline-block; float: none; white-space: nowrap; text-align: right" class="btn btn-secondary-outline" ng-click="listtransactionwithhistory(row)">history</button></th>
+                    </tr>
+                    <!-- prebill grid-->
+                    <tr data-ng-hide="hidebillsettings">
+                        <td colspan="12">
+
+                            <!--<table class="table table-hover">-->
+                                <!--<thead>-->
+                                <!--<tr>-->
+                                    <!--<th></th>-->
+                                    <!--<th>item</th>-->
+                                    <!--<th>value</th>-->
+                                    <!--<th></th>-->
+                                <!--</tr>-->
+                                <!--</thead>-->
+                                <!--<tbody data-ng-repeat="charges in listtransactioncharges | orderBy:'products_title'" ng-if="['PW102','PW103','PA202','PA203','PW105','PW107'].indexOf(charges.product_code) > -1" >-->
+                                <!--<tr data-ng-hide="charges.products_title=='making expense'"> &lt;!&ndash; hide making expense as wastage server the same purpose. request from business owner &ndash;&gt;-->
+                                    <!--<td></td>-->
+                                    <!--<td>{{charges.products_title}}</td>-->
+                                    <!--<td ng-switch on="charges.product_code">-->
+                                        <!--<span ng-switch-when='PW102' data-ng-hide="true"><input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=3 data-ng-model="billdata.makingexpense"></span>-->
+                                        <!--<span ng-switch-when='PW103'><input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=2 data-ng-model="billdata.valueaddition"></span>-->
+                                        <!--<span ng-switch-when='PW105'><input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=3 data-ng-model="billdata.stoneweight"></span>-->
+                                        <!--<span ng-switch-when='PA202'><input type="text" enter ng-only-number data-max-length=5 data-max-decimal-points=2 data-ng-model="billdata.makingcharge"></span>-->
+                                        <!--<span ng-switch-when='PA203'><input type="text" enter ng-only-number data-max-length=5 data-max-decimal-points=2 data-ng-model="billdata.stonevalue"></span>-->
+                                        <!--<span ng-switch-when='PW107'><input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=3 data-ng-model="billdata.wastage"></span>-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                                <!--</tbody>-->
+                            <!--</table>-->
+
+                            <div data-ng-repeat="charges in listtransactioncharges | orderBy:'products_title'" ng-if="['PW102','PW103','PA202','PA203','PW105','PW107'].indexOf(charges.product_code) > -1">
+                                <div ng-class="{ 'row': ($index + 1) % 5 == 0 }">
+                                    <div class="col-md-2" ng-switch on="charges.product_code">
+                                        <span ng-switch-when='PW103'>{{charges.products_short_description}}<input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=2 data-ng-model="billdata.valueaddition"></span>
+                                        <span ng-switch-when='PW105'>{{charges.products_short_description}}<input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=3 data-ng-model="billdata.stoneweight"></span>
+                                        <span ng-switch-when='PA202'>{{charges.products_short_description}}<input type="text" enter ng-only-number data-max-length=5 data-max-decimal-points=2 data-ng-model="billdata.makingcharge"></span>
+                                        <span ng-switch-when='PA203'>{{charges.products_short_description}}<input type="text" enter ng-only-number data-max-length=5 data-max-decimal-points=2 data-ng-model="billdata.stonevalue"></span>
+                                        <span ng-switch-when='PW107'>{{charges.products_short_description}}<input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=3 data-ng-model="billdata.wastage"></span>
+                                        <span ng-switch-when='PW102' data-ng-hide="true">{{charges.products_short_description}}<input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=3 data-ng-model="billdata.makingexpense"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div><button class="btn-primary pull-right" ng-click="savebillcharges(row)">save charges</button></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- model window for transaction history-->
+        <script type="text/ng-template" id="modelhistory">
+            <div class="row" style="text-transform: lowercase !important; margin-top: 5px">
+                <div class="col-md-12">
+                    <div class="row col-md-12" >
+                        <div class="modal-header">
+                            <span>transaction history</span>
+                        </div>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row col-md-12 modal-body">
+                            <div class="col-md-6"><label class="h4">customer </label><br>{{transactionhistoryheader[0].orgname}}<br>{{transactionhistoryheader[0].salesowner}}<br>
+                                {{transactionhistoryheader[0].contactno}}<br>{{transactionhistoryheader[0].typename}}</div>
+                            <div class="col-md-6"><label class="h4">details </label>
+                                <br>
+                                <div  ng-switch on="transactionhistoryheader[0].receiptno">
+                                    <span ng-switch-when='0'><label class="h4">not available </label></span>
+                                    <span ng-switch-when='1'><label class="h4">{{transactionhistoryheader[0].receiptno}} </label></span>
+                                </div>
+
+                                <br>{{transactionhistoryheader[0].transactiontypename}}<br>
+                                {{transactionhistoryheader.transactiondate | date:'shortDate'}}
+                                <br>
+                                <div  ng-switch on="transactionhistoryheader[0].status">
+                                    <span ng-switch-when='0'><label class="h4">live </label></span>
+                                    <span ng-switch-when='1'><label class="h4">cancelled </label></span>
+                                </div>
+                            </div>
+
+                            <br>
+                            <b></b>
+                            <hr style="width: 96%; color: #ecd320; height: 1px; background-color:#ecd320;" />
+                        </div>
+
+                        <div class="row col-md-12" style="padding-top: -10px">
+                            <div class="container-fluid">
+                                <h3>history</h3>
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>user</th>
+                                        <th>date</th>
+                                        <th>comments</th>
+                                        <th>package</th>
+                                        <th>product</th>
+                                        <th>category</th>
+                                        <th>purity</th>
+                                        <th>rate</th>
+                                        <th>quantity</th>
+                                        <th>value</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody data-ng-repeat="row in transactionhistorybody" >
+                                    <tr>
+                                        <th>{{$index+1}}</th>
+                                        <th>{{row.appuser}}</th>
+                                        <th>{{row.createddatetime  | date:'longDate'}}</th>
+                                        <th>{{row.description}}</th>
+                                        <th>{{row.package_name}}</th>
+                                        <th>{{row.products_title}}</th>
+                                        <th>{{row.categoryname}}</th>
+                                        <th>{{row.purity}}</th>
+                                        <th>{{row.rate}}</th>
+                                        <th>{{row.quantity}}</th>
+                                        <th>{{row.productvalue}}</th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="modal-footer">-->
+                        <!--<button class="btn btn-primary" ng-click="modelokclick()">close</button>-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </script>
+
+        <!-- model window for customer bill-->
+        <script type="text/ng-template" id="modelcustomerbill">
+            <div class="row">
+                <div class="col-md-12" style="height: 480px; width: 1000px">
+                    <iframe id='pdfV' src="{{base64encodedpdf}}" style="height: 480px; width: 1000px"></iframe>
+                </div>
+            </div>
+        </script>
+    </div>
+</div>

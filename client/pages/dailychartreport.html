@@ -1,0 +1,346 @@
+<div class="row"  data-ng-controller="reportcontroller" ng-init="initdaybookreport()">
+    <div class="col-md-12">
+        <div class="row" >
+            <div class="data-header">
+                <span>day book</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-2">
+                    <label style="font-size: 14px">select date </label>
+                </div>
+                <div class="col-md-4 pull-left">
+                    <div class="input-group" >
+                        <input type="text"
+                               placeholder="from date"
+                               class="form-control"
+                               datepicker-popup="dd-MM-yyyy"
+                               is-open="opened[8]"
+                               min="event.start_date"
+                               data-ng-model="reportdata.fromdate"
+                               datepicker-options="dateOptions"
+                               date-disabled="disabled(date, mode)"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="open($event,8)">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                    <div class="col-md-6 pull-left"></div>
+                </div>
+                <div class="col-md-1 pull-left">
+                    <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="daybook();">
+                </div>
+            </div>
+
+        </div>
+        <!--  report body starts here-->
+
+        <div class="row" style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+            <div class="panel panel-body panel-info">
+                <div class="row col-md-12">
+                    <h4>complete activity for {{reportdata.fromdate | date:'mediumDate'}}</h4>
+                </div>
+                <div class="row col-md-12">
+                    <div class="row col-md-4" style="margin-right: 10px;">
+                        <div class="panel panel-body panel-info">
+                            <div style="align-content: center">
+                                <h3>sales</h3>
+                            </div>
+                            <div class="panel mini-box dev4violet">
+                                    <span class="box-icon rounded bg-violet">
+                                        <a class="mouse-pointer" data-ng-click="salesdetails=!salesdetails"><i class="fa fa-users" ></i></a>
+                                    </span>
+                                    <div class="box-info" style="padding-top: 20px;">
+                                        <p></p>
+                                        <p><span i18n="nos">net count : </span><span class="size-h8" style="padding-left: 5px;">{{salescount}} numbers</span></p>
+                                        <p><span i18n="weight">net weight : </span><span class="size-h8" style="padding-left: 5px;">{{salesweight}} grams</span></p>
+                                    </div>
+                                    <a class="more" href=""></a>
+                                </div>
+                            <table class="table table-hover" data-ng-show="salesdetails">
+                                <thead>
+                                    <tr>
+                                        <th>customer</th>
+                                        <th>quantity</th>
+                                        <th>weight</th>
+                                    </tr>
+                                </thead>
+                                <tbody data-ng-repeat="row in daybookdatadetails | filter:({transactiontype : 1})">
+                                    <tr>
+                                        <td>{{row.orgname}}</td>
+                                        <td>{{row.billquantity}}</td>
+                                        <td>{{row.billweight}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row col-md-4" style="margin-right: 10px;">
+                        <div class="panel panel-body panel-info">
+                            <div style="align-content: center">
+                                <h3>purchase</h3>
+                            </div>
+                            <div class="panel mini-box dev4blue">
+                                    <span class="box-icon rounded bg-twitter">
+                                        <a class="mouse-pointer" data-ng-click="purchasedetails=!purchasedetails"><i class="fa fa-users"></i></a>
+                                    </span>
+                                <div class="box-info" style="padding-top: 20px;">
+                                    <p></p>
+                                    <p><span i18n="nos">net count : </span><span class="size-h8" style="padding-left: 5px;">{{purchasecount}} numbers</span></p>
+                                    <p><span i18n="weight">net weight : </span><span class="size-h8" style="padding-left: 5px;">{{purchaseweight}} grams</span></p>
+                                </div>
+                                <a class="more" href=""></a>
+                            </div>
+                            <table class="table table-hover" data-ng-show="purchasedetails">
+                                <thead>
+                                <tr>
+                                    <th>customer</th>
+                                    <th>quantity</th>
+                                    <th>weight</th>
+                                </tr>
+                                </thead>
+                                <tbody data-ng-repeat="row in daybookdatadetails | filter:({transactiontype : 2})">
+                                <tr>
+                                    <td>{{row.orgname}}</td>
+                                    <td>{{row.billquantity}}</td>
+                                    <td>{{row.billweight}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row col-md-4" style="margin-right: 10px;">
+                        <div class="panel panel-body panel-info">
+                            <div style="align-content: center">
+                                <h3>order</h3>
+                            </div>
+                            <div class="panel mini-box dev4peacockgreen">
+                                    <span class="box-icon rounded bg-primary-light">
+                                        <a class="mouse-pointer" data-ng-click="orderdetails=!orderdetails"><i class="fa fa-users"></i></a>
+                                    </span>
+                                <div class="box-info" style="padding-top: 20px;">
+                                    <p></p>
+                                    <p><span i18n="nos">net count : </span><span class="size-h8" style="padding-left: 5px;">{{ordercount}} numbers</span></p>
+                                    <p><span i18n="weight">net weight : </span><span class="size-h8" style="padding-left: 5px;">{{orderweight}} grams</span></p>
+                                </div>
+                                <a class="more" href=""></a>
+                            </div>
+                            <table class="table table-hover" data-ng-show="orderdetails">
+                                <thead>
+                                <tr>
+                                    <th>customer</th>
+                                    <th>quantity</th>
+                                    <th>weight</th>
+                                </tr>
+                                </thead>
+                                <tbody data-ng-repeat="row in daybookdatadetails | filter:({transactiontype : 9})">
+                                <tr>
+                                    <td>{{row.orgname}}</td>
+                                    <td>{{row.billquantity}}</td>
+                                    <td>{{row.billweight}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row col-md-12">
+                    <div class="row col-md-4" style="margin-right: 10px;">
+                        <div class="panel panel-body panel-info">
+                            <div style="align-content: center">
+                                <h3>smith issue</h3>
+                            </div>
+                            <div class="panel mini-box dev4orange">
+                                    <span class="box-icon rounded bg-orange">
+                                        <a class="mouse-pointer" data-ng-click="smithissuedetails=!smithissuedetails"><i class="fa fa-users"></i></a>
+                                    </span>
+                                <div class="box-info" style="padding-top: 20px;">
+                                    <p></p>
+                                    <p><span i18n="nos">net count : </span><span class="size-h8" style="padding-left: 5px;">{{smithissuecount}} numbers</span></p>
+                                    <p><span i18n="weight">net weight : </span><span class="size-h8" style="padding-left: 5px;">{{smithissueweight}} grams</span></p>
+                                </div>
+                                <a class="more" href=""></a>
+                            </div>
+                            <table class="table table-hover" data-ng-show="smithissuedetails">
+                                <thead>
+                                <tr>
+                                    <th>customer</th>
+                                    <th>quantity</th>
+                                    <th>weight</th>
+                                </tr>
+                                </thead>
+                                <tbody data-ng-repeat="row in daybookdatadetails | filter:({transactiontype : 5})">
+                                <tr>
+                                    <td>{{row.orgname}}</td>
+                                    <td>{{row.billquantity}}</td>
+                                    <td>{{row.billweight}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row col-md-4" style="margin-right: 10px;">
+                        <div class="panel panel-body panel-info">
+                            <div style="align-content: center">
+                                <h3>smith return</h3>
+                            </div>
+                            <div class="panel mini-box dev4yellow">
+                                    <span class="box-icon rounded bg-warning">
+                                        <a class="mouse-pointer" data-ng-click="smithreturndetails=!smithreturndetails"><i class="fa fa-users"></i></a>
+                                    </span>
+                                <div class="box-info" style="padding-top: 20px;">
+                                    <p></p>
+                                    <p><span i18n="nos">net count : </span><span class="size-h8" style="padding-left: 5px;">{{smithreturncount}} numbers</span></p>
+                                    <p><span i18n="weight">net weight : </span><span class="size-h8" style="padding-left: 5px;">{{smithreturnweight}} grams</span></p>
+                                </div>
+                                <a class="more" href=""></a>
+                            </div>
+                            <table class="table table-hover" data-ng-show="smithreturndetails">
+                                <thead>
+                                <tr>
+                                    <th>customer</th>
+                                    <th>quantity</th>
+                                    <th>weight</th>
+                                </tr>
+                                </thead>
+                                <tbody data-ng-repeat="row in daybookdatadetails | filter:({transactiontype : 6})">
+                                <tr>
+                                    <td>{{row.orgname}}</td>
+                                    <td>{{row.billquantity}}</td>
+                                    <td>{{row.billweight}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row col-md-4" style="margin-right: 10px;">
+                        <div class="panel panel-body panel-info">
+                            <div style="align-content: center">
+                                <h3>sales return</h3>
+                            </div>
+                            <div class="panel mini-box dev4">
+                                    <span class="box-icon rounded bg-danger">
+                                        <a class="mouse-pointer" data-ng-click="salesreturndetails=!salesreturndetails"><i class="fa fa-users"></i></a>
+                                    </span>
+                                <div class="box-info" style="padding-top: 20px;">
+                                    <p></p>
+                                    <p><span i18n="nos">net count : </span><span class="size-h8" style="padding-left: 5px;">{{salesreturncount}} numbers</span></p>
+                                    <p><span i18n="weight">net weight : </span><span class="size-h8" style="padding-left: 5px;">{{salesreturnweight}} grams</span></p>
+                                </div>
+                                <a class="more" href=""></a>
+                            </div>
+                            <table class="table table-hover" data-ng-show="salesreturndetails">
+                                <thead>
+                                <tr>
+                                    <th>customer</th>
+                                    <th>quantity</th>
+                                    <th>weight</th>
+                                </tr>
+                                </thead>
+                                <tbody data-ng-repeat="row in daybookdatadetails | filter:({transactiontype : 3})">
+                                <tr>
+                                    <td>{{row.orgname}}</td>
+                                    <td>{{row.billquantity}}</td>
+                                    <td>{{row.billweight}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-12">
+                    <div class="row col-md-4" style="margin-right: 10px;">
+                        <div class="panel panel-body panel-info">
+                            <div style="align-content: center">
+                                <h3>bills</h3>
+                            </div>
+                            <div class="panel mini-box dev4">
+                                    <span class="box-icon rounded bg-danger">
+                                        <i class="fa fa-users"></i>
+                                    </span>
+                                <div class="box-info" style="padding-top: 20px;">
+                                    <p></p>
+                                    <p><span i18n="nos">net count : </span><span class="size-h8" style="padding-left: 5px;">{{billcount}} numbers</span></p>
+                                    <!--<p><span i18n="weight">net weight : </span><span class="size-h8" style="padding-left: 40px;">221.324 grams</span></p>-->
+                                </div>
+                                <a class="more" href=""></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-md-4" style="margin-right: 10px;">
+                        <div class="panel panel-body panel-info">
+                            <div style="align-content: center">
+                                <h3>cash receipt</h3>
+                            </div>
+                            <div class="panel mini-box dev4green">
+                                    <span class="box-icon rounded bg-success">
+                                        <a class="mouse-pointer" data-ng-click="cashreceiptdetails=!cashreceiptdetails"><i class="fa fa-users"></i></a>
+                                    </span>
+                                <div class="box-info" style="padding-top: 20px;">
+                                    <p></p>
+                                    <p><span i18n="nos">net count : </span><span class="size-h8" style="padding-left: 5px;">{{cashreceiptcount}} numbers</span></p>
+                                    <p><span i18n="weight">net amount : </span><span class="size-h8" style="padding-left: 5px;">{{cashreceiptweight}} inr</span></p>
+                                </div>
+                                <a class="more" href=""></a>
+                            </div>
+                            <table class="table table-hover" data-ng-show="cashreceiptdetails">
+                                <thead>
+                                <tr>
+                                    <th>customer</th>
+                                    <th>quantity</th>
+                                    <th>weight</th>
+                                </tr>
+                                </thead>
+                                <tbody data-ng-repeat="row in daybookdatadetails | filter:({transactiontype : 8})">
+                                <tr>
+                                    <td>{{row.orgname}}</td>
+                                    <td>{{row.billquantity}}</td>
+                                    <td>{{row.billweight}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row col-md-4" style="margin-right: 10px;">
+                        <div class="panel panel-body panel-info">
+                            <div style="align-content: center">
+                                <h3>cash payments</h3>
+                            </div>
+                            <div class="panel mini-box dev5">
+                                    <span class="box-icon rounded bg-facebook">
+                                        <a class="mouse-pointer" data-ng-click="cashpaymentdetails=!cashpaymentdetails"><i class="fa fa-users"></i></a>
+                                    </span>
+                                <div class="box-info" style="padding-top: 20px;">
+                                    <p></p>
+                                    <p><span i18n="nos">net count : </span><span class="size-h8" style="padding-left: 5px;">{{cashissuecount}} numbers</span></p>
+                                    <p><span i18n="weight">net amount : </span><span class="size-h8" style="padding-left: 5px;">{{cashissueweight}} inr</span></p>
+                                </div>
+                                <a class="more" href=""></a>
+                            </div>
+                            <table class="table table-hover" data-ng-show="cashpaymentdetails">
+                                <thead>
+                                <tr>
+                                    <th>customer</th>
+                                    <th>quantity</th>
+                                    <th>weight</th>
+                                </tr>
+                                </thead>
+                                <tbody data-ng-repeat="row in daybookdatadetails | filter:({transactiontype : 7})">
+                                <tr>
+                                    <td>{{row.orgname}}</td>
+                                    <td>{{row.billquantity}}</td>
+                                    <td>{{row.billweight}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

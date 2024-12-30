@@ -1,0 +1,121 @@
+<div class="row"  data-ng-controller="reportcontroller" ng-init="initcashreport()">
+    <div class="col-md-12">
+        <div class="row" >
+            <div class="data-header">
+                <span>cashbook report</span>
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <div class="panel panel-body panel-info">
+                <div class="col-md-1 pull-left">
+                    <label class="control-label" >From</label>
+                </div>
+
+                <div class="col-md-4 pull-left">
+                    <div class="input-group" >
+                        <input type="text"
+                        placeholder="Date"
+                        class="form-control"
+                        datepicker-popup="dd-MM-yyyy"
+                        is-open="opened[0]"
+                        data-ng-model="reportdata.fromdate"
+                        datepicker-options="dateOptions"
+                        ng-required="true"
+                        close-text="Close"
+                        ng-click="open($event,0)"
+                        >
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <label class="control-label" >To</label>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="input-group" >
+                        <input type="text"
+                        placeholder="Date"
+                        class="form-control"
+                        datepicker-popup="dd-MM-yyyy"
+                        is-open="opened[1]"
+                        min="event.start_date"
+                        data-ng-model="reportdata.todate"
+                        datepicker-options="dateOptions"
+                        date-disabled="disabled(date, mode)"
+                        ng-required="true"
+                        close-text="Close"
+                        ng-click="open($event,1)">
+                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="cash()">
+                </div>
+            </div>
+        </div>
+        <!--  report body starts here-->
+        <div class="row" style="margin-left:2px">
+            <h3>opening balance as on {{reportdata.fromdate | date:'mediumDate'}} : {{cashbooksummary[0].opbalance || 0}} inr.</h3>
+            <h3>closing balance as on {{reportdata.todate | date:'mediumDate'}} : {{cashbooksummary[0].clbalance || 0}} inr.</h3>
+        </div>
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-12" data-ng-show="cashbookreport" >
+                <div class="columnsContainer">
+                    <div class="leftColumn">
+                        <h3>cash receipt</h3>
+                        <table class="table table-hover">
+                            <thead class="table-header-custom">
+                            <tr>
+                                <th class="text-left">date</th>
+                                <th class="text-left">customer</th>
+                                <th class="text-right">amount</th>
+                                <th class="text-left">comments</th>
+                                <th class="text-left"></th>
+                            </tr>
+                            </thead>
+                            <tbody data-ng-repeat="row in cashbookreport | filter: ({transactiontype:'8'})">
+                            <tr>
+                                <td class="text-left" ng-class='{cancelledtransaction : !row.status}'>{{row.transactiondate | date:'longDate'}}</td>
+                                <td class="text-left" ng-class='{cancelledtransaction : !row.status}'>{{row.orgname}}</td>
+                                <td class="text-right" ng-class='{cancelledtransaction : !row.status}'>{{row.productvalue}} rs.</td>
+                                <td class="text-left" ng-class='{cancelledtransaction : !row.status}'>{{row.description}}</td>
+                                <td class="text-left" ng-class='{cancelledtransaction : !row.status}'><span>{{row.status=='0' ? 'cancelled' : ''}}</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="middleColumn"></div>
+                    <div class="rightColumn">
+                        <h3>cash payment</h3>
+                        <table class="table table-hover">
+                            <thead class="table-header-custom">
+                                <tr>
+                                    <th class="text-left">date</th>
+                                    <th class="text-left">customer</th>
+                                    <th class="text-right">amount</th>
+                                    <th class="text-left">comments</th>
+                                    <th class="text-left"></th>
+                                </tr>
+                            </thead>
+                            <!--<tbody data-ng-repeat="row in cashbookreport | filter: ({transactiontype:'5'})">-->
+                            <tbody data-ng-repeat="paymentrow in cashbookreport" ng-if="[5,7].indexOf(paymentrow.transactiontype) > -1">
+                                <tr>
+                                    <td class="text-left" ng-class='{cancelledtransaction : !paymentrow.status}'>{{paymentrow.transactiondate | date:'longDate'}}</td>
+                                    <td class="text-left" ng-class='{cancelledtransaction : !paymentrow.status}'>{{paymentrow.orgname}}</td>
+                                    <td class="text-right" ng-class='{cancelledtransaction : !paymentrow.status}'>{{paymentrow.productvalue}} rs.</td>
+                                    <td class="text-left" ng-class='{cancelledtransaction : !paymentrow.status}'>{{paymentrow.description}}</td>
+                                    <td class="text-left" ng-class='{cancelledtransaction : !paymentrow.status}'><span>{{paymentrow.status=='0' ? 'cancelled' : ''}}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" data-ng-hide="cashbookreport" >
+                <h4>no data to display</h4>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,152 @@
+<div class="row"  data-ng-controller="reportcontroller" ng-init="initsmithreport()">
+    <div class="col-md-12">
+        <div class="row" >
+            <div class="data-header">
+                <span>smith report</span>
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <div class="panel panel-body panel-info">
+                <div class="col-md-1 pull-left">
+                    <label class="control-label" >From</label>
+                </div>
+
+                <div class="col-md-3 pull-left">
+                    <div class="input-group" >
+                        <input type="text"
+                               placeholder="from date"
+                               class="form-control"
+                               datepicker-popup="dd-MM-yyyy"
+                               is-open="opened[2]"
+                               min="event.start_date"
+                               data-ng-model="reportdata.fromdate"
+                               datepicker-options="dateOptions"
+                               date-disabled="disabled(date, mode)"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="open($event,2)">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <label class="control-label" >To</label>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="input-group" >
+                        <input type="text"
+                               class="form-control"
+                               datepicker-popup="dd-MM-yyyy"
+                               data-ng-model="reportdata.todate"
+                               placeholder="to date"
+                               is-open="opened[3]"
+                               min="event.start_date"
+                               datepicker-options="dateOptions"
+                               date-disabled="disabled(date, mode)"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="open($event,3)">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control" ng-model="billcustomer" ng-options="row.orgname for row in listcustomer | orderBy:'orgname'" data-ng-change="onchangecustomer(billcustomer)">
+                        <option value="">-- smith --</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="smith();">
+                </div>
+            </div>
+        </div>
+        <!--  report body starts here-->
+        <div class="row" style="margin-left:2px" data-ng-show="smithoutstanding[0].outstandingweight">
+            <h4>opening balance as on {{reportdata.fromdate | date:'mediumDate'}} : {{smithopeningstock[0].outstandingweight || 0}} grams.</h4>
+            <h4>outstanding balance as on {{currentdate | date:'mediumDate'}} : {{smithoutstanding[0].outstandingweight}} grams.</h4>
+        </div>
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-12" data-ng-hide="smithreport" >
+                <h4>no data to display</h4>
+            </div>
+            <div class="col-md-12" data-ng-show="smithreport" >
+                <h3>issue</h3>
+                <table class="table table-hover">
+                    <thead class="table-header-custom">
+                    <tr>
+                        <th class="text-left">date</th>
+                        <th class="text-right">og.wt(gm)</th>
+                        <th class="text-right">og.purity(%)</th>
+                        <th class="text-right">995.wt(gm)</th>
+                        <th class="text-right">995.purity(%)</th>
+                        <th class="text-right">cash(rs)</th>
+                        <th class="text-right">rate(rs)</th>
+                        <th class="text-right">ornament.no(no)</th>
+                        <th class="text-right">ornament.item</th>
+                        <th class="text-right">ornament.wt(gm)</th>
+                        <th class="text-right">net weight(gm)</th>
+                        <th class="text-left"></th>
+                    </tr>
+                    </thead>
+                    <tbody data-ng-repeat="issuerow in smithissuelist">
+                    <tr data-ng-click="showissuedetails=!showissuedetails">
+                        <td class="text-left">{{issuerow.transactiondate}}</td>
+                        <td class="text-right">{{issuerow.og}}</td>
+                        <td class="text-right">{{issuerow.ogpurity}}</td>
+                        <td class="text-right">{{issuerow.weight995}}</td>
+                        <td class="text-right">{{issuerow.purity995}}</td>
+                        <td class="text-right">{{issuerow.cash}}</td>
+                        <td class="text-right">{{issuerow.rate}}</td>
+                        <td class="text-right">{{issuerow.quantity}}</td>
+                        <td class="text-right">{{issuerow.item}}</td>
+                        <td class="text-right">{{issuerow.weight}}</td>
+                        <td class="text-right">{{issuerow.netweight}}</td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12" data-ng-show="smithreport" >
+                <h3>return</h3>
+                <table class="table table-hover">
+                    <thead class="table-header-custom">
+                    <tr>
+                        <th class="text-left">date</th>
+                        <th class="text-left">item</th>
+                        <th class="text-right">quantity(no)</th>
+                        <th class="text-right">weight(gm)</th>
+                        <th class="text-right">st.weight(gm)</th>
+                        <th class="text-right">touch(gm)</th>
+                        <th class="text-right">wastage(gm)</th>
+                        <th class="text-right">net.weight(gm)</th>
+                        <th class="text-left"></th>
+                    </tr>
+                    </thead>
+                    <tbody data-ng-repeat="returnrow in smithreturnlist">
+                    <tr data-ng-click="showreturndetails=!showreturndetails">
+                        <td class="text-left">{{returnrow.transactiondate}}</td>
+                        <td class="text-left">{{returnrow.item}}</td>
+                        <td class="text-right">{{returnrow.quantity}}</td>
+                        <td class="text-right">{{returnrow.weight}}</td>
+                        <td class="text-right">{{returnrow.stoneweight}}</td>
+                        <td class="text-right">{{returnrow.valueaddition}}</td>
+                        <td class="text-right">{{returnrow.wastage}}</td>
+                        <td class="text-right">{{returnrow.netweight}}</td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <br>
+            </div>
+            <!--<div class="col-md-12" data-ng-show="smithreport" >-->
+                <!--<div class="columnsContainer">-->
+                    <!--<div class="leftColumn">                        -->
+                    <!--</div>-->
+                    <!--<div class="middleColumn"></div>-->
+                    <!--<div class="rightColumn">                        -->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>

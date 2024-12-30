@@ -1,0 +1,148 @@
+/*<copyright file="headerNfooter.css" company="CronyCo">*/
+/*Copyright (c) 2014 All Right Reserved, http://cronyco.in/*/
+
+/*This source is subject to the CronyCo Permissive License.*/
+/*Unauthorized copying of this file, via any medium is strictly prohibited*/
+/*Proprietary and confidential*/
+/*All other rights reserved.*/
+/*</copyright>*/
+
+/*<author>Santhosh Poothankurussi</author>*/
+/*<email>santhosh.poothankurussi@cronyco.in</email>*/
+/*<date>2014-06-22</date>*/
+/*<summary>Contains Styles For Header and Footer</summary>*/
+
+
+
+#apDiv1 {
+    position:absolute;
+    left:162px;
+    top:119px;
+    width:488px;
+    height:201px;
+    z-index:1;
+}
+#navigation a:hover {
+    color:#FFFFCC;
+    font-weight:bold;
+    background: url("client/image/mm_bullet_yellow.gif") 10px 50% no-repeat;
+}
+a:hover {
+    color: #FF9900;
+}
+.navText {
+    font:11px Georgia, Times New Roman, Times, serif;
+    color: #ec8731;
+    line-height:16px;
+    letter-spacing:.1em;
+    text-decoration: none;
+}
+
+#navigationReport a:hover {
+    color:#FFFFCC;
+    font-weight:bold;
+    background: url("client/image/mm_bullet_yellow.gif") 10px 50% no-repeat;
+}
+
+#navigationReport td {
+    border-bottom: 1px solid #d3cccf
+}
+
+#navigationReport a {
+    font:11px Arial, Helvetica, sans-serif;
+    color: #FF9900;
+    line-height:16px;
+    letter-spacing:.1em;
+    text-decoration: none;
+    display:block;
+    padding:8px 6px 8px 22px;
+}
+
+#navigation td {
+    border-bottom: 1px solid #FF9900
+}
+
+
+#navigation li {
+    border-bottom: 1px solid #FF9900
+}
+td {
+    font:13px Arial, Helvetica, sans-serif;
+    color: #8f3504;
+}
+#navigation a {
+    font:11px Arial, Helvetica, sans-serif;
+    color: #FF9900;
+    line-height:16px;
+    letter-spacing:.1em;
+    text-decoration: none;
+    display:block;
+    padding:8px 6px 8px 22px;
+}
+
+#logo 	{
+    font:14px Arial, Helvetica, sans-serif;
+    color: #FF9900;
+    letter-spacing:.5em;
+    line-height:30px;
+
+}
+#tagline 	{
+    font:11px Arial, Helvetica, sans-serif;
+    color: #FF9900;
+    letter-spacing:.2em;
+    line-height:14px;
+}
+
+
+
+#footer-bg {
+
+
+    background-repeat: no-repeat;
+    background-origin: content-box;
+
+
+    height: 55px;
+    /*width: 1002px;*/
+    background-color: #220103;
+    text-align-last: center;
+    padding-top: 30px;
+
+
+}
+#tel-email {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+
+    color: #c09853;
+
+    text-decoration: none;
+    float: left;
+    height: 51px;
+
+    width: 222px;
+    padding-left: 40px;
+    text-align: left;
+}
+#copyright {
+    float: right;
+    color: #c09853;
+
+
+    height: 21px;
+    width: 347px;
+    padding-right: 10px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    color: #c09853;
+
+    text-decoration: none;
+    padding-top: 10px;
+}

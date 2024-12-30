@@ -1,0 +1,120 @@
+<div class="row"  data-ng-controller="reportcontroller" ng-init="initcumilationreport()">
+    <div class="col-md-12">
+        <div class="row" >
+            <div class="data-header">
+                <span>cumilative report</span>
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <div class="panel panel-body panel-info">
+                <div class="col-md-1 pull-left">
+                    <label class="control-label" >From</label>
+                </div>
+
+                <div class="col-md-3 pull-left">
+                    <div class="input-group" >
+                        <input type="text"
+                               placeholder="from date"
+                               class="form-control"
+                               datepicker-popup="dd-MM-yyyy"
+                               is-open="opened[8]"
+                               min="event.start_date"
+                               data-ng-model="reportdata.fromdate"
+                               datepicker-options="dateOptions"
+                               date-disabled="disabled(date, mode)"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="open($event,8)">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <label class="control-label" >To</label>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="input-group" >
+                        <input type="text"
+                               class="form-control"
+                               datepicker-popup="dd-MM-yyyy"
+                               data-ng-model="reportdata.todate"
+                               placeholder="to date"
+                               is-open="opened[9]"
+                               min="event.start_date"
+                               datepicker-options="dateOptions"
+                               date-disabled="disabled(date, mode)"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="open($event,9)">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control" ng-model="billcustomer" ng-options="row.orgname + '(' + row.typename.substr(0,1) + ')' for row in listcustomer | filter: { typename:'!goldsmith'} | orderBy:'orgname'" data-ng-change="onchangecustomer(billcustomer)">
+                        <option value="">-- customer --</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="cumilativereport();">
+                </div>
+            </div>
+        </div>
+        <!--  report body starts here-->
+        <div class="row col-md-12" style="margin-left:2px" data-ng-show="customeroutstanding[0].customerid">
+            <div class="col-md-04 text-left">
+                <span style="font-size: large">{{customeroutstanding[0].orgname}}</span> , {{customeroutstanding[0].cname}} ({{customeroutstanding[0].typename}}) , {{customeroutstanding[0].district}}.<br>
+                phone: {{customeroutstanding[0].contactno}} , email: {{customeroutstanding[0].email}}
+            </div>
+            <div class="col-md-08 text-right">
+                <span ng-if="customeroutstanding[0].customertype == 1">outstanding balance as on {{currentdate | date:'mediumDate'}} : <span style="font-size: large">{{customeroutstanding[0].outstandingweight}} </span>grams.</span>
+                <span ng-if="customeroutstanding[0].customertype == 2">outstanding balance as on {{currentdate | date:'mediumDate'}} : <span style="font-size: large">{{customeroutstanding[0].outstandingcash}} </span>rupees.</span>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-12" data-ng-hide="billsummary" >
+                <h4>no data to display</h4>
+            </div>
+            <div class="col-md-12" data-ng-show="billsummary" >
+                <div class="columnsContainer">
+                    <div>
+                        <table class="table table-hover">
+                            <thead class="table-header-custom">
+                            <tr>
+                                <th class="text-left">date</th>
+                                <th class="text-right">op.balance</th>
+                                <th class="text-right">sales</th>
+                                <th class="text-right">purchase</th>
+                                <th class="text-right">sales return</th>
+                                <th class="text-right">cash</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody data-ng-repeat="row in billsummary">
+                                <tr ng-if="customeroutstanding[0].customertype == 1">
+                                    <td class="text-left">{{row.transactiondate | date:'longDate'}}</td>
+                                    <td class="text-right" ng-if="$index == 0">{{customeropbalance[0].opbalanceweight}} gm.</td>
+                                    <td class="text-right" ng-if="$index > 0">{{billsummary[$index-1].outstandingweight}} gm.</td>
+                                    <td class="text-right">{{row.netsaleweight}} gm.</td>
+                                    <td class="text-right">{{row.netpurchaseweight}} gm.</td>
+                                    <td class="text-right">{{row.netreturnweight}} gm.</td>
+                                    <td class="text-right">{{row.netcashreceived}} rs.</td>
+                                </tr>
+                                <tr ng-if="customeroutstanding[0].customertype == 2">
+                                    <td class="text-left">{{row.transactiondate | date:'longDate'}}</td>
+                                    <td class="text-right" ng-if="$index == 0">{{customeropbalance[0].opbalancecash}} rs.</td>
+                                    <td class="text-right" ng-if="$index > 0">{{billsummary[$index-1].outstandingcash}} rs.</td>
+                                    <td class="text-right">{{row.netsaleweight}} gm.</td>
+                                    <td class="text-right">{{row.netpurchaseweight}}gm.</td>
+                                    <td class="text-right">{{row.netreturnweight}} gm.</td>
+                                    <td class="text-right">{{row.netcashreceived}} rs.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

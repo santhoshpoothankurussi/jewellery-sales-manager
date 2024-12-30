@@ -1,0 +1,293 @@
+<div class="row"  data-ng-controller="reportcontroller" ng-init="initstockreport()" >
+    <div class="col-md-12">
+        <div class="row" >
+            <div class="data-header">
+                <span>stock report</span>
+            </div>
+        </div>
+        <div class="panel panel-body panel-info">
+
+            <!-- stock report table-->
+            <div class="row form-group">
+                <div class="col-md-12">
+
+                    <!-- display store -->
+                    <div class="container-fluid">
+                        <h3>display store</h3>
+                        <table class="table table-striped table-bordered table-hover table-condense " style="border: 1px solid #97550b;">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th class="text-left">item</th>
+                                <th class="text-left">opening stock</th>
+                                <th class="text-left">sales</th>
+                                <th class="text-left">purchase</th>
+                                <th class="text-left">sales return</th>
+                                <th class="text-left">issue</th>
+                                <th class="text-left">return</th>
+                                <th class="text-left">movement</th>
+                                <th class="text-left">closing stock</th>
+                                <th class="text-left">updated on</th>
+                            </tr>
+                            </thead>
+                            <tbody data-ng-repeat="row in listcurrentstockdisplay | filter: packagefilter" >
+                            <tr>
+                                <td>
+                                    <button ng-click="stocktransactionexpanded = !stocktransactionexpanded">
+                                        <span ng-bind="stocktransactionexpanded ? '-' : '+'"></span>
+                                    </button>
+                                </td>
+                                <td>{{row.package_title}}</td>
+                                <td>Quantity: {{row.opbalquantity}} <br>
+                                    Weight  : {{row.opbalweight}}</td>
+                                <td>Quantity: {{row.salequantity}}<br>
+                                    Weight  : {{row.saleweight}}</td>
+                                <td>Quantity: {{row.purchasequantity}}<br>
+                                    Weight  : {{row.purchaseweight}}</td>
+                                <td>Quantity: {{row.salesreturnquantity}}<br>
+                                    Weight  : {{row.salesreturnweight}}</td>
+                                <td>Quantity: {{row.issuequantity}}<br>
+                                    Weight  : {{row.issueweight}}</td>
+                                <td>Quantity: {{row.returnquantity}}<br>
+                                    Weight  : {{row.returnweight}}</td>
+                                <td>Quantity: {{row.movementquantity}}<br>
+                                    Weight  : {{row.movementweight}}</td>
+                                <td style="color: #ed574d">Quantity: {{row.clbalquantity}}<br>
+                                    Weight  : {{row.clbalweight}}</td>
+                                <td>{{row.createddatetime | date:'longDate'}}</td>
+                            </tr>
+                            <tr data-ng-show="stocktransactionexpanded">
+                                <td colspan="12">
+                                    <table class="table" style="border: 1px solid #e0940b;">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th class="fa fa-level-down"></th>
+                                            <th>transaction</th>
+                                            <th>store</th>
+                                            <th>quantity</th>
+                                            <th>value</th>
+                                            <th>comments</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody data-ng-repeat="item in listcurrentstocktransaction | filter: ({packageid:row.packageid, storeid:row.storeid}):true">
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <button ng-click="stocktransactiondetailsexpanded = !stocktransactiondetailsexpanded">
+                                                    <span ng-bind="stocktransactiondetailsexpanded ? '-' : '+'"></span>
+                                                </button>
+                                            </td>
+                                            <td>{{item.transactiontypename}}</td>
+                                            <td>{{item.storename}}</td>
+                                            <td>{{item.transactionquantity}}</td>
+                                            <td>{{item.transactionvalue}}</td>
+                                            <td>{{item.comments}}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr data-ng-show="stocktransactiondetailsexpanded">
+                                            <td colspan="12">
+                                                <table class="table" style="border: 1px solid #e0940b;">
+                                                    <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th class="fa fa-level-down"></th>
+                                                        <th>customer</th>
+                                                        <th>quantity</th>
+                                                        <th>value</th>
+                                                        <th></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody data-ng-repeat="customer in listcurrentstocktransactiondetails | filter: ({packageid:row.packageid, storeid:row.storeid, transactiontype:row.transactiontype}):true">
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>{{customer.orgname}}</td>
+                                                        <td>{{customer.billquantity}}</td>
+                                                        <td>{{customer.billweight}}</td>
+                                                        <td></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Godown Store-->
+                    <div class="container-fluid">
+                        <h3>standby store</h3>
+                        <table class="table table-striped table-bordered table-hover table-condense " style="border: 1px solid #97550b;">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th class="text-left">item</th>
+                                <th class="text-left">opening stock</th>
+                                <th class="text-left">sales</th>
+                                <th class="text-left">purchase</th>
+                                <th class="text-left">sales return</th>
+                                <th class="text-left">issue</th>
+                                <th class="text-left">return</th>
+                                <th class="text-left">movement</th>
+                                <th class="text-left">closing stock</th>
+                                <th class="text-left">updated on</th>
+                            </tr>
+                            </thead>
+                            <tbody data-ng-repeat="row in listcurrentstockgodown | filter: ({package_title:'!cash'})" >
+                            <tr>
+                                <td>
+                                    <button ng-click="stocktransactionexpanded = !stocktransactionexpanded">
+                                        <span ng-bind="stocktransactionexpanded ? '-' : '+'"></span>
+                                    </button>
+                                </td>
+                                <td>{{row.package_title}}</td>
+                                <td>Quantity: {{row.opbalquantity}} <br>
+                                    Weight  : {{row.opbalweight}}</td>
+                                <td>Quantity: {{row.salequantity}}<br>
+                                    Weight  : {{row.saleweight}}</td>
+                                <td>Quantity: {{row.purchasequantity}}<br>
+                                    Weight  : {{row.purchaseweight}}</td>
+                                <td>Quantity: {{row.salesreturnquantity}}<br>
+                                    Weight  : {{row.salesreturnweight}}</td>
+                                <td>Quantity: {{row.issuequantity}}<br>
+                                    Weight  : {{row.issueweight}}</td>
+                                <td>Quantity: {{row.returnquantity}}<br>
+                                    Weight  : {{row.returnweight}}</td>
+                                <td>Quantity: {{row.movementquantity}}<br>
+                                    Weight  : {{row.movementweight}}</td>
+                                <td style="color: #ed574d">Quantity: {{row.clbalquantity}}<br>
+                                    Weight  : {{row.clbalweight}}</td>
+                                <td>{{row.createddatetime | date:'longDate'}}</td>
+                            </tr>
+                            <tr data-ng-show="stocktransactionexpanded">
+                                <td colspan="12">
+                                    <table class="table" style="border: 1px solid #e0940b;">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th class="fa fa-level-down"></th>
+                                            <th>transaction</th>
+                                            <th>store</th>
+                                            <th>quantity</th>
+                                            <th>value</th>
+                                            <th>comments</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody data-ng-repeat="item in listcurrentstocktransaction | filter: ({storeid:row.storeid, packageid:row.packageid}):true">
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <button ng-click="stocktransactiondetailsexpanded = !stocktransactiondetailsexpanded">
+                                                    <span ng-bind="stocktransactiondetailsexpanded ? '-' : '+'"></span>
+                                                </button>
+                                            </td>
+                                            <td>{{item.transactiontypename}}</td>
+                                            <td>{{item.storename}}</td>
+                                            <td>{{item.transactionquantity}}</td>
+                                            <td>{{item.transactionvalue}}</td>
+                                            <td>{{item.comments}}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr data-ng-show="stocktransactiondetailsexpanded">
+                                            <td colspan="12">
+                                                <table class="table" style="border: 1px solid #e0940b;">
+                                                    <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th class="fa fa-level-down"></th>
+                                                        <th>customer</th>
+                                                        <th>quantity</th>
+                                                        <th>value</th>
+                                                        <th></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody data-ng-repeat="customer in listcurrentstocktransactiondetails | filter: ({packageid:row.packageid, storeid:row.storeid, transactiontype:customer.transactiontype}):true">
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>{{customer.orgname}}</td>
+                                                        <td>{{customer.billquantity}}</td>
+                                                        <td>{{customer.billweight}}</td>
+                                                        <td></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" collapse="!showstockhistory" style="margin-top: 15px">
+                <div class="col-md-12">
+                    <div class="container-fluid">
+                        <h3>stock history. last 10 days</h3>
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th class="text-center">item</th>
+                                <th class="text-center">op.qty</th>
+                                <th class="text-center">op.wt</th>
+                                <th class="text-center">sales.qty</th>
+                                <th class="text-center">sales.wt</th>
+                                <th class="text-center">purchase.qty</th>
+                                <th class="text-center">purchase.wt</th>
+                                <th class="text-center">sales-return.qty</th>
+                                <th class="text-center">sales-return.wt</th>
+                                <th class="text-center">issue.qty</th>
+                                <th class="text-center">issue.wt</th>
+                                <th class="text-center">return.qty</th>
+                                <th class="text-center">return.wt</th>
+                                <th class="text-center">cl.qty</th>
+                                <th class="text-center">cl.wt</th>
+                                <th class="text-center">updated.on</th>
+                            </tr>
+                            </thead>
+                            <tbody data-ng-repeat="row in liststockhistory" >
+                            <tr>
+                                <th>{{row.package_title}}<th>
+                                <td>{{row.opbalquantity}}</td>
+                                <td>{{row.opbalweight}}</td>
+                                <td>{{row.salequantity}}</td>
+                                <td>{{row.saleweight}}<td>
+                                <td>{{row.purchasequantity}}</td>
+                                <td>{{row.purchaseweight}}<td>
+                                <td>{{row.salesreturnquantity}}</td>
+                                <td>{{row.salesreturnweight}}</td>
+                                <td>{{row.issuequantity}}</td>
+                                <td>{{row.issueweight}}</td>
+                                <td>{{row.returnquantity}}<td>
+                                <td>{{row.returnweight}}</td>
+                                <td>{{row.clbalquantity}}<td>
+                                <td>{{row.clbalweight}}</td>
+                                <td>{{row.createddatetime | date:'longDate'}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,452 @@
+<div class="row" style="margin-top: 1px" data-ng-controller="servicecontroller" ng-init="initstock()">
+    <div class="col-md-12">
+        <div class="row" >
+            <div class="data-header">
+                <span>stock</span>
+            </div>
+        </div>
+
+        <!-- store -->
+        <div class="row form-group">
+            <div class="col-md-4" style="margin-left: 10px">
+                <select class="form-control input-sm" autofocus data-ng-model="stockdata.store">
+                    <option data-ng-repeat="store in liststores"  value="{{store.storeid}}">{{store.storename}}</option>
+                </select>
+            </div>
+            <div class="col-md-1">
+                <button class="btn btn-primary" data-ng-click="liststock(stockdata);hidestockgrid=false;hidecategorygrid=true;">get stock</button>
+            </div>
+            <div class="col-md-1">
+                <button class="btn btn-primary" data-ng-click="listcategoryforstock();hidestockgrid=true;hidecategorygrid=false;">add category</button>
+            </div>
+        </div>
+
+        <!-- line -->
+        <div class="row">
+            <div class="col-md-12 customHr">
+            </div>
+        </div>
+
+        <!-- grid stock -->
+        <div class="row form-group" data-ng-hide="hidestockgrid">
+            <div class="col-md-12">
+                <div class="row col-md-12" style="padding-top: -10px">
+                        <div class="container-fluid">
+                            <!--<h3>stock</h3>-->
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>item</th>
+                                        <th>op.quantity</th>
+                                        <th>op.weight</th>
+                                        <th>curr.quantity</th>
+                                        <th>curr.weight</th>
+                                        <th>last updated on</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Sum Quantity:</th>
+                                        <th>{{liststocknetquantity}} numbers</th>
+                                        <th></th>
+                                        <th>Sum Weight:</th>
+                                        <th>{{liststocknetweight}} grams</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody data-ng-repeat="row in currentstock | filter: packagefilter | orderBy:'package_title'" >
+                                    <tr>
+                                        <th>{{row.package_title}}</th>
+                                        <th>{{row.opbalquantity}}</th>
+                                        <th>{{row.opbalweight}}</th>
+                                        <th>{{row.opbalquantity+row.returnquantity+row.salesreturnquantity-row.salequantity-row.issuequantity+row.movementquantity | number:0}}</th>
+                                        <th>{{row.opbalweight+row.purchaseweight+row.returnweight+row.salesreturnweight-row.saleweight-row.issueweight+row.movementweight | number:3}}</th>
+                                        <th>{{row.createddatetime | date:'longDate'}}</th>
+                                        <th><button style="display: inline-block; float: none; white-space: nowrap; text-align: right" class="btn btn-secondary-outline" data-ng-click="onselectstockitem(row);hidestockmovement=true;hidestockdetails=!hidestockdetails;hidevadetails=true;hidestockedit=true;">details</button></th>
+                                        <th><button style="display: inline-block; float: none; white-space: nowrap; text-align: right" class="btn btn-secondary-outline" data-ng-click="onselectstockitem(row);hidestockmovement=true;hidevadetails=!hidevadetails;hidestockdetails=true;hidestockedit=true;">value addition</button></th>
+                                        <th><button style="display: inline-block; float: none; white-space: nowrap; text-align: right" class="btn btn-secondary-outline" data-ng-click="onselectstockitem(row);hidestockmovement=true;hidestockedit=!hidestockedit;hidestockdetails=true;hidevadetails=true;">edit stock</button></th>
+                                        <th><button style="display: inline-block; float: none; white-space: nowrap; text-align: right" class="btn btn-secondary-outline" data-ng-click="onselectstockitem(row);hidestockmovement=!hidestockmovement;hidestockedit=true;hidestockdetails=true;hidevadetails=true;">move stock</button></th>
+                                    </tr>
+                                    <!-- stock details -->
+                                    <tr data-ng-hide="hidestockdetails">
+                                        <td colspan="12">
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>transaction</th>
+                                                    <th>quantity</th>
+                                                    <th>weight</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr style="font-size: 15px;">
+                                                    <th>sales</th>
+                                                    <th>{{row.salequantity}}</th>
+                                                    <th>{{row.saleweight}}</th>
+                                                </tr>
+                                                <tr style="font-size: 15px;">
+                                                    <th>purchase</th>
+                                                    <th>{{row.purchasequantity}}</th>
+                                                    <th>{{row.purchaseweight}}</th>
+                                                </tr>
+                                                <tr style="font-size: 15px;">
+                                                    <th>issue</th>
+                                                    <th>{{row.issuequantity}}</th>
+                                                    <th>{{row.issueweight}}</th>
+                                                </tr>
+                                                <tr style="font-size: 15px;">
+                                                    <th>sales return</th>
+                                                    <th>{{row.salesreturnquantity}}</th>
+                                                    <th>{{row.salesreturnweight}}</th>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <!-- valueaddition details -->
+                                    <tr data-ng-hide="hidevadetails">
+                                        <td colspan="12">
+                                            <!-- add new valueaddition-->
+                                            <div class="row form-group">
+                                                <div class="col-md-12" >
+                                                    <div class="panel panel-info" style="border-color: #00bce3; box-shadow: 2px 2px 4px 0px">
+                                                        <div class="panel-body">
+                                                            <div class="col-md-1"></div>
+                                                            <div class="col-md-1">
+                                                                <label class="control-label">VA min</label>
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=3 class="form-control input-sm" data-ng-model="stockdata.vamin">
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <label class="control-label">VA max</label>
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <input type="text" enter ng-only-number data-max-length=2 data-max-decimal-points=3 class="form-control input-sm" data-ng-model="stockdata.vamax">
+                                                            </div>
+                                                            <div class="col-md-1 ">
+                                                                <label class="control-label">VA % </label>
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <input type="text" enter  ng-only-number data-max-length=2 data-max-decimal-points=2 class="form-control input-sm" data-ng-model="stockdata.vapercentage">
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="btn btn-group">
+                                                                    <button class="btn btn-line-primary fa fa-user" btn-radio="1" data-ng-model="stockdata.vacustomertype"  data-ng-click="stockdata.vacustomertype=1;"> wholesale</button>
+                                                                    <button class="btn btn-line-primary fa fa-user" btn-radio="2" data-ng-model="stockdata.vacustomertype"  data-ng-click="stockdata.vacustomertype=2;"> retail</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <button class="btn btn-success" data-ng-click="addvalueaddition()">save</button>
+                                                            </div>
+                                                            <div class="col-md-2"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- list all valueaddition-->
+                                            <div class="container-fluid">
+                                                <!--<h3>value additoin</h3>-->
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Type</th>
+                                                        <th>Min</th>
+                                                        <th>Max</th>
+                                                        <th>VA%</th>
+                                                        <th></th>
+                                                        <th></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody data-ng-repeat="varow in listallvalueaddition | orderBy:['customertype','minvalue'] | filter: ({packageid: row.packageid})" >
+                                                    <tr>
+                                                        <td data-ng-switch="varow.customertype">
+                                                            <span data-ng-switch-when="1" >wholesale</span>
+                                                            <span data-ng-switch-when='2'>retail</span>
+                                                            <span data-ng-switch-when='3'>smith</span>
+                                                        </td>
+                                                        <th>{{varow.minvalue}}</th>
+                                                        <th>{{varow.maxvalue}}</th>
+                                                        <th>{{varow.va}}</th>
+                                                        <!--<th><button style="display: inline-block; float: none; white-space: nowrap; text-align: right" class="btn btn-secondary-outline" data-ng-click="addvalueaddition(varow)">edit</button></th>-->
+                                                        <th><button style="display: inline-block; float: none; white-space: nowrap; text-align: right" class="btn btn-secondary-outline" data-ng-click="removevalueaddition(varow)">delete</button></th>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <!-- stock update-->
+                                    <tr data-ng-hide="hidestockedit">
+                                        <td colspan="12">
+                                            <div class="row form-group">
+                                                <div class="col-md-12" >
+                                                    <div class="panel panel-info" style="border-color: #00bce3; box-shadow: 2px 2px 4px 0px">
+                                                        <div class="panel-body">
+                                                            <div class="col-md-1"></div>
+                                                            <div class="col-md-2">
+                                                                <label class="control-label">opening stock quantity</label>
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <input type="text" enter select-on-click ng-only-number data-max-length=4 data-max-decimal-points=0 class="form-control input-sm" data-ng-model="stockdata.opstockquantity">
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <label class="control-label">opening stock weight</label>
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <input type="text" enter select-on-click ng-only-number data-max-length=4 data-max-decimal-points=3 class="form-control input-sm" data-ng-model="stockdata.opstockweight">
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <label class="control-label">comments</label>
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <input type="text" enter select-on-click ng-only-character class="form-control input-sm" data-ng-model="stockdata.comments">
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <button class="btn btn-success" data-ng-click="savestock()">update stock</button>
+                                                            </div>
+                                                            <div class="col-md-4"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <!-- move stock across display and godown-->
+                                    <tr data-ng-hide="hidestockmovement">
+                                        <td colspan="12">
+                                            <div class="row form-group">
+                                                <div class="col-md-12" >
+                                                    <div class="panel panel-info" style="border-color: #00bce3; box-shadow: 2px 2px 4px 0px">
+                                                        <div class="panel-body">
+                                                            <div class="row col-md-12">
+                                                                <div class="col-md-1"></div>
+                                                                <div class="col-md-2">
+                                                                    <label class="control-label">display stock</label>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <label class="control-label">quantity</label>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="input-group">
+                                                                        <input type="text" enter select-on-click ng-only-number data-max-length=4 data-max-decimal-points=0 class="form-control input-sm" disabled data-ng-model="stockdata.diplaystockquantitytemp" >
+                                                                        <div class="input-group-addon">no</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <label class="control-label">weight</label>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="input-group">
+                                                                        <input type="text" enter select-on-click ng-only-number data-max-length=4 data-max-decimal-points=3 class="form-control input-sm" disabled data-ng-model="stockdata.diplaystockweighttemp" >
+                                                                        <div class="input-group-addon">gm</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-1"></div>
+                                                            </div>
+                                                            <div class="row margin-top-20">
+                                                                <div class="col-md-1"></div>
+                                                                <div class="col-md-9 customHr" style="padding-top: 2px; margin-top: 5px; margin-left: 26px;"></div>
+                                                                <div class="col-md-2"></div>
+                                                            </div>
+
+                                                            <div class="row col-md-12">
+                                                                <div class="col-md-1"></div>
+                                                                <div class="col-md-2">
+                                                                    <label class="control-label">standby stock</label>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <label class="control-label">quantity</label>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="input-group">
+                                                                        <input type="text" enter select-on-click ng-only-number data-max-length=4 data-max-decimal-points=0 disabled class="form-control input-sm" data-ng-model="stockdata.godownstockquantitytemp">
+                                                                        <div class="input-group-addon">no</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <label class="control-label">weight</label>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="input-group">
+                                                                        <input type="text" enter select-on-click ng-only-number data-max-length=4 data-max-decimal-points=3 disabled class="form-control input-sm" data-ng-model="stockdata.godownstockweighttemp">
+                                                                        <div class="input-group-addon">gm</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-1"></div>
+                                                            </div>
+                                                            <div class="row margin-top-20">
+                                                                <div class="col-md-1"></div>
+                                                                <div class="col-md-9 customHr" style="padding-top: 2px; margin-top: 5px; margin-left: 26px;"></div>
+                                                                <div class="col-md-2"></div>
+                                                            </div>
+                                                            <div class="row col-md-12">
+                                                                <div class="col-md-1"></div>
+                                                                <div class="col-md-2">
+                                                                    <label class="control-label">net stock</label>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <label class="control-label">quantity</label>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="input-group">
+                                                                        <input type="text" enter select-on-click ng-only-number data-max-length=4 data-max-decimal-points=0 disabled class="form-control input-sm" data-ng-model="stockdata.totalpackagequantity">
+                                                                        <div class="input-group-addon">no</div>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <label class="control-label">weight</label>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="input-group">
+                                                                        <input type="text" enter select-on-click ng-only-number data-max-length=4 data-max-decimal-points=3 disabled class="form-control input-sm" data-ng-model="stockdata.totalpackageweight">
+                                                                        <div class="input-group-addon">gm</div>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="col-md-1"></div>
+                                                            </div>
+                                                            <div class="row margin-top-20">
+                                                                <div class="col-md-1"></div>
+                                                                <div class="col-md-9 customHr" style="padding-top: 2px; margin-top: 5px; margin-left: 26px;"></div>
+                                                                <div class="col-md-2"></div>
+                                                            </div>
+                                                            <div class="row col-md-12">
+                                                                <div class="col-md-1"></div>
+                                                                <div class="col-md-4">
+                                                                    <div class="input-group">
+                                                                        <div class="btn btn-group" style="padding-top: 0px; padding-right: 0px">
+                                                                            <button class="btn btn-line-primary fa fa-user" btn-radio="1" data-ng-model="stockdata.movementtype"  data-ng-click="onchangestock(1);"> move to display</button>
+                                                                            <button class="btn btn-line-primary fa fa-user" btn-radio="2" data-ng-model="stockdata.movementtype"  data-ng-click="onchangestock(2);"> move to standby</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-2">
+                                                                    <div class="input-group">
+                                                                        <input type="text" select-on-click enter ng-only-number data-max-length=4 data-max-decimal-points=0  class="form-control input-sm" data-ng-model="stockdata.movementquantity">
+                                                                        <div class="input-group-addon">no</div>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="col-md-2">
+
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="input-group">
+                                                                        <input type="text" select-on-click enter ng-only-number data-max-length=4 data-max-decimal-points=3  class="form-control input-sm" data-ng-model="stockdata.movementweight">
+                                                                        <div class="input-group-addon">gm</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-1"></div>
+                                                            </div>
+                                                            <div class="row col-md-12">
+                                                                <div class="col-md-3"></div>
+                                                                <div class="col-md-2">
+                                                                    <label class="control-label">comments</label>
+                                                                </div>
+                                                                <div class="col-md-6 pull-left">
+                                                                    <input type="text" enter select-on-click ng-only-character class="form-control input-sm" data-ng-model="stockdata.comments">
+                                                                </div>
+                                                                <div class="col-md-1"></div>
+                                                            </div>
+                                                            <div class="row col-md-12">
+                                                                <div class="col-md-8"></div>
+                                                                <div class="col-md-3 pull-right" style="padding-top: 5px;">
+                                                                    <button class="btn btn-success"  data-ng-click="cancelstockchanges();">cancel</button>
+                                                                    <button class="btn btn-success" data-ng-click="movestock();">update stock</button>
+                                                                </div>
+                                                                <div class="col-md-1"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        <!-- grid category -->
+        <div class="row"  style="text-transform: lowercase !important; margin-top: 2px" data-ng-hide="hidecategorygrid">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="row col-md-12" >
+                        <div class="modal-header" style="text-align: center">
+                            <h3>category</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row" style="padding-top:15px"></div>
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-2 pull-left">
+                                <label class="control-label" placeholder="enter category name">new category</label>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" ng-only-character enter class="form-control input-sm" data-ng-model="stockdata.categoryname">
+                            </div>
+                            <div class="col-md-3" style="padding-left: 55px">
+                                <select class="form-control input-sm" enter ng-model="stockpackage" ng-options="pkgitem.package_name for pkgitem in listpackage" data-ng-change="onchangecategoryitem(stockpackage)">
+                                    <option value="">-- choose item --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2" style="padding-left: 85px">
+                                <button class="btn btn-success"  data-ng-click="addcategory();"> save </button>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top:25px"></div>
+                        <div class="row">
+                            <div class="container-fluid">
+                                <h3>category list</h3>
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th style="text-align: center">#</th>
+                                        <th style="text-align: center">name</th>
+                                        <th style="text-align: center">item</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="text-center" data-ng-repeat="row in listcategorymaster">
+                                        <td>{{$index+1}}</td>
+                                        <td>{{row.categoryname}}</td>
+                                        <td>{{row.package_title}}</td>
+                                        <td>
+                                            <input type="button" value="remove" class="btn btn-primary" data-ng-click="deletecategory(row);"/>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- line -->
+        <div class="row">
+            <div class="col-md-12 customHr">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+

@@ -1,0 +1,85 @@
+<div class="row"  data-ng-controller="servicecontroller" ng-init="initbilledit()">
+    <div class="col-md-12">
+        <div class="row" >
+            <div class="data-header">
+                <span>bill edit</span>
+            </div>
+        </div>
+        <div class="row col-md-12" style="padding-bottom: 20px">
+            <span style="font-size: large" >you are about to edit receipt number {{editbilldata.receiptno}}</span>. select transactions from below list
+            <select class="form-control" id="edittransaction" ng-model="edittransaction" autofocus ng-options="row.transactionid + ' (' + row.transactiontypename  + ' on ' + (row.transactiondate | date:'longDate') + ' for ' + row.orgname +')' for row in edittransactionlist" data-ng-change="onchangeedittransaction(edittransaction)">
+                <option value="">-- transaction list --</option>
+            </select>
+        </div>
+        <div class="row">
+            <div class="col-md-12 customHr">
+            </div>
+        </div>
+
+        <!--  body starts here-->
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-12" data-ng-show="transactionitemlist" >
+                <div class="col-md-3 pull-left">
+                    <label class="control-label">old item: {{editbilldata.packagename}} , old category: {{editbilldata.categoryname}}</label>
+                </div>
+                <div class="col-md-8">
+                    <div class="col-md-4">
+                        <label>new item: </label>
+                        <select enter ng-model="billpackage" id="packageitem" ng-options="pkgitem.package_name for pkgitem in listpackage" data-ng-change="onchangeitem(billpackage)">
+                            <option value="">-- choose item --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <label>new category: </label>
+                        <select  enter ng-model="billcategory" ng-options="category.categoryname for category in listcategories | filter: ({packages_id:billpackage.packages_id})" data-ng-change="onchangecategory(billcategory)">
+                            <option value="">-- choose category --</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" data-ng-show="transactionitemlist" >
+                <div class="columnsContainer">
+                    <div class="leftColumn">
+                        <h3>edit transaction details</h3>
+                        <table class="table table-hover">
+                            <thead class="table-header-custom">
+                            <tr>
+                            <tr>
+                                <th class="text-left">product</th>
+                                <th class="text-left">items</th>
+                                <th class="text-left">quantity</th>
+                                <th class="text-right">value</th>
+                                <th class="text-right">new_quantity</th>
+                                <th class="text-right">new_value</th>
+                            </tr>
+                            </tr>
+                            </thead>
+                            <tbody data-ng-repeat="row in selectedtransactiontoedit">
+                            <tr>
+                                <td class="text-left" >{{row.package_name}}</td>
+                                <td class="text-left" >{{row.products_name}}</td>
+                                <td class="text-right" >{{row.quantity}}</td>
+                                <td class="text-right" >{{row.productvalue}}</td>
+                                <td class="text-right" ><input type="text" style="text-align: right" data-ng-model="row.newquantity"/></td>
+                                <td class="text-right" ><input type="text" style="text-align: right" data-ng-model="row.newvalue"/></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="middleColumn"></div>
+                </div>
+            </div>
+            <div class="col-md-12" data-ng-hide="transactionitemlist" >
+                <h4>no data to display</h4>
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 5px;margin-bottom: 5px">
+            <div class="col-md-10 pull-left"></div>
+            <div class="col-md-2 pull-right">
+                <input type="button" value="save bill changes" class="btn btn-primary form-control" data-ng-click="savebilledit()">
+            </div>
+        </div>
+        <div class="row" style="margin-top: 30px"></div>
+    </div>
+</div>

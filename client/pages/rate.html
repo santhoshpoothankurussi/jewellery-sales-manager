@@ -1,0 +1,62 @@
+<div class="row" style="text-transform: lowercase !important; margin-top: 1px" data-ng-controller="enrollmentcontroller" ng-init="initrate()">
+    <div class="col-md-12">
+        <div class="row" >
+            <div class="data-header">
+                <span>rate</span>
+            </div>
+        </div>
+    </div>
+    <div class="row form-group" >
+        <div class="col-md-12 ">
+            <div class="form-group">
+                <div class="row " style="margin-bottom: 5px; margin-top: 10px">
+                    <div class="col-sm-offset-2 col-md-1" style="padding-top: 10px">
+                        <label >Board Rate </label>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" autofocus select-on-click enter ng-only-number data-max-length=4 data-max-decimal-points=2 required="" placeholder="enter board rate" data-ng-model="enrolldata.wholesalerate" tabindex="1">
+                            <div class="input-group-addon">rs</div>
+                        </div>
+                    </div>
+                    <div class="col-md-1 "  style="padding-top: 10px">
+                        <label >99.5 Rate </label>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input type="text" enter placeholder="Enter 99.5 Rate" select-on-click ng-only-number data-max-length=4 data-max-decimal-points=2 data-ng-model="enrolldata.retailrate" class="form-control"  tabindex="2">
+                            <div class="input-group-addon">rs</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-sm-offset-1 col-md-10">
+                    <table class="table table-bordered table-responsive">
+                        <tr style="background-color: #f0f0f0" data-ng-repeat="rows in metalrate">
+                            <th>board rate</th>
+                            <th>{{rows.boardrate}}</th>
+                        </tr>
+                        <tr style="" data-ng-repeat="rows in metalrate">
+                            <th>995</th>
+                            <th>{{rows.rate995}}</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group" >
+                <div class="row">
+                    <div class="col-sm-offset-1 col-md-4"  data-ng-repeat="rows in metalrate">
+                        Last Updated On {{rows.createddatetime  | date:'medium'}}
+                    </div>
+                    <div class="col-sm-offset-4 col-md-2">
+                        <input type="submit"  class="btn btn-primary" value="Save" data-ng-click="setrate()"tabindex="3">
+                        <button type="button" class="btn btn-danger" data-ng-click="cleardata()" tabindex="4">cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

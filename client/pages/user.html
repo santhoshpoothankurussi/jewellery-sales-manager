@@ -1,0 +1,233 @@
+
+<div class="col-md-12" style="margin-top: 60px">
+    <div class="data-header">
+        <span>user</span>
+    </div>
+
+</div>
+<div data-ng-controller="enrollmentcontroller">
+<!--Header Section Ends Here-->
+
+<!--Body Content Starts Here-->
+<div class="panel panel-body panel-danger" >
+
+
+<!--Division row 1 ends-->
+<div class="row">
+<div class="col-md-12">
+<form data-ng-submit="saveuser(data)">
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12">
+                <!--Second Accordion-->
+                <div class="counter-text text-center bg-gallery-red mouse-pointer"  data-ng-click="hideAuthenticationDetails=!hideAuthenticationDetails;showAuthenticationDetails=!showAuthenticationDetails">Authentication Details</div>
+            </div>
+        </div>
+
+        <!--Details Section starts-->
+        <div class="panel panel-body panel-info" data-ng-hide="hideAuthenticationDetails">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+
+                        <div class="row">
+                            <div class="col-md-4"><label>Access Type </label> </div>
+                            <div class="col-md-8">
+                                <select class="form-control" data-ng-model="data.usertype" tabindex="10"><label>
+                                    <option value="">Guest</option>
+                                    <option value="1">Administrator</option>
+                                    <option value="2">Operator</option></label>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4"><label>User ID </label></div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control"  placeholder=" Desired User ID"  data-ng-model="data.Username"  tabindex="11">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4"><label>Password</label> </div>
+                            <div class="col-md-8">
+                                <input type="password"  class="form-control"  placeholder="Password" minlength="8"
+                                       data-ng-model="data.Password" data-ng-change="type(Password)" tabindex="12" >
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row margin-top-10">
+                        <div class="col-md-5 col-md-offset-5" >
+                            <span ng-bind="" style="color:red"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4"><label>Confirm Password</label> </div>
+                            <div class="col-md-8">
+                                <input type="password" class="form-control"  placeholder="Confirm Password"  data-ng-model="data.Password2" tabindex="13" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9 col-md-offset-5" >
+                            <span data-ng-bind="message" style="color:red"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9 col-md-offset-5" >
+                            <span data-ng-bind="" style="color:red"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-right">
+                        <a href="#" class="btn btn-success" data-ng-show="hideAccountInformation" data-ng-click="CheckPassword(Password2,Password)" tabindex="14">Next</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Account Information NgHide Starts Here-->
+<div class="row">
+    <div class="col-md-12">
+        <div ng-show="accountFields">
+            <!--<div>-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!--third Accordion-->
+                    <div class="counter-text text-center bg-gallery-red mouse-pointer" ng-click="hideAccountInformation=!hideAccountInformation;showAccountInformation=!showAccountInformation">Account Information</div>
+                </div>
+            </div>
+            <div class="panel panel-body panel-info" data-ng-hide="hideAccountInformation">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+
+                                    <div class="row">
+                                        <div class="col-md-2"><label>Business Name</label> </div>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control"  placeholder="Enter your Business Name"  ng-model="BusinessName" ng-change="setUserName()" tabindex="15">
+                                        </div>
+                                        <div class="col-md-2"><label>Customer Type </label> </div>
+                                        <div class="col-md-4" >
+                                            <select class="form-control"  ng-model="CustomerType" tabindex="16" ng-change="setCreditLimit(CustomerType,OpeningWeightLimit)" ><label>
+
+                                                <option value="{{Customer.TypeCode}}" ng-repeat="Customer in CustomerTypeValues">{{Customer.TypeName}}</option>
+
+                                            </label> </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row margin-bottom-10">
+                            <div class="col-md-12">
+                                <div class="header-label">
+                            <span>
+                              Credit Limit
+                            </span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-md-offset-1">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-4"><label>Metal</label>(gram)</div>
+                                        <div class="col-md-8">
+                                            <input type="text" ng-disabled="!MetalGram" class="form-control" ng-model="WeightCreditLimit" tabindex="17">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-4"><label>Opening Weight</label> </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control"  ng-disabled="!MetalWt"  ng-model="OpeningWeightLimit" tabindex="18">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-4"><label>Cash(Rs.)</label> </div>
+                                        <div class="col-md-8">
+                                            <input type="text" ng-disabled="!CashCredit" class="form-control"    ng-model="CashCreditLimit" tabindex="19">                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-4"><label>Opening Balance</label> </div>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" ng-disabled="!CashLimit"   ng-model="OpeningCashLimit" tabindex="20">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <!--Button Hide-->
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="row no-right-margin">
+    <div class="col-md-12">
+        <div class="pull-right">
+            <button type="submit"  class="btn btn-success" tabindex="21">Register</button>
+            <input type="button" value="Clear"  class="btn btn-primary" ng-click="registerClear()" tabindex="22"></button>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+</form>
+</div>
+
+
+
+</div>
+</div>
+
+
+</div>
+
+
+
+
+
+
+

@@ -1,0 +1,285 @@
+<div class="row" style="text-transform: lowercase !important; margin-top: 1px" data-ng-controller="enrollmentcontroller" ng-init="initcustomer()">
+    <div class="col-md-12">
+        <div class="row" >
+            <div class="data-header">
+                <span>enroll</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row col-md-12">
+        <div class="panel panel-body panel-danger" >
+            <div class="row">
+                <div class="col-md-12">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="counter-text text-center bg-gallery-red mouse-pointer" >customer details</div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-body panel-info"  >
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group" >
+                                                <div class="row">
+                                                    <div class="col-sm-6" ><label> name </label></div>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" autofocus select-on-click ng-only-character limit-to="30" enter class="form-control" required=""  placeholder="owner name" data-ng-model="enrolldata.firstname" tabindex="1">
+                                                        <span class="help-block" ng-show="enrolldata.firstname.$error.required">Required</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" >
+                                                <div class="row">
+                                                    <div class="col-sm-6" ><label> shop </label></div>
+                                                    <div class="col-sm-6">
+                                                        <input type="text"  ng-only-character limit-to="30" enter  id="cshop" class="form-control" placeholder="shop name" data-ng-model="enrolldata.orgname" tabindex="2">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-6"><label>address</label> </div>
+                                                    <div class="col-md-6">
+                                                        <input type="text" ng-only-character limit-to="50" enter  id="caddress" class="form-control"  placeholder="house, street"  data-ng-model="enrolldata.house" tabindex="3">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-6"><label>postoffice</label> </div>
+                                                    <div class="col-md-6">
+                                                        <input type="text"  ng-only-character limit-to="20" enter class="form-control"  placeholder="post office " data-ng-model="enrolldata.postoffice" tabindex="4">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-6"><label>district</label> </div>
+                                                    <div class="col-md-6" >
+                                                        <input type="text" ng-only-character select-on-click limit-to="20" enter  class="form-control" placeholder="district"  data-ng-model="enrolldata.district" tabindex="5">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row" ng-hide="true">
+                                                    <div class="col-md-6"><label>state</label> </div>
+                                                    <div class="col-md-6">
+                                                        <input type="text"  ng-only-character limit-to="20" enter class="form-control" placeholder="state"  name="state"   data-ng-model="enrolldata.state" tabindex="6">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-6"><label>pin</label> </div>
+                                                    <div class="col-md-6">
+                                                        <input type="text" class="form-control" enter ng-only-number  data-max-length=6 data-max-decimal-points=0  placeholder="pin code" pattern="(^[0-9]{0,10}([\.][0-9]{1,2})?$)" title="INDIA:999-123;US:99999-1234;canadian:0AI$#160"  ng-model="enrolldata.pin" tabindex="7">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-6"><label>contact number</label> </div>
+                                                    <div class="col-md-6">
+                                                        <input type="text" class="form-control" enter ng-only-number data-max-length=10 data-max-decimal-points=0  placeholder="mobile number"  pattern="(^[0-9]{0,10}([\.][0-9]{1,2})?$)"   data-ng-model="enrolldata.contactno" tabindex="8">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="counter-text text-center bg-gallery-red mouse-pointer">login details</div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-body panel-info" >
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-12" style="padding-left:0px;">
+                                                        <div class="btn btn-group">
+                                                            <button class="btn btn-line-primary fa fa-users" btn-radio="1" enter data-ng-model="enrolldata.customertype" tabindex="9" data-ng-click="showcredit=true">  wholesale</button>
+                                                            <button class="btn btn-line-primary fa fa-user" btn-radio="2" enter data-ng-model="enrolldata.customertype"  tabindex="10" data-ng-click="showcredit=true">  retail</button>
+                                                            <button class="btn btn-line-primary fa fa-user" btn-radio="3" enter data-ng-model="enrolldata.customertype"  tabindex="10" data-ng-click="showcredit=true">  smith</button>
+                                                            <button class="btn btn-line-primary fa fa-user" btn-radio="5" enter data-ng-model="enrolldata.customertype" tabindex="10" data-ng-click="showcredit=false;">  app user</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-6"><label>access as </label> </div>
+                                                    <div class="col-md-6">
+                                                        <select class="form-control" enter ng-model="enrolldata.accesstype" tabindex="11"><label>
+                                                            <option value="7">Guest</option>
+                                                            <option value="6">Administrator</option>
+                                                            <option value="5">Operator</option></label>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-6"><label>login id</label></div>
+                                                    <div class="col-md-6">
+                                                        <input type="text" enter ng-only-character class="form-control"  placeholder=" login id"  ng-model="enrolldata.loginid"  tabindex="12">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-6"><label>login password</label> </div>
+                                                    <div class="col-md-6">
+                                                        <input type="password" enter  class="form-control"  placeholder="8 character password" minlength="8"
+                                                               ng-model="enrolldata.loginpassword" ng-change="type(Password)" tabindex="13" >
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-6"><label>confirm password</label></div>
+                                                    <div class="col-md-6">
+                                                        <input type="password" class="form-control" enter  placeholder="re-type password"  ng-model="enrolldata.loginpassword2" tabindex="14" >
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" data-ng-show="showcredit">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="counter-text text-center bg-gallery-red mouse-pointer">credit details</div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-body panel-info" >
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-6"><label>credit limit weight</label> </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" select-on-click enter ng-only-number data-max-length=4 data-max-decimal-points=3 placeholder="credit limit weight" data-ng-model="enrolldata.creditlimitweight" tabindex="15">
+                                                            <div class="input-group-addon">gm</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-6"><label>credit limit cash</label></div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control"  placeholder="credit limit cash" select-on-click enter ng-only-number data-max-length=6 data-max-decimal-points=2  data-ng-model="enrolldata.creditlimitcash"  tabindex="16">
+                                                            <div class="input-group-addon">rs</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-6"><label>op.balance weight</label> </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <input type="text"  class="form-control"  placeholder=" opening balance weight" select-on-click enter ng-only-number data-max-length=4 data-max-decimal-points=3 data-ng-model="enrolldata.openingbalanceweight" tabindex="17">
+                                                            <div class="input-group-addon">gm</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-6"><label>op.balance cash</label> </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control"  placeholder="opening balance cash" select-on-click enter ng-only-number data-max-length=6 data-max-decimal-points=3  data-ng-model="enrolldata.openingbalancecash" tabindex="18" >
+                                                            <div class="input-group-addon">rs</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row no-right-margin">
+                                <div class="col-md-12">
+                                    <div class="pull-right">
+                                        <button class="btn btn-success" data-ng-click="saveuser(data)" tabindex="19">save</button>
+                                        <input type="button" value="clear"  class="btn btn-primary" ng-click="cleardata()" tabindex="20"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-body panel-danger" >
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="counter-text text-center bg-gallery-red mouse-pointer" >list</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table">
+                                <thead>
+                                <tr class="table-header-custom">
+                                    <th>#</th>
+                                    <th ng-hide="true">id</th>
+                                    <th>name</th>
+                                    <th>contact</th>
+                                    <th>type</th>
+                                    <th>shop</th>
+                                    <th>address</th>
+                                    <th>cr.weight</th>
+                                    <th>cr.cash</th>
+                                    <th>op.weight</th>
+                                    <th>op.cash</th>
+                                    <th>created on</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody data-ng-repeat="customer in allcustomerlist" >
+                                <tr>
+                                    <th>{{$index+1}}</th>
+                                    <th ng-hide="true">{{customer.customerid}}</th>
+                                    <th>{{customer.firstname}} {{customer.lastname}}</th>
+                                    <th>{{customer.contactno}}</th>
+                                    <th>{{customer.typename}}</th>
+                                    <th>{{customer.orgname}}</th>
+                                    <th>{{customer.house}},{{customer.street}},{{customer.postoffice}},{{customer.district}},{{customer.pin}}</th>
+                                    <th>{{customer.creditlimitweight}}</th>
+                                    <th>{{customer.creditlimitcash}}</th>
+                                    <th>{{customer.opbalanceweight}}</th>
+                                    <th>{{customer.opbalancecash}}</th>
+                                    <th>{{customer.createddatetime  | date:'shortDate'}}</th>
+                                    <th><button class="btn-primary"  ng-click="edituser(customer)">edit</button></th>
+                                    <th><button class="btn-primary"  ng-click="deleteuser(customer)">delete</button></th>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

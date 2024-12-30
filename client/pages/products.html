@@ -1,0 +1,979 @@
+<div data-ng-controller="CashController">
+
+<div class="jewarHeader ">
+    <div class="row">
+        <div class="col-md-12">
+            <span class="jewar-head">Products</span>
+        </div>
+    </div>
+</div>
+<div class="panel panel-body panel-danger" >
+    <!--Body starts here-->
+    <div class="row">
+
+        <div class="col-md-12">
+
+        <accordion close-others="oneAtATime"  class="ui-accordion-palered ">
+
+          <accordion-group is-open="status.isFirstOpen">
+                <accordion-heading>
+                    <div class="row" data-ng-click="showProductPackages=true">
+                        <span class="col-md-12">
+                             <span class="">
+                                <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                             </span>
+                             <span>Rate</span>
+                        </span>
+                    </div>
+
+                </accordion-heading>
+                <div class="col-md-12" data-ng-controller="productController">
+                    <div class="row form-group">
+                        <div class="col-sm-offset-1 col-md-10">
+                            <table class="table table-bordered table-responsive">
+                                <tr>
+                                    <th>board rate</th>
+                                    <th>{{BoardRate}}</th>
+                                    <th>{{BoardRate}}</th>
+                                </tr>
+                                <tr>
+                                    <th>995</th>
+                                    <th>{{Rate995}}</th>
+                                    <th>{{BoardRate}}</th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label >Board Rate </label>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" required="" placeholder="Enter Board Rate" ng-model="BoardRate" tabindex="1">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-sm-offset-2 col-md-8">
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label >99.5 Rate </label>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" placeholder="Enter 99.5 Rate" ng-model="Rate995" class="form-control"  required pattern="(^[0-9]{0,10}([\.][0-9]{1,2})?$)" tabindex="2">
+                            </div>
+                        </div>
+                    </div>
+                        <div class="col-md-8">
+                            <div class="form-group" >
+                                <div class="row">
+                                    <div class="col-md-12"  >
+                                        Last Updated On {{LastUpdateDate}}
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row no-right-margin" >
+                     <div class="col-md-11">
+                         <div class="pull-right">
+                             <input type="submit"  class="btn btn-success" value="Save" ng-click="UpdateRate(BoardRate,Rate995)"tabindex="3">
+                             <button type="button" class="btn btn-rss" data-ng-click="RateClear()" tabindex="4">Cancel</button>
+                         </div>
+                     </div>
+
+                    </div>
+
+                </div>
+
+            </accordion-group>
+
+                <div class="divider"></div>
+          <accordion-group is-open="status.isFirstOpen1">
+        <accordion-heading>
+            <div class="row" data-ng-click="showProductPackages=true">
+                 <span class="col-md-12">
+                     <span class="">
+                       <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                     </span>
+                     <span>
+                          Categories
+                     </span>
+                 </span>
+            </div>
+
+        </accordion-heading>
+
+        <div class="panel-default margin-top-10" data-ng-controller="CategoryController">
+
+        <div class="row">
+            <div class="col-md-12">
+                <!--<button class="btn btn-xs text-small btn-primary float-right" ng-show="list.status" ng-click="addNewCategory()">Add More Category</button>-->
+                <a class="btn btn-xs text-small btn-primary" data-ng-show="showCategorydata"  ng-click="hidedata()">Add More Category</a>
+
+                <a class="btn btn-xs text-small btn-primary" data-ng-show="showexistingCategorydata"  ng-click="hidedataExistingCategory()">Existing Category</a>
+
+                <!--<button class="btn btn-xs text-small btn-danger float-right" data-ng-hide="hideCategorydata" ng-click="hideCategorydata=!hideCategorydata;showCategorydata=!showCategorydata">Close Category</button>-->
+
+            </div>
+
+        </div>
+        <!--<div ng-show="Categorydata">-->
+        <div data-ng-show="hideCategorydata" class="ng-hide-container effect1">
+            <div class="sub_child_hiddenContainer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <span class="text-center">New Category
+                        </span>
+                        <span style="font-size: 13px" data-ng-show="hideCategorydata" ng-click="hideCategorydata=!hideCategorydata;showCategorydata=!showCategorydata;closeCategory()" class="pull-right btn-round mouse-pointer btn-danger btn-close-round"><i class="fa fa-close"></i></span>
+
+                    </div>
+
+                </div>
+            </div>
+            <!--<div data-ng-hide="hideExistingCategorydata" class="ng-hide-container effect1">-->
+
+            <!--<div class="row margin-top-25">-->
+                <!--<div class="col-md-12">-->
+                    <!--<div class="form-group">-->
+                        <!--<div class="row">-->
+                            <!--<div class="col-md-2">Add New Category</div>-->
+                            <!--<div class="col-md-2">-->
+                                <!--<input type="checkbox"  class="" required ng-model="Category.NewCategory"  >-->
+                            <!--</div>-->
+
+                        <!--<div class="col-md-2">Existing Category</div>-->
+                        <!--<div class="col-md-1">-->
+                            <!--<input type="checkbox"  class="" required ng-model="Category.ExistingCategory"  >-->
+                        <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+            <!--</div>-->
+
+
+            <form ng-submit="CategoryMasterAdd(Category)">
+                <div class="row margin-top-25">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-2">Category Name</div>
+                                <div class="col-md-10">
+                                    <input type="text" placeholder="Enter Category Name" class="input-round form-control" required ng-model="Category.CategoryName" ng-change="ClearStatusMsg()" tabindex="1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                     <!--first row ends-->
+                <div class="">
+                    <div class="row margin-bottom-10">
+                        <div class="col-md-12">
+                            <div class="header-label">
+                            <label>
+                              Opening Balance
+                            </label>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-4">Display Wt</div>
+                                    <div class="col-md-8">
+                                        <input type="text" class="input-round form-control" placeholder="In grams " ng-model="Category.OpeningStockDisplayWeight" required pattern="(^[0-9]{0,10}([\.][0-9]{1,2})?$)" tabindex="2">
+                                        <span class="btn-arrow">gm</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div  class="col-md-4">Display Qty</div>
+                                    <div class="col-md-8">
+                                        <input type="text" class="input-round form-control" placeholder="In Numbers" data-ng-model="Category.OpeningStockDisplayQuantity" tabindex="3">
+                                        <span class="btn-arrow">nos</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-4">Store Wt</div>
+                                    <div class="col-md-8">
+                                        <input type="text" class="input-round form-control" placeholder="In grams"   ng-model="Category.OpeningStockGodownWeight" required tabindex="4">
+                                        <span class="btn-arrow">gm</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div  class="col-md-4">Store Qty</div>
+                                    <div class="col-md-8">
+                                        <input type="text" class="input-round form-control" placeholder="In Numbers"   ng-model="Category.OpeningStockGodownQuantity" required tabindex="5">
+                                        <span class="btn-arrow">nos</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row margin-bottom-10">
+                    <div class="col-md-12">
+                        <div class="header-label">
+                            <label>
+                              Value Addition
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="well">
+
+                    <div class="row">
+                        <div ng-repeat="prodCategory in addVaDetails" >
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                    Sales Type
+                                    <select class="input-round form-control"  ng-model="prodCategory.CustomerType" ><label>
+                                        <option value>--- Operator ---</option>
+
+                                        <option value="{{Customer.TypeCode}}" ng-repeat="Customer in CustomerTypeValues">{{Customer.TypeName}}</option>
+
+                                    </label> </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    Min
+                                    <input type="text" class="input-round form-control"  placeholder="In grams"  pattern="(^[0-9]{0,10}([\.][0-9]{1,2})?$)" data-ng-model="prodCategory.WC_MinimumWeight" tabindex="7"  >
+                                    <span class="btn-arrow">gm</span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    Max
+                                    <input type="text" class="input-round form-control"  data-ng-model="prodCategory.WC_MaximumWeight" placeholder="In grams"  pattern="(^[0-9]{0,10}([\.][0-9]{1,2})?$)" tabindex="8"  >
+                                    <span class="btn-arrow">gm</span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    VA%
+                                    <input type="text" class="input-round form-control"  data-ng-model="prodCategory.WC_VAPercentage" placeholder="In %.."  pattern="(^[0-9]{0,10}([\.][0-9]{1,2})?$)" tabindex="9" >
+                                    <span class="btn-arrow">%</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <a class="input-round btn btn-primary margin-top-25" ng-show="prodCategory.status" ng-click="AddMoreVA()" tabindex="10">Add More</a>
+                                    <button class="input-round btn btn-danger margin-top-25" ng-hide="prodCategory.status" ng-click="addVaDetails.splice($index,1)" tabindex="11">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row margin-5">
+                    <div class="pull-right">
+                        <input type="submit" class="input-round btn btn-success" ng-click="hideCategorydata=!hideCategorydata;showCategorydata=!showCategorydata"  ng-model="buttonCategoryAdd" value="Save Category" tabindex="12" >
+                        <input type="button" class="input-round btn btn-rss"  value="Cancel" ng-click="CategoryVA_Clear(prodCategory,Category)" tabindex="13">
+
+                    </div>
+                </div>
+
+            </form>
+
+
+        </div>
+            <div data-ng-show="hideExistingCategorydata" class="ng-hide-container effect1">
+                <div class="sub_child_hiddenContainer">
+                    <div class="row">
+                        <div class="col-md-12">
+                        <span class="text-center">Existing Category
+                        </span>
+                            <span style="font-size: 13px" data-ng-show="hideExistingCategorydata" ng-click="hideExistingCategorydata=!hideExistingCategorydata;showExistingCategorydata=!showExistingCategorydata;CloseExistingCategory()" class="pull-right btn-round mouse-pointer btn-danger btn-close-round"><i class="fa fa-close"></i></span>
+
+                        </div>
+
+                    </div>
+                </div>
+                <form ng-submit="CategoryMasterValueAddChange(Category)">
+                    <div class="row margin-top-25">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2">Choose Category </div>
+                                    <div class="col-md-10">
+
+
+                                        <select   ng-model="Category.CategoryCheckName" class="form-control col-sm-3" >
+                                            <option value=""></option>
+                                            <option value="{{row.CategoryID}}" ng-repeat="row in CategoryData">{{row.CategoryName}}</option>
+                                        </select>
+                                        <!--<input type="text" placeholder="Enter Category Name" class="input-round form-control" required ng-model="Category.CategoryName" ng-change="ClearStatusMsg()" tabindex="1">-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!--first row ends-->
+                    <!--<div class="">-->
+                        <!--<div class="row margin-bottom-10">-->
+                            <!--<div class="col-md-12">-->
+                                <!--<div class="header-label">-->
+                                    <!--<label>-->
+                                        <!--Opening Balance-->
+                                    <!--</label>-->
+
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+
+                        <!--<div class="row">-->
+                            <!--<div class="col-md-6">-->
+                                <!--<div class="form-group">-->
+                                    <!--<div class="row">-->
+                                        <!--<div class="col-md-4">Display Wt</div>-->
+                                        <!--<div class="col-md-8">-->
+                                            <!--<input type="text" class="input-round form-control" placeholder="In grams " ng-model="Category.OpeningStockDisplayWeight" required pattern="(^[0-9]{0,10}([\.][0-9]{1,2})?$)" tabindex="2">-->
+                                            <!--<span class="btn-arrow">gm</span>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+
+                            <!--</div>-->
+                            <!--<div class="col-md-6">-->
+                                <!--<div class="form-group">-->
+                                    <!--<div class="row">-->
+                                        <!--<div  class="col-md-4">Display Qty</div>-->
+                                        <!--<div class="col-md-8">-->
+                                            <!--<input type="text" class="input-round form-control" placeholder="In Numbers" data-ng-model="Category.OpeningStockDisplayQuantity" tabindex="3">-->
+                                            <!--<span class="btn-arrow">nos</span>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="row">-->
+                            <!--<div class="col-md-6">-->
+                                <!--<div class="form-group">-->
+                                    <!--<div class="row">-->
+                                        <!--<div class="col-md-4">Store Wt</div>-->
+                                        <!--<div class="col-md-8">-->
+                                            <!--<input type="text" class="input-round form-control" placeholder="In grams"   ng-model="Category.OpeningStockGodownWeight" required tabindex="4">-->
+                                            <!--<span class="btn-arrow">gm</span>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="col-md-6">-->
+                                <!--<div class="form-group">-->
+                                    <!--<div class="row">-->
+                                        <!--<div  class="col-md-4">Store Qty</div>-->
+                                        <!--<div class="col-md-8">-->
+                                            <!--<input type="text" class="input-round form-control" placeholder="In Numbers"   ng-model="Category.OpeningStockGodownQuantity" required tabindex="5">-->
+                                            <!--<span class="btn-arrow">nos</span>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div class="row margin-bottom-10">
+                        <div class="col-md-12">
+                            <div class="header-label">
+                                <label>
+                                    Value Addition
+                                </label>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="well">
+
+                        <div class="row">
+                            <div ng-repeat="prodCategory in addVaDetails" >
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        Sales Type
+                                        <select class="input-round form-control"  ng-model="prodCategory.CustomerType" tabindex="6"><label>
+                                            <option value>--- Operator ---</option>
+
+                                            <option value="{{Customer.TypeCode}}" ng-repeat="Customer in CustomerTypeValues">{{Customer.TypeName}}</option>
+
+                                        </label> </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        Min
+                                        <input type="text" class="input-round form-control"  placeholder="In grams"  pattern="(^[0-9]{0,10}([\.][0-9]{1,2})?$)" data-ng-model="prodCategory.WC_MinimumWeight" tabindex="7"  >
+                                        <span class="btn-arrow">gm</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        Max
+                                        <input type="text" class="input-round form-control"  data-ng-model="prodCategory.WC_MaximumWeight" placeholder="In grams"  pattern="(^[0-9]{0,10}([\.][0-9]{1,2})?$)" tabindex="8"  >
+                                        <span class="btn-arrow">gm</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        VA%
+                                        <input type="text" class="input-round form-control"  data-ng-model="prodCategory.WC_VAPercentage" placeholder="In %.."  pattern="(^[0-9]{0,10}([\.][0-9]{1,2})?$)" tabindex="9" >
+                                        <span class="btn-arrow">%</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <a class="input-round btn btn-primary margin-top-25" ng-show="prodCategory.status" ng-click="AddMoreVA()" tabindex="10">Add More</a>
+                                        <button class="input-round btn btn-danger margin-top-25" ng-hide="prodCategory.status" ng-click="addVaDetails.splice($index,1)" tabindex="11">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row margin-5">
+                        <div class="pull-right">
+                            <input type="submit" class="input-round btn btn-success" ng-click="hideExistingCategorydata=!hideExistingCategorydata;showExistingCategorydata=!showExistingCategorydata"  ng-model="buttonCategoryAdd" value="Save " tabindex="12" >
+                            <input type="button" class="input-round btn btn-rss"  value="Cancel" ng-click="CategoryVA_Clear(prodCategory,Category)" tabindex="13">
+
+                        </div>
+                    </div>
+
+                </form>
+
+
+            </div>
+
+        <div class="row margin-top-20">
+            <div class="col-md-12">
+                <div class="table-responsive">
+
+                    <table class="table">
+                        <thead>
+                        <tr class="table_tr_head">
+                            <th></th>
+
+
+                            <th class="">Category</th>
+
+                            <th class="text-right">Op.Qty-Display</th>
+                            <th class="text-right">Op.Wt-Display</th>
+                            <th class="text-right">Op.Qty-Store</th>
+                            <th class="text-right">Op.Wt-Store</th>
+                            <th></th>
+
+                        </tr>
+                        <!--{{CategoryData}}-->
+                        </thead>
+                        <tbody ng-repeat="row in CategoryData | orderBy:'CategoryName'">
+                        <!--<tbody>-->
+
+
+
+                        <tr>
+                            <!--<td><a><p ng-click="GetCategoryVAForAll(row.CategoryID)"><span class="fa fa-plus"></span> </p></a></td>-->
+                            <td class="mouse-pointer" ng-click="hideGridCategory=!hideGridCategory;showGridCategory=!showGridCategory;GetCategoryVAForAll(row.CategoryID)">
+                                <a href="" ng-show="showGridCategory" ><span class="fa fa-plus"></span></a>
+                                <a href=""data-ng-hide="hideGridCategory"><span class="fa fa-minus"></span></a>
+
+                            </td>
+                            <td class="mouse-pointer" ng-click="hideGridCategory=!hideGridCategory;showGridCategory=!showGridCategory;GetCategoryVAForAll(row.CategoryID)">{{row.CategoryName}}</td>
+                            <td class="mouse-pointer text-right" ng-click="hideGridCategory=!hideGridCategory;showGridCategory=!showGridCategory;GetCategoryVAForAll(row.CategoryID)">{{row.OpeningStockDisplayQuantity}}</td>
+                            <td class="mouse-pointer text-right" ng-click="hideGridCategory=!hideGridCategory;showGridCategory=!showGridCategory;GetCategoryVAForAll(row.CategoryID)">{{row.OpeningStockDisplayWeight}}</td>
+                            <td class="mouse-pointer text-right" ng-click="hideGridCategory=!hideGridCategory;showGridCategory=!showGridCategory;GetCategoryVAForAll(row.CategoryID)">{{row.OpeningStockGodownQuantity}}</td>
+                            <td class="mouse-pointer text-right" ng-click="hideGridCategory=!hideGridCategory;showGridCategory=!showGridCategory;GetCategoryVAForAll(row.CategoryID)">{{row.OpeningStockGodownWeight}}</td>
+                            <td>
+                                <!--<p ng-click="deleteCategory(row.CategoryID)" class="mouse-pointer">-->
+                                <a data-ng-click="deleteCategory(row.CategoryID)" class="btn btn-behance btn-xs"><span class="fa fa-trash"></span> Delete</a>
+                                <!--</p>-->
+                            </td>
+                        </tr>
+
+                        <!--<tr ng-hide="stockGridHide[row.CategoryID]">-->
+                        <tr data-ng-hide="hideGridCategory">
+                            <td></td>
+                            <td colspan="6">
+                                <table class="table">
+                                    <thead>
+                                    <tr style="font-size: 15px; font-weight: bold;">
+                                        <th>Sales Type</th>
+                                        <th>Min</th>
+                                        <th>Max</th>
+                                        <th>VA%</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody ng-repeat="childRow in stockReportData[row.CategoryID] | orderBy:'SalesType':'Descending'">
+
+                                    <tr >
+
+                                        <td ng-switch="childRow.SalesType">
+                                            <span ng-switch-when="WS">Wholesaler</span>
+
+                                        <span ng-switch-when='R'>Retailer</span>
+                                        <span ng-switch-when='GS'>GoldSmith</span>
+                                        </td>
+                                        <td>{{childRow.MinWeight}}</td>
+                                        <td>{{childRow.MaxWeight}}</td>
+                                        <!--<td>{{childRow.WastagePercentage}}</td>-->
+                                        <!--<div class="col-md-2">-->
+
+
+                                        <td data-ng-hide="prodCategory.WC_VAPercentage">{{childRow.WastagePercentage}}
+                                            <a style="color:blue" href="" data-ng-click="prodCategory.WC_VAPercentage=true;">edit</a>
+                                        </td>
+                                        <td data-ng-show="prodCategory.WC_VAPercentage">
+                                            <input type="text" name="txt"  size="3" id="Wst"  data-ng-model=childRow.WastagePercentage>
+                                            <a style="color:blue" href="" data-ng-click="prodCategory.WC_VAPercentage=false;UpdateVA(childRow)">save</a>
+                                        </td>
+
+
+
+
+                                            <!--<td  data-ng-hide="prodCategory.WC_VAPercentage">{{childRow.WastagePercentage}}-->
+                                            <!--<a style="color:blue" data-ng-click="prodCategory.WC_VAPercentage=true;" href="">edit</a></a>-->
+
+                                          <!--</td>-->
+                                    <!--<td data-ng-show="prodCategory.WC_VAPercentage">-->
+                                    <!--<input type="text" name="txt"  size="3" id="EditWC_VAPercentage"  data-ng-model="prodCategory.WC_VAPercentage">-->
+                                <!--&lt;!&ndash;<a style="color:blue" href="" data-ng-click="prodCategory.WC_VAPercentage=false;">save</a>&ndash;&gt;-->
+                                        <!--<a style="color:blue" href="" data-ng-click="UpdateVA(prodCategory.WC_VAPercen)">save</a>-->
+                                 <!--</td>-->
+
+                                        <td>
+                                            <a data-ng-click="deleteWastage(childRow.WastageID,row.CategoryID)" class="btn btn-behance btn-xs"><span class="fa fa-trash"></span> Delete</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+
+                                </table>
+
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+
+        </div>
+
+        </accordion-group>
+
+                <div class="divider"></div>
+          <accordion-group is-open="status.isFirstOpen3">
+                <accordion-heading>
+                    <div class="row" data-ng-click="showProductPackages=true">
+                         <span class="col-md-12">
+                              <span class="">
+                                   <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                              </span>
+                              <span>Item</span>
+                         </span>
+                    </div>
+
+                </accordion-heading>
+
+                <div class=" panel-default margin-top-10" data-ng-controller="ItemController">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <a class="btn btn-primary btn-xs"  data-ng-show="ShowItemData" ng-click="HideItemData=!HideItemData;ShowItemData=!ShowItemData;addNewItem()">Add More Item</a>
+
+                       </div>
+                    </div>
+
+                    <div data-ng-hide="HideItemData" class="ng-hide-container effect1">
+                        <div class="sub_child_hiddenContainer">
+                            <div class="row">
+                                <div class="col-md-12">
+                        <span class="text-center">New Item
+                        </span>
+                                    <span style="font-size: 13px" data-ng-hide="HideItemData" ng-click="HideItemData=!HideItemData;ShowItemData=!ShowItemData" class="pull-right btn-round mouse-pointer btn-danger btn-close-round"><i class="fa fa-close"></i></span>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <form ng-submit="ItemMasterAdd(item,Data)">
+
+                            <div class="row margin-top-25">
+                                <div class="col-md-6">
+                                    <!--<div class="col-md-12">-->
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div  class="col-md-4">Item </div>
+                                            <div class="col-md-8">
+
+                                                <input type="text" placeholder="Enter Item Name" class="input-round form-control" data-ng-model="item.ItemName" required tabindex="1">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!--</div>-->
+                                </div>
+                                <div class="col-md-6">
+                                    <!--<div class="col-md-12">-->
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-4">Category </div>
+                                            <div class="col-md-8">
+
+
+                                                <select ng-model="item.Category" ng-change="LoadItems()" class="input-round form-control" required tabindex="2">
+                                                    <option value="">- Category-</option>
+                                                    <option value="{{Users.CategoryID}}" ng-repeat="Users in CategoryValues">{{Users.CategoryName}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--</div>-->
+
+                                </div>
+                                <!--split column-->
+
+
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <!--<div class="col-md-12">-->
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-4">Purity </div>
+                                            <div class="col-md-8">
+                                                <select ng-model="item.PurityID" class="form-control input-round" tabindex="3" >
+                                                    <option value="">-Purity-</option>
+                                                    <option value="{{purity.PurityID}}" ng-repeat="purity in PurityValues">{{purity.PurityPercentage}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--</div>-->
+
+                                </div>
+                                <!--split column-->
+                                <div class="col-md-6">
+                                    <!--<div class="col-md-12">-->
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div  class="col-md-4">
+                                                <!--Not a Sale Item-->
+                                            </div>
+                                            <div class="col-md-8">
+                                                <!--<label class="ui-radio"><input value="0" data-ng-click="selectOption('Yes')" id="Radiobtn1" ng-checked="combo" ng-model="item.NonSellableItem"  name="RadioButton" type="radio"><span>YES</span></label>-->
+                                                <!--<label class="ui-radio"><input id="Radiobtn2" ng-checked="text" data-ng-click="selectOption('No')" name="RadioButton" value="1" ng-model="item.NonSellableItem" type="radio"><span>NO</span></label>-->
+                                                <div class="btn-group">
+                                                    <button type="button" class="input-round btn btn-line-primary" data-ng-click="selectOption('Yes')" data-ng-model="item.NonSellableItem" btn-radio="'0'" tabindex="4" ><span class="fa fa-user"> </span> Sellable Item</button>
+                                                    <button type="button" class="input-round btn btn-line-primary" data-ng-click="selectOption('No')" data-ng-model="item.NonSellableItem" btn-radio="'1'" tabindex="5" ><span class="fa fa-users"> </span> Non Sellable Item </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!--</div>-->
+                                </div>
+                            </div>
+
+                            <div class="row no-right-margin margin-5" >
+                                <div class="col-md-12">
+                                    <div class="pull-right">
+                                        <input type="submit"  class="input-round btn btn-success" value="Save" ng-click="HideItemData=!HideItemData;ShowItemData=!ShowItemData" tabindex="6">
+                                        <button type="button" class="input-round btn btn-rss" data-ng-click="ItemClear(item)" tabindex="7">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </form>
+                    </div>
+
+                    <div class="row margin-top-20">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table ">
+                                    <thead>
+                                    <tr class="table_tr_head">
+
+                                        <th>Name</th>
+                                        <th>Category</th>
+                                        <th class="text-right">Purity</th>
+                                        <th class="text-center">Sellable/Non Sellable</th>
+                                        <th >Action</th>
+                                    </tr>
+                                    </thead>
+                                    <!--<tbody ng-repeat="row in CategoryData | orderBy:'CategoryID':'Descending'">-->
+                                    <tbody>
+
+
+
+                                    <tr ng-repeat="row in ItemData |  orderBy:'ItemName'">
+                                        <td>{{row.ItemName}}</td>
+                                        <td>{{row.CategoryName}}</td>
+                                        <td class="text-right">{{row.PurityPercentage}}</td>
+
+                                        <td class="text-center" ng-switch="row.NonSellableItem"><span data-ng-switch-when="0">Sellable </span><span ng-switch-default="">Non Sellable</span> </td>
+                                           <td>
+                                            <a href="" data-ng-click="deleteItem(row.ItemID)" class="btn btn-behance btn-xs"><span class="fa fa-trash"></span> Delete</a>
+
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+
+            </accordion-group>
+
+                <div class="divider"></div>
+          <accordion-group is-open="status.isFirstOpen4">
+                <accordion-heading>
+                    <div class="row" data-ng-click="showProductPackages=true">
+                         <span class="col-md-12">
+                              <span class="">
+                                   <i class="pull-left fa" data-ng-class="{'fa-chevron-down':isopen,'fa-chevron-right':!isopen}"></i>
+                              </span>
+                             <span>Stock</span>
+                         </span>
+                    </div>
+
+                </accordion-heading>
+
+                <div class="panel-default margin-top-10" data-ng-controller="StockController">
+                    <form ng-submit="UpdateStocks()">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a class="btn btn-primary btn-xs"  data-ng-show="ShowStockData" ng-click="HideStockData=!HideStockData;ShowStockData=!ShowStockData;addNewStock()">Edit Stock</a>
+                            </div>
+                        </div>
+                        <div data-ng-hide="HideStockData" class="ng-hide-container effect1 ">
+                            <!--<form  ng-submit="UpdateStocks()" onkeypress="return event.keyCode!=13;">-->
+                            <div class="sub_child_hiddenContainer">
+                                <div class="row">
+                                    <div class="col-md-12">
+                        <span class="text-center">Edit Stock
+                        </span>
+                                        <span style="font-size: 13px" data-ng-hide="ShowStockData" ng-click="HideStockData=!HideStockData;ShowStockData=!ShowStockData;" class="pull-right btn-round mouse-pointer btn-danger btn-close-round"><i class="fa fa-close"></i></span>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                              <div class="form-group">
+                                <div class="row margin-top-25">
+                                    <div class="col-md-12">
+
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                <label class="font-normal control-label item-label-res"> Move</label>
+                                            </div>
+                                            <div class="col-md-2 col-md-Qty-2">
+
+                                                <input type="text"  placeholder="Display Qty" class="form-control input-round" data-ng-model="Stock_QuantityMoved" required tabindex="1">
+
+
+                                                <!--<input type="text" min="0" max="{{maxValue}}"  placeholder="" class="form-control input-round" data-ng-model="Stock_QuantityMoved" required>-->
+                                                <span class="btn-arrow">nos</span>
+
+                                            </div>
+                                            <div class="col-md-2 col-md-label-Qty-2">
+                                                <label class="font-normal control-label item-label-res">
+                                                    Quantity of
+                                                </label>
+                                            </div>
+                                            <div class="col-md-2 col-md-Cat-2">
+                                                <select ng-model="stockCategory" class="form-control input-round" ng-change="onChangeCategory(stockCategory)" tabindex="2">
+                                                    <option value="">-Select Category-</option>
+                                                    <option value="{{CategoryDataValues.CategoryID}}"  ng-repeat="CategoryDataValues in Stock_CategoryValues" >{{CategoryDataValues.CategoryName}}</option>
+                                                </select>                                                </div>
+                                            <div class="col-md-1">
+                                                <label class="font-normal control-label item-label-res">
+                                                   for weight
+                                                </label>
+                                            </div>
+                                            <div class="col-md-2">
+
+                                                <!--<input type="number" min="0" max="{{maxValue}}"  placeholder="Display Qty" class="input-round form-control" data-ng-model="Stock_WeightMoved" required>-->
+
+
+                                                <input type="text"    class="input-round form-control" data-ng-model="Stock_WeightMoved" required tabindex="3">
+                                                <span class="btn-arrow">gm</span>
+
+                                            </div>
+                                            <div class="col-md-3 desc-sm-Stock">
+                                                <label class="font-normal control-label item-label-res">
+                                                    grams from Store to Display.
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <!--H##################################################################################################-->
+
+                            <!--<div class="hidden row">-->
+                                <!--<div class="col-md-12">-->
+
+                                    <!--<div class="form-group">-->
+                                        <!--<div class="row">-->
+                                            <!--<label class="col-md-3">Qty Moved From Godown To Display </label>-->
+                                            <!--<div class="col-md-9">-->
+
+                                                <!--<input type="number" min="0" max="{{maxValue}}"  placeholder="Display Qty" class="form-control" data-ng-model="Stock_DisplayWeight" required>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class=" row">-->
+                                <!--&lt;!&ndash;split column&ndash;&gt;-->
+                                <!--<div class=" hidden row">-->
+                                    <!--<div class="col-md-12">-->
+                                        <!--<div class="form-group">-->
+                                            <!--<div class="row">-->
+                                                <!--<label  class="col-md-3">Wt Moved From Godown To Display </label>-->
+                                                <!--<div class="col-md-9">-->
+
+                                                    <!--&lt;!&ndash;<div class="col-md-12">&ndash;&gt;-->
+
+                                                    <!--<input type="number" min="0" max="{{maxWeight}}" placeholder="Display Wt" class="form-control" data-ng-model="Stock_WeightMoved" required>-->
+                                                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                                <!--</div>-->
+
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+
+                            <!--</div>-->
+
+                            <!--&lt;!&ndash;#########################################################################################################&ndash;&gt;-->
+                            <div class="row no-right-margin margin-5" >
+                                <div class="pull-right">
+                                    <input type="submit"  class="input-round btn btn-success" value="Save" tabindex="4">
+                                    <button type="button" class="input-round btn btn-rss" data-ng-click="clearStockTab()" tabindex="5">Cancel</button>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="row margin-top-20">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table ">
+                                        <thead>
+                                        <tr class="table_tr_head">
+                                            <th></th>
+                                            <th>Category</th>
+                                            <!--<th>Item</th>-->
+                                            <th>Disp Qty</th>
+                                            <th>Disp Wt</th>
+                                            <th>Store Qty</th>
+                                            <th>Store Wt</th>
+                                        </tr>
+                                        </thead>
+                                        <!--<tbody ng-repeat="row in CategoryData | orderBy:'CategoryID':'Descending'">-->
+                                        <tbody>
+
+
+                                        <tr ng-repeat="row in Stock_ItemValues | orderBy:'ItemID':'Descending'">
+                                            <td></td>
+                                            <td>{{row.CategoryName}}</td>
+                                            <!--<td>{{row.ItemName}}</td>-->
+                                            <td>{{row.DisplayQuantity}}</td>
+                                            <td>{{row.DisplayWeight}}</td>
+                                            <td>{{row.GodownQuantity}}</td>
+                                            <td>{{row.GodownWeight}}</td>
+                                            <td></td>
+                                            <!--<td>-->
+                                                <!--<a href="" data-ng-click="DeleteStock(row.CategoryID)" class="btn btn-behance btn-xs"><span class="fa fa-trash"></span> Delete</a>-->
+                                            <!--</td>-->
+
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+            </accordion-group>
+
+        </accordion>
+        <!--Item accordion starts-->
+        </div>
+
+    </div>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+

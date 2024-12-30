@@ -1,0 +1,147 @@
+<div class="row"  data-ng-controller="reportcontroller" ng-init="initsalesreturnreport()">
+    <div class="col-md-12">
+        <div class="row" >
+            <div class="data-header">
+                <span>salesreturn report</span>
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <div class="panel panel-body panel-info">
+                <div class="col-md-1 pull-left">
+                    <label class="control-label" >From</label>
+                </div>
+
+                <div class="col-md-3 pull-left">
+                    <div class="input-group" >
+                        <input type="text"
+                               placeholder="from date"
+                               class="form-control"
+                               datepicker-popup="dd-MM-yyyy"
+                               is-open="opened[8]"
+                               min="event.start_date"
+                               data-ng-model="reportdata.fromdate"
+                               datepicker-options="dateOptions"
+                               date-disabled="disabled(date, mode)"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="open($event,8)">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+
+                <div class="col-md-1">
+                    <label class="control-label" >To</label>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="input-group" >
+                        <input type="text"
+                               class="form-control"
+                               datepicker-popup="dd-MM-yyyy"
+                               data-ng-model="reportdata.todate"
+                               placeholder="to date"
+                               is-open="opened[9]"
+                               min="event.start_date"
+                               datepicker-options="dateOptions"
+                               date-disabled="disabled(date, mode)"
+                               ng-required="true"
+                               close-text="Close"
+                               ng-click="open($event,9)">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control" ng-model="billcustomer" ng-options="row.cname for row in listcustomer" data-ng-change="onchangecustomer(billcustomer)">
+                        <option value="">-- customer --</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="salesreturn();">
+                </div>
+            </div>
+        </div>
+        <!--  report body starts here-->
+        <div class="row col-md-12" style="margin-left:2px" data-ng-show="customeroutstanding[0].outstandingweight">
+            <h3></h3>
+            <address>
+                <span style="font-size: large">{{customeroutstanding[0].orgname}}</span><br>
+                {{customeroutstanding[0].cname}} ({{customeroutstanding[0].typename}})<br>
+                {{customeroutstanding[0].postoffice}},{{customeroutstanding[0].district}}.<br>
+                phone: {{customeroutstanding[0].contactno}}<br>
+                email: {{customeroutstanding[0].email}}
+            </address>
+            <h3>outstanding balance as on {{currentdate | date:'mediumDate'}} : {{customeroutstanding[0].outstandingweight}} grams.</h3>
+        </div>
+
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-12" data-ng-hide="billsummary" >
+                <h4>no data to display</h4>
+            </div>
+            <div class="col-md-12" data-ng-show="billsummary" >
+                <div class="columnsContainer">
+                    <div>
+                        <table class="table table-hover">
+                            <thead class="table-header-custom">
+                            <tr>
+                                <th></th>
+                                <th class="text-left">date</th>
+                                <th class="text-left">receipt</th>
+                                <th class="text-left">quantity</th>
+                                <th class="text-left">weight</th>
+                                <th class="text-left">created by</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody data-ng-repeat="row in billsummary">
+                            <tr data-ng-click="showbilldetails=!showbilldetails">
+                                <td>
+                                    <button data-ng-click="showbilldetails=!showbilldetails;">
+                                        <span ng-bind="showbilldetails ? '-' : '+'"></span>
+                                    </button>
+                                </td>
+                                <td class="text-left" ng-class='{cancelledtransaction : !row.status}'>{{row.billingdate | date:'longDate'}}</td>
+                                <td class="text-left" ng-class='{cancelledtransaction : !row.status}'>{{row.receiptno}}</td>
+                                <td class="text-left" ng-class='{cancelledtransaction : !row.status}'>{{row.billquantity}}</td>
+                                <td class="text-left" ng-class='{cancelledtransaction : !row.status}'>{{row.billweight}}</td>
+                                <td class="text-left" ng-class='{cancelledtransaction : !row.status}'>{{row.cname}}</td>
+                                <td class="text-left" ng-class='{cancelledtransaction : !row.status}'><span>{{row.status=='0' ? 'cancelled' : ''}}</span></td>
+                            </tr>
+                            <tr ng-show="showbilldetails">
+                                <td></td>
+                                <td colspan="12" style="padding-left: 20px">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th class="fa fa-level-down"></th>
+                                            <th>quantity</th>
+                                            <th>item</th>
+                                            <th>category</th>
+                                            <th>value</th>
+                                            <th>purity</th>
+                                            <th>rate</th>
+                                            <th>comments</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody data-ng-repeat="billitem in billdetailsreport | filter: ({transactionid: row.transactionid})" >
+                                        <tr>
+                                            <td ng-if="billitem.productvalue > 0">{{$index+1}}</td>
+                                            <td ng-if="billitem.productvalue > 0">{{billitem.quantity}}</td>
+                                            <td ng-if="billitem.productvalue > 0">{{billitem.products_title}}</td>
+                                            <td ng-if="billitem.productvalue > 0">{{billitem.categoryname}}</td>
+                                            <td ng-if="billitem.productvalue > 0">{{billitem.productvalue}}</td>
+                                            <td ng-if="billitem.productvalue > 0">{{billitem.purity}}</td>
+                                            <td ng-if="billitem.productvalue > 0">{{billitem.rate}}</td>
+                                            <td ng-if="billitem.productvalue > 0">{{billitem.description}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

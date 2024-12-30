@@ -1,0 +1,131 @@
+<div class="row"  data-ng-controller="reportcontroller">
+    <div class="col-md-12">
+        <div class="row" >
+            <div class="data-header">
+                <span>transaction report</span>
+            </div>
+        </div>
+        <div class="panel panel-body panel-info">
+            <div class="row">
+                <div class="col-md-1">
+                    <label class="control-label" style="padding-top: 5px">From</label>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+
+                <div class="input-group" >
+                    <input type="text"
+                           placeholder="Date"
+                           class="form-control"
+                           datepicker-popup='yyyy-MM-dd'
+                           is-open="opened1"
+                           data-ng-model="data.fromdate"
+                           datepicker-options="dateOptions"
+                           ng-required="true"
+                           close-text="Close"
+                           ng-click="open1(report)"
+                            >
+
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-1">
+                <label class="control-label" style="padding-top: 5px">To</label>
+
+            </div>
+
+            <div class="col-md-4">
+                <div class="input-group" >
+                    <input type="text"
+                           placeholder="Date"
+                           class="form-control"
+                           datepicker-popup='yyyy-MM-dd'
+                           is-open="opened"
+                           min="event.start_date"
+                           data-ng-model="data.todate"
+                           datepicker-options="dateOptions"
+                           date-disabled="disabled(date, mode)"
+                           ng-required="true"
+                           close-text="Close"
+                           ng-click="open(report)" >
+
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                </div>
+            </div>
+            <div class="col-md-1">
+
+                <input type="button" value="Go" class="btn btn-primary form-control" data-ng-click="transactions(data)">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Body Content-->
+
+        <div collapse="!transactionshow" style="margin-top: 20px">
+            <table class="table">
+                <thead class="table-header-custom">
+
+                <tr class="table-header-custom">
+                    <th class="text-center"></th>
+                    <th class="text-center">Item Name </th>
+                    <th class="text-center">Qty</th>
+                    <th class="text-center">Weight </th>
+                    <th class="text-center">Rate</th>
+                </tr>
+                </thead>
+                <tbody data-ng-repeat="row in transactiondata">
+                <tr class="mouse-pointer" data-ng-click="hidedetail=!hidedetail">
+                    <td class="text-center">
+                        <span class="fa fa-plus" data-ng-hide="hidedetail" data-ng-click="hidedetail=!hidedetail"></span>
+                        <span class="fa fa-minus" data-ng-show="hidedetail" data-ng-click="hidedetail=!hidedetail"></span>
+                    </td>
+                    <td class="text-center">{{row.products_name}}</td>
+                    <td class="text-center">{{row.quantity}}</td>
+                    <td class="text-center">{{row.productvalue}}</td>
+                    <td class="text-center">{{row.rate}}</td>
+                </tr>
+                <tr data-ng-show="hidedetail">
+                    <td colspan="6">
+                        <table class="table" >
+                            <thead>
+                            <tr style="font-size: 15px; font-weight: bold;" class="subtable-header">
+                                <th class="text-center">Return Qty.</th>
+                                <th class="text-center">Return Wt.</th>
+                                <th class="text-center">St Qty.</th>
+                                <th class="text-center">St W.t</th>
+                            </tr>
+                            <tr>
+                                <td class="text-center">{{childrow.ReturnQty}}</td>
+                                <td class="text-center">{{childrow.ReturnWt}}</td>
+                                <td class="text-center">{{childrow.StQty}}</td>
+                                <td class="text-center">{{childrow.StWeight}}</td>
+                            </tr>
+                            </thead>
+
+
+                        </table>
+
+                    </td>
+                </tr>
+                </tbody>
+
+
+            </table>
+
+
+
+            <!--<table class="table">-->
+                <!--<tr><td>Total Purchases ({{type[item.TransactionID]}}) </td><td>{{PurchaseDetails[item.TransactionID]}}</td><td style="text-align: left">:&nbsp;&nbsp;{{TotalPurchases[item.TransactionID]||0}}</td></tr>-->
+                <!--<tr><td>Cash  ({{type[item.TransactionID]}}) </td><td> (Rs. {{Amount}} )</td><td style="text-align: left">:&nbsp;&nbsp;{{TotalCash||0}}  </td> </tr>-->
+            <!--</table>-->
+        </div>
+
+</div>
+</div>
+

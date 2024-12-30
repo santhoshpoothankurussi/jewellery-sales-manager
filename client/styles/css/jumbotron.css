@@ -1,0 +1,76 @@
+/*
+ * Style tweaks
+ * --------------------------------------------------
+ */
+html,
+body {
+    overflow-x: hidden; /* Prevent scroll on narrow devices */
+}
+body {
+    padding-top: 70px;
+}
+footer {
+    padding: 30px 0;
+}
+
+/*
+ * Off Canvas
+ * --------------------------------------------------
+ */
+@media screen and (max-width: 767px) {
+    .row-offcanvas {
+        position: relative;
+        -webkit-transition: all .25s ease-out;
+        -o-transition: all .25s ease-out;
+        transition: all .25s ease-out;
+    }
+
+    .row-offcanvas-right {
+        right: 0;
+    }
+
+    .row-offcanvas-left {
+        left: 0;
+    }
+
+    .row-offcanvas-right
+    .sidebar-offcanvas {
+        right: -50%; /* 6 columns */
+    }
+
+    .row-offcanvas-left
+    .sidebar-offcanvas {
+        left: -50%; /* 6 columns */
+    }
+
+    .row-offcanvas-right.active {
+        right: 50%; /* 6 columns */
+    }
+
+    .row-offcanvas-left.active {
+        left: 50%; /* 6 columns */
+    }
+
+    .sidebar-offcanvas {
+        position: absolute;
+        top: 0;
+        width: 50%; /* 6 columns */
+    }
+}
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+
+.divider{display:block;height:10px}.divider-sm{height:15px}
+.divider-md{height:20px}.divider-lg{height:30px}.divider-xl{height:50px}
+
+.ui-radio{position:relative;margin:0 20px 10px;font-size:14px;line-height:20px;height:20px}
+.ui-radio input[type=radio]+span:hover{cursor:pointer}.ui-radio input[type=radio]:disabled+span:hover{cursor:not-allowed}
+.ui-radio input[type=radio]{display:none}.ui-radio input[type=radio]+span{padding-left:10px;font-weight:400}
+.ui-radio input[type=radio]+span:before{content:"";width:20px;height:20px;display:inline-block;vertical-align:middle;position:absolute;left:-20px;top:0;background:#fff;border-radius:50%;border:1px solid #ccc}
+.ui-radio input[type=radio]:disabled+span:before{opacity:.65;border:1px solid #ccc;cursor:no-drop}
+.ui-radio input[type=radio]:checked+span:after{content:"";width:8px;height:8px;position:absolute;top:6px;left:-14px;background-color:#248aaf;border-radius:50%;display:block}
+.ui-radio input[type=radio]:disabled:checked+span:after{opacity:.65;cursor:no-drop;background-color:#ccc}

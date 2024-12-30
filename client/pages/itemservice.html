@@ -1,0 +1,112 @@
+
+<div class="col-md-12" style="margin-top: 60px">
+    <div class="data-header">
+        <span>item</span>
+    </div>
+
+</div>
+
+<div style="margin-left: 30px; margin-right: 30px" class=" panel-default margin-top-10"  data-ng-controller="servicecontroller">
+    <div class="row form-group">
+        <div class="col-md-12">
+
+            <a class="btn btn-primary btn-xs"   data-ng-click="addmoreitem()">Add More Item</a>
+
+        </div>
+    </div>
+   <div class="row ">
+       <div class="col-md-12">
+    <div collapse="!shownewitem" class="row form-group">
+        <div class="col-md-12">
+            <div class="panel panel-info" style="border-color: #007a9a; box-shadow: 4px 4px 8px 0px">
+                <div class="panel-heading text-center" style="color: white; background-color:#007a9a; text-transform: lowercase; border-color: #007a9a">
+                    <span class="pull-right fa fa-close close-button"  data-ng-click="closenewitem()"></span>new items</div>
+                <div class="panel-body">
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="row form-group">
+                                <div class="col-md-1">
+                                    <label class="control-label">item</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control input-sm">
+                                </div>
+                                <div class="col-md-1">
+                                    <label class="control-label">purity</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control input-sm">
+                                </div>
+
+
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="col-md-1">
+                                        <label class="control-label">weight</label>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control input-sm">
+                                    </div>
+                                    <div class="col-md-3 col-sm-offset-3">
+                                        <div class="btn-group">
+                                            <div class="btn btn-line-primary fa fa-user" data-ng-model="sellableitem" radio=0>sellable item</div>
+                                            <button class="btn btn-line-primary fa fa-users" data-ng-model="nonsellableitem" radio=1>non sellable item</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-2 col-sm-offset-10">
+                                    <button class="btn btn-success">save</button>
+                                    <button class="btn btn-danger">cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+       </div>
+   </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table ">
+                    <thead>
+                    <tr class="table-header-custom">
+
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th class="text-right">Purity</th>
+                        <th class="text-center">Sellable/Non Sellable</th>
+                        <th >Action</th>
+                    </tr>
+                    </thead>
+                    <!--<tbody ng-repeat="row in CategoryData | orderBy:'CategoryID':'Descending'">-->
+                    <tbody>
+
+
+
+                    <tr data-ng-repeat="row in catogorieslist">
+                        <td>{{row.ItemName}}</td>
+                        <td>{{row.CategoryName}}</td>
+                        <td class="text-right">{{row.PurityPercentage}}</td>
+
+                        <td class="text-center" ng-switch="row.NonSellableItem"><span data-ng-switch-when="0">Sellable </span><span ng-switch-default="">Non Sellable</span> </td>
+                        <td>
+                            <a href="" data-ng-click="deleteItem(row.ItemID)" class="btn btn-behance btn-xs"><span class="fa fa-trash"></span> Delete</a>
+
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
